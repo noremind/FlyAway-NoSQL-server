@@ -1,0 +1,25 @@
+.p-select{
+	display: flex !important;
+	gap: 8px;
+	align-items: center;
+	border-radius: 16px !important;
+	padding: 8px 12px;
+	&-dropdown{
+		svg{
+			margin-top: 3px;
+		}
+		svg path[fill]{
+			color: #00B8FA !important;
+		}
+	}
+	&-list{
+		background-color: #f7f5f5 !important;
+		padding: 8px 12px !important;
+		border-radius: 12px !important;
+		font-size: 14px;
+		margin-top: 2px !important;
+		display: flex;
+		flex-direction: column;
+		gap: 10px !important;
+	}
+}

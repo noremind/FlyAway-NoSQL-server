@@ -1,0 +1,211 @@
+
+i.icon {
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  background-color: $surface-400;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  transition: 0.2s;
+
+  &.up {
+    transform: rotate(-180deg);
+  }
+
+  &.down {
+    transform: rotate(180deg);
+  }
+
+  &.left {
+    transform: rotate(-90deg);
+  }
+
+  &.right {
+    transform: rotate(90deg);
+  }
+
+	  &.up-right {
+    transform: rotate(-45deg);
+  }
+}
+
+
+//Colors
+.transparent{
+	background-color: transparent !important;
+}
+
+.blue-400{
+	background-color: $blue-400 !important;
+}
+
+.blue-500{
+	background-color: $blue-500 !important;
+}
+
+.orange-200{
+	background-color: $orange-200 !important;
+}
+
+.surface-900{
+	background-color: $surface-900 !important;
+}
+
+.yellow-500{
+	background-color: $yellow-500 !important;
+}
+
+
+//Sizes
+.size-52 {
+  mask-size: 52px 52px;
+  width: 52px !important;
+  min-width: 52px;
+  height: 52px !important;
+}
+.size-44 {
+    mask-size: 44px 44px;
+    width: 44px!important;
+    min-width: 44px;
+    height: 44px!important;
+}
+.size-42 {
+  mask-size: 42px 42px;
+  width: 42px !important;
+  min-width: 42px;
+  height: 42px !important;
+}
+.size-36 {
+  mask-size: 36px 36px;
+  width: 36px !important;
+  min-width: 36px;
+  height: 36px !important;
+}
+.size-32 {
+  mask-size: 32px 32px;
+  width: 32px !important;
+  min-width: 32px;
+  height: 32px !important;
+}
+.size-30 {
+  mask-size: 30px 30px;
+  width: 30px !important;
+  min-width: 30px;
+  height: 30px !important;
+}
+.size-24 {
+  mask-size: 24px 24px;
+  width: 24px !important;
+  min-width: 24px;
+  height: 24px !important;
+}
+.size-20 {
+  mask-size: 20px 20px;
+  width: 20px !important;
+  min-width: 20px;
+  height: 20px !important;
+}
+.size-16 {
+  mask-size: 16px 16px;
+  width: 16px !important;
+  min-width: 16px;
+  height: 16px !important;
+}
+
+.size-17-5{
+	mask-size: 17.5px 17.5px;
+  width: 17.5px !important;
+  min-width: 17.5px;
+  height: 17.5px !important;
+}
+
+.size-14 {
+  mask-size: 14px 14px;
+  width: 14px !important;
+  min-width: 14px;
+  height: 14px !important;
+}
+
+
+
+// Icons
+.lupa{
+						    @extend i, .icon;
+    -webkit-mask-image: url("@/assets/icons/search.svg");
+    mask-image: url("@/assets/icons/search.svg");
+}
+.profile{
+						    @extend i, .icon;
+    -webkit-mask-image: url("@/assets/icons/profile.svg");
+    mask-image: url("@/assets/icons/profile.svg");
+}
+.login{
+						    @extend i, .icon;
+    -webkit-mask-image: url("@/assets/icons/login.svg");
+    mask-image: url("@/assets/icons/login.svg");
+}
+.map{
+						    @extend i, .icon;
+    -webkit-mask-image: url("@/assets/icons/map.svg");
+    mask-image: url("@/assets/icons/map.svg");
+}
+.smile{
+						    @extend i, .icon;
+    -webkit-mask-image: url("@/assets/icons/smile.svg");
+    mask-image: url("@/assets/icons/smile.svg");
+}
+.heart{
+								@extend i, .icon;
+		-webkit-mask-image: url("@/assets/icons/heart.svg");
+		mask-image: url("@/assets/icons/heart.svg");
+}
+.credit-card{
+								@extend i, .icon;
+		-webkit-mask-image: url("@/assets/icons/credit-card.svg");
+		mask-image: url("@/assets/icons/credit-card.svg");
+}
+.home{
+								@extend i, .icon;
+		-webkit-mask-image: url("@/assets/icons/home.svg");
+		mask-image: url("@/assets/icons/home.svg");
+}
+.arrow{
+								@extend i, .icon;
+		-webkit-mask-image: url("@/assets/icons/arrow.svg");
+		mask-image: url("@/assets/icons/arrow.svg");
+}
+.hot{
+								@extend i, .icon;
+		-webkit-mask-image: url("@/assets/icons/hot.svg");
+		mask-image: url("@/assets/icons/hot.svg");
+}
+.star{
+								@extend i, .icon;
+		-webkit-mask-image: url("@/assets/icons/star.svg");
+		mask-image: url("@/assets/icons/star.svg");
+}
+.instagram{
+								@extend i, .icon;
+		-webkit-mask-image: url("@/assets/icons/instagram.svg");
+		mask-image: url("@/assets/icons/instagram.svg");
+}
+.email{
+								@extend i, .icon;
+		-webkit-mask-image: url("@/assets/icons/email.svg");
+		mask-image: url("@/assets/icons/email.svg");
+}
+.tiktok{
+								@extend i, .icon;
+		-webkit-mask-image: url("@/assets/icons/tiktok.svg");
+		mask-image: url("@/assets/icons/tiktok.svg");
+}
+.location{
+								@extend i, .icon;
+		-webkit-mask-image: url("@/assets/icons/location.svg");
+		mask-image: url("@/assets/icons/location.svg");
+}
+.phone{
+								@extend i, .icon;
+		-webkit-mask-image: url("@/assets/icons/phone.svg");
+		mask-image: url("@/assets/icons/phone.svg");
+}

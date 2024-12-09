@@ -1,0 +1,122 @@
+@font-face {
+	font-family: Geologica;
+	src: url("@/assets/fonts/Geologica/static/Geologica-Regular.woff2") format("woff2");
+	font-style: normal;
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: Geologica;
+	src: url("@/assets/fonts/Geologica/static/Geologica-Bold.woff2") format("woff2");
+	font-style: normal;
+	font-weight: 700;
+}
+
+@font-face {
+	font-family: Geologica;
+	src: url("@/assets/fonts/Geologica/static/Geologica-Meduim.woff2") format("woff2");
+	font-style: normal;
+	font-weight: 500;
+}
+
+@font-face {
+	font-family: Geologica;
+	src: url("@/assets/fonts/Geologica/static/Geologica-Thin.woff2") format("woff2");
+	font-style: normal;
+	font-weight: 200;
+}
+
+@font-face {
+	font-family: Miama Nueva;
+	src: url("@/assets/fonts/MiamaNueva/miamanueva.woff2") format("woff2");
+	font-style: normal;
+	font-weight: 400;
+}
+
+@font-face {
+	font-family: Miama Nueva;
+	src: url("@/assets/fonts/MiamaNueva/miamanueva.woff2") format("woff2");
+	font-style: italic;
+	font-weight: 400;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-style: normal;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  width: 100%;
+  background: $surface-150;
+  min-height: 100%;
+	font-weight: 200;
+  overflow-x: hidden;
+  font-family: "Geologica", sans-serif;
+  color: #000;
+}
+
+input,
+textarea,
+select {
+  background: none;
+  border: none;
+  outline: none;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-top: 0;
+  margin-bottom: 0rem;
+  font-weight: 400;
+  line-height: 1;
+}
+
+img {
+  max-width: 100%;
+}
+
+ol,
+ul {
+  margin-top: 0;
+  margin-bottom: 0rem;
+  padding-left: 0rem;
+}
+
+li {
+  list-style-type: none;
+}
+
+a {
+  text-decoration: none;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+button {
+  cursor: pointer;
+	background-color: transparent;
+	border: none;
+	outline: none;
+}

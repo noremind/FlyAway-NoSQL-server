@@ -1,0 +1,68 @@
+.main{
+	&__wrapper{
+		margin: 0 auto;
+		max-width: 1240px;
+		width: 100%;
+	}
+	&__link{
+		color: $blue-500;
+		font-weight: 700;
+	}
+	&__tours{
+		margin: 46px 0 26px 0;
+		position: relative;
+		&-inner{
+			display: flex;
+			gap: 12px;
+			align-items: center;
+			margin: 0 0 26px 0;
+		}
+		&-box{
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+		}
+	}
+	&__cards{
+		display: flex;
+		justify-content: space-between;
+		gap: 12px;
+	}
+	&__tours-carving{
+		position: absolute;
+		left: -135px;
+		top: -40px;
+	}
+	&__hotels-box{
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		gap: 12px;
+		margin: 36px 0;
+	}
+	&__hotels-cards{
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		gap: 12px;
+	}
+	&__reviews{
+		display: flex;
+		flex-direction: column;
+		gap: 36px;
+		margin: 26px 0;
+	}
+}
+
+.title{
+	font-size: 32px;
+	font-weight: 700;
+	line-height: 40px;
+	color: $surface-900;
+}
+
+
+:global(.swiper-pagination) {
+  position: relative !important;
+	bottom: -30px;
+}
