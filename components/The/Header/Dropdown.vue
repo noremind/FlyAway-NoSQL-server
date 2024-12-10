@@ -9,7 +9,12 @@
         />
 
         <button class="dropdown__avatar" type="button">
-          <UiIcons size="size-32" icon="profile" color="blue-500"></UiIcons>
+          <UiIcons
+            size="size-32"
+            icon="profile-user"
+            @click="userStore.openAuthModal"
+            color="blue-500"
+          ></UiIcons>
         </button>
       </div>
 
@@ -18,10 +23,12 @@
           label="Войти"
           before-icon="login"
           icon-color="blue-500"
+          @click="userStore.openAuthModal"
         ></UiButton>
         <UiButton
           background-color="blue-500"
           label="Зарегестрироваться"
+          @click="userStore.openAuthModal"
         ></UiButton>
       </div>
 
@@ -49,13 +56,14 @@
 </template>
 
 <script setup>
+const userStore = useAuthStore();
 const emit = defineEmits(["closeDropdown"]);
 const dropdownNav = [
   {
     id: 1,
     name: "Личный кабинет",
     link: "",
-    icon: "profile",
+    icon: "profile-user",
   },
   {
     id: 2,

@@ -7,6 +7,16 @@
 
     <BaseFooter></BaseFooter>
   </div>
+
+  <UiModal
+    :is-show="userStore.isRegistered"
+    max-width="600px"
+    @close="userStore.closeAuthModal"
+  >
+    <ModalsAuthStep></ModalsAuthStep>
+  </UiModal>
 </template>
 
-<script setup></script>
+<script setup>
+const userStore = useAuthStore();
+</script>

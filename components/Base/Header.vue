@@ -10,11 +10,11 @@
           />
         </nuxt-link>
 
-        <!-- <UiSelect
+        <UiSelect
           class="header__city"
           v-model="selectCity"
           :options="cities"
-        ></UiSelect> -->
+        ></UiSelect>
 
         <ul class="header__list">
           <li v-for="list in navList" :key="list.id" class="header__list-item">
@@ -26,9 +26,8 @@
         <!-- <TheHeaderLocale></TheHeaderLocale> -->
 
         <UiInput
-          class="header__search"
+          custom-class="header__search"
           placeholder="Введите название"
-          label="Top"
           after-icon="lupa"
           icon-color="blue-500"
         ></UiInput>
@@ -39,7 +38,7 @@
             type="button"
             @click="openDropdownMenu"
           >
-            <UiIcons icon="profile" color="blue-500"></UiIcons>
+            <UiIcons icon="profile-user" color="blue-500"></UiIcons>
           </button>
 
           <TheHeaderDropdown
@@ -157,6 +156,12 @@ const closeDropdownMenu = () => {
   &__list {
     display: flex;
     gap: 26px;
+    &-item {
+      font-size: 14px;
+      &--active {
+        color: $blue-500;
+      }
+    }
   }
   &__link {
     font-weight: 400;

@@ -134,7 +134,7 @@ i.icon {
     -webkit-mask-image: url("@/assets/icons/search.svg");
     mask-image: url("@/assets/icons/search.svg");
 }
-.profile{
+.profile-user{
 						    @extend i, .icon;
     -webkit-mask-image: url("@/assets/icons/profile.svg");
     mask-image: url("@/assets/icons/profile.svg");
@@ -218,4 +218,9 @@ i.icon {
 								@extend i, .icon;
 		-webkit-mask-image: url("@/assets/icons/chevron.svg");
 		mask-image: url("@/assets/icons/chevron.svg");
+}
+.circle-close{
+								@extend i, .icon;
+		-webkit-mask-image: url("@/assets/icons/circle-close.svg");
+		mask-image: url("@/assets/icons/circle-close.svg");
 }

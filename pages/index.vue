@@ -59,7 +59,7 @@
 
   <UiSwiper :pagination="{ clickable: true }" :per-slides="1" :autoplay="true">
     <swiper-slide v-for="banner in 4" :key="banner">
-      <TheMainPopularBanner></TheMainPopularBanner>
+      <TheCommonPopularBanner></TheCommonPopularBanner>
     </swiper-slide>
   </UiSwiper>
 
@@ -95,12 +95,12 @@
         }"
       >
         <swiper-slide v-for="review in 4" :key="review">
-          <TheMainReview></TheMainReview>
+          <TheCommonReview></TheCommonReview>
         </swiper-slide>
       </UiSwiper>
     </div>
     <div class="main__reviews-cards main__reviews-cards--mobile">
-      <TheMainReview v-for="review in 2" :key="review"></TheMainReview>
+      <TheCommonReview v-for="review in 2" :key="review"></TheCommonReview>
     </div>
   </section>
 </template>

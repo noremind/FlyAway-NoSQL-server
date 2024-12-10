@@ -4,7 +4,7 @@
       <nuxt-link to="/">
         <img
           class="footer__logo"
-          src="@/assets/image/logo/sapartime-logo-footer.png"
+          src="@/assets/image/logo/sapartime-logo.png"
           alt="Sapartime"
         />
       </nuxt-link>
@@ -66,12 +66,17 @@ const footerList = reactive([
     id: 2,
     list: [
       {
+        name: "Партнеры",
+        icon: "",
+        link: "",
+      },
+      {
         name: "Полезные ссылки",
         icon: "",
         link: "",
       },
       {
-        name: "Основатель",
+        name: "FAQ",
         icon: "",
         link: "",
       },
@@ -150,6 +155,7 @@ const footerList = reactive([
     display: flex;
     gap: 4px;
     align-items: center;
+    margin-top: 12px;
   }
 }
 
@@ -162,7 +168,7 @@ const footerList = reactive([
       flex-wrap: wrap;
     }
     &__list-item {
-      margin-top: 4px;
+      margin-top: 12px;
     }
   }
 }

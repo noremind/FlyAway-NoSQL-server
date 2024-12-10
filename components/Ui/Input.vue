@@ -1,6 +1,7 @@
 <template>
   <div class="input">
-    <div class="input__wrapper">
+    <label class="input__label" for="" v-if="label">{{ label }}</label>
+    <div class="input__wrapper" :class="customClass">
       <UiIcons
         v-if="beforeIcon"
         :icon="beforeIcon"
@@ -42,23 +43,29 @@ const props = defineProps({
   afterIcon: String,
   iconSize: String,
   iconColor: String,
+  customClass: String,
 });
 </script>
 
 <style lang="scss" scoped>
 .input {
-  border-radius: 26px;
-  padding: 12px 18px;
-  max-width: 100%;
-  border: 1px solid $surface-300;
   &__wrapper {
+    border-radius: 26px;
+    padding: 10px 18px;
+    max-width: 100%;
+    border: 1px solid $surface-300;
     display: flex;
     gap: 6px;
     align-items: center;
   }
+  &__label {
+    color: $surface-900;
+    font-weight: 400;
+    font-size: 14px;
+  }
   &__field {
     &[placeholder] {
-      color: $surface-400;
+      color: $surface-900;
     }
   }
 }

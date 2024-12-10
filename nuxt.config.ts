@@ -55,12 +55,18 @@ export default defineNuxtConfig({
     },
   },
 
+	plugins: ['~/plugins/sms-code.client.js'],
+
 	css: [
     "@/assets/scss/normalize.scss",
     "@/assets/scss/index.scss",
     "@/assets/scss/icons.scss",
     "@/assets/scss/primevue/index.scss",
   ],
+
+	pinia: {
+    storesDirs: ["./store/**"],
+  },
 
 	runtimeConfig: {
     public: {
