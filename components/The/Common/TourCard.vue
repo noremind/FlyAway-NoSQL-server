@@ -77,6 +77,7 @@
     left: 0;
     object-fit: cover;
     cursor: pointer;
+    width: 100%;
   }
   &__icon {
     background-color: rgba(255, 255, 255, 0.8);
@@ -184,6 +185,17 @@
     font-size: 14px;
     background-color: $orange-200;
     font-weight: 400;
+  }
+}
+
+@media (max-width: 768px) {
+  .tour {
+    &__wrapper {
+      max-width: 327px;
+    }
+    &__info {
+      margin-top: 12px;
+    }
   }
 }
 </style>

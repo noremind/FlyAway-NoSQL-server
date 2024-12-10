@@ -22,6 +22,8 @@
   &__img {
     border-radius: 16px;
     width: 100%;
+    max-height: 300px;
+    object-fit: cover;
   }
 }
 </style>

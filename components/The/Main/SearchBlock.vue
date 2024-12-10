@@ -61,19 +61,21 @@ const selectedTab = ref(tabs[0]);
 <style lang="scss" scoped>
 .search {
   position: relative;
-  width: 100%;
+  width: 90%;
   display: flex;
   justify-content: center;
-  margin-bottom: 89px;
+  top: -170px;
+  padding: 0 12px;
+  margin: 0 auto;
+  min-height: 160px;
   &__wrapper {
     width: 100%;
     position: absolute;
-    top: -170px;
     z-index: 5;
     box-shadow: 0px 0px 20px 0px #00000029;
     border-radius: 16px;
     max-width: 1120px;
-    padding: 16px;
+    padding: 16px 16px 46px 16px;
     background-color: $white;
     width: 100%;
     display: flex;
@@ -81,6 +83,7 @@ const selectedTab = ref(tabs[0]);
     justify-content: center;
     align-items: center;
     gap: 44px;
+    margin: 12px;
   }
   &__btn {
     background-color: transparent;
@@ -93,6 +96,7 @@ const selectedTab = ref(tabs[0]);
     margin: auto 0 0 0;
     padding: 12px 16px;
     border-radius: 24px;
+    white-space: nowrap;
   }
   &__text {
     color: $surface-900;
@@ -103,6 +107,9 @@ const selectedTab = ref(tabs[0]);
   &__filter {
     display: flex;
     gap: 36px;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 100%;
   }
   &__start-date,
   &__end-date {
@@ -110,6 +117,16 @@ const selectedTab = ref(tabs[0]);
     padding: 10px;
     border-radius: 26px;
     display: flex;
+  }
+}
+
+@media (max-width: 768px) {
+  .search {
+    min-height: 250px;
+    top: -10px;
+    &__filter {
+      gap: 12px;
+    }
   }
 }
 </style>

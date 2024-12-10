@@ -209,3 +209,13 @@ i.icon {
 		-webkit-mask-image: url("@/assets/icons/phone.svg");
 		mask-image: url("@/assets/icons/phone.svg");
 }
+.burger-menu{
+								@extend i, .icon;
+		-webkit-mask-image: url("@/assets/icons/burger-menu.svg");
+		mask-image: url("@/assets/icons/burger-menu.svg");
+}
+.chevron{
+								@extend i, .icon;
+		-webkit-mask-image: url("@/assets/icons/chevron.svg");
+		mask-image: url("@/assets/icons/chevron.svg");
+}

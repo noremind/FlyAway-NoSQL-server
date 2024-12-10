@@ -38,9 +38,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    max-height: 765px;
-    // height: 765px;
-    height: clamp(26.875rem, 20.893rem + 29.91vw, 47.813rem);
+    height: clamp(20.438rem, 10.916rem + 47.61vw, 47.813rem);
   }
   &__img-wrapper {
     max-width: 1240px;
@@ -50,13 +48,14 @@
     z-index: 2;
     border-radius: 16px;
     overflow: hidden;
+    padding: 12px 0px;
   }
   &__img {
     object-fit: cover;
     width: 100%;
-    // max-height: 756px;
     filter: brightness(40%);
     pointer-events: none;
+    border-radius: 16px;
   }
   &__content {
     position: relative;
@@ -67,16 +66,18 @@
     justify-content: center;
     align-items: center;
     gap: 26px;
+    padding: 16px;
   }
   &__title {
-    font-size: clamp(3.5rem, 2rem + 7.5vw, 8.75rem); //140
+    font-size: clamp(2rem, -0.348rem + 11.74vw, 8.75rem); //140
     font-family: "Miama Nueva", sans-serif;
     text-align: center;
     color: $blue-400;
     font-style: italic;
   }
   &__description {
-    font-size: 20px;
+    // font-size: 20px;
+    font-size: clamp(0.875rem, 0.745rem + 0.65vw, 1.25rem);
     font-weight: 300;
     text-align: center;
     color: $white;
@@ -89,6 +90,22 @@
     background-color: transparent;
     display: flex;
     justify-content: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .banner {
+    &__wrapper {
+      display: block;
+      height: auto;
+    }
+    &__img {
+      border-radius: 20px;
+      height: clamp(20.438rem, -24.105rem + 92.8vw, 47.813rem);
+    }
+    &__title {
+      margin-top: 64px;
+    }
   }
 }
 </style>

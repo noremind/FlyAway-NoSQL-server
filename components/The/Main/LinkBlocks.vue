@@ -47,6 +47,9 @@ const links = reactive([
 
 <style lang="scss" scoped>
 .blocks {
+  &__wrapper {
+    margin-top: 40px;
+  }
   &__title {
     color: $blue-500;
   }
@@ -54,7 +57,8 @@ const links = reactive([
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 36px;
+    gap: clamp(0.75rem, -1.691rem + 5.08vw, 2.25rem);
+    flex-wrap: wrap;
   }
   &__list-item {
     box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.04);
@@ -68,6 +72,39 @@ const links = reactive([
     transition: 0.5s;
     &:hover {
       border: 1px solid $blue-500;
+    }
+  }
+}
+@media (max-width: 768px) {
+  .blocks {
+    &__wrapper {
+      margin-top: 90px;
+    }
+    &__list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      &-item {
+        width: 100%;
+        justify-content: center;
+        padding: 16px 22px;
+      }
+    }
+  }
+}
+
+@media (max-width: 584px) {
+  .blocks {
+    &__wrapper {
+      margin-top: 130px;
+    }
+  }
+}
+
+@media (max-width: 567px) {
+  .blocks {
+    &__wrapper {
+      margin-top: 210px;
     }
   }
 }

@@ -60,10 +60,12 @@
     padding: 16px;
     border-radius: 16px;
     border: 0.5px solid $surface-300;
-    height: 315px;
+    // height: 315px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    max-width: 480px;
+    min-width: 327px;
   }
   &__header {
     display: flex;

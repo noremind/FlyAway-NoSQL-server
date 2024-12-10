@@ -10,11 +10,11 @@
           />
         </nuxt-link>
 
-        <UiSelect
+        <!-- <UiSelect
           class="header__city"
           v-model="selectCity"
           :options="cities"
-        ></UiSelect>
+        ></UiSelect> -->
 
         <ul class="header__list">
           <li v-for="list in navList" :key="list.id" class="header__list-item">
@@ -23,7 +23,7 @@
         </ul>
       </div>
       <div class="header__box">
-        <TheHeaderLocale></TheHeaderLocale>
+        <!-- <TheHeaderLocale></TheHeaderLocale> -->
 
         <UiInput
           class="header__search"
@@ -48,6 +48,13 @@
           ></TheHeaderDropdown>
         </div>
       </div>
+
+      <UiIcons
+        class="header__burger"
+        icon="burger-menu"
+        size="size-32"
+        color="blue-500"
+      ></UiIcons>
     </div>
   </header>
 </template>
@@ -127,6 +134,7 @@ const closeDropdownMenu = () => {
     align-items: center;
     justify-content: space-between;
     margin: 0 auto;
+    padding: 0 24px;
   }
   &__logo {
     margin: 0 12px 0 0;
@@ -161,6 +169,9 @@ const closeDropdownMenu = () => {
     background-color: $surface-150;
     border: none;
   }
+  &__burger {
+    display: none;
+  }
   &__profile {
     position: relative;
     &-btn {
@@ -168,6 +179,20 @@ const closeDropdownMenu = () => {
       height: 44px;
       background-color: $surface-150;
       border-radius: 50%;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
+    &__list,
+    &__box {
+      display: none;
+    }
+
+    &__burger {
+      display: block;
+      cursor: pointer;
     }
   }
 }

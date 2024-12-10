@@ -42,7 +42,8 @@ const props = defineProps({
     cursor: pointer;
     padding: 8px;
     border-radius: 24px;
-    font-size: 24px;
+    // font-size: 24px;
+    font-size: clamp(0.875rem, 0.648rem + 1.14vw, 1.5rem);
     padding: 8px 16px;
     &--active {
       background-color: $blue-500;

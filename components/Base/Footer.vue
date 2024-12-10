@@ -127,7 +127,7 @@ const footerList = reactive([
     max-width: 1240px;
     width: 100%;
     margin: 0 auto;
-    padding: 40px 0 100px 0;
+    padding: 40px 24px 100px 24px;
   }
   &__box {
     display: flex;
@@ -150,6 +150,20 @@ const footerList = reactive([
     display: flex;
     gap: 4px;
     align-items: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .footer {
+    &__wrapper {
+      padding: 16px 24px 40px 24px;
+    }
+    &__box {
+      flex-wrap: wrap;
+    }
+    &__list-item {
+      margin-top: 4px;
+    }
   }
 }
 </style>
