@@ -23,7 +23,7 @@
         </ul>
       </div>
       <div class="header__box">
-        <!-- <TheHeaderLocale></TheHeaderLocale> -->
+        <TheHeaderLocale></TheHeaderLocale>
 
         <UiInput
           custom-class="header__search"
@@ -31,6 +31,8 @@
           after-icon="lupa"
           icon-color="blue-500"
         ></UiInput>
+
+        <UiIcons icon="heart" size="size-24" color="blue-500"></UiIcons>
 
         <div class="header__profile" ref="headerDropdown">
           <button
@@ -142,6 +144,7 @@ const closeDropdownMenu = () => {
   &__city {
     background-color: $surface-150;
     font-size: 14px;
+    border-radius: 16px;
   }
   &__inner {
     display: flex;

@@ -42,7 +42,7 @@ const navList = reactive([
   },
   {
     id: 4,
-    icon: "",
+    icon: "home-hotel",
     value: "",
     name: "Мои отели",
     link: "",
@@ -56,7 +56,7 @@ const navList = reactive([
   },
   {
     id: 6,
-    icon: "",
+    icon: "credit-card",
     value: "",
     name: "Кошелек и бонусы",
     link: "",
@@ -73,9 +73,9 @@ const updateSelectedNav = (nav) => {
 .nav {
   &__wrapper {
     background-color: $white;
-    max-width: 254px;
-    width: 100%;
+    width: 254px;
     border-radius: 16px;
+    box-shadow: 0px 0px 20px 0px #0000000a;
   }
   &__list {
     display: flex;

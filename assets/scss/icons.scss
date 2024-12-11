@@ -35,6 +35,10 @@ i.icon {
 	background-color: transparent !important;
 }
 
+.white{
+	background-color: $white !important;
+}
+
 .blue-400{
 	background-color: $blue-400 !important;
 }
@@ -159,6 +163,11 @@ i.icon {
 		-webkit-mask-image: url("@/assets/icons/heart.svg");
 		mask-image: url("@/assets/icons/heart.svg");
 }
+.heart-fill{
+								@extend i, .icon;
+		-webkit-mask-image: url("@/assets/icons/heart-fill.svg");
+		mask-image: url("@/assets/icons/heart-fill.svg");
+}
 .credit-card{
 								@extend i, .icon;
 		-webkit-mask-image: url("@/assets/icons/credit-card.svg");
@@ -223,4 +232,19 @@ i.icon {
 								@extend i, .icon;
 		-webkit-mask-image: url("@/assets/icons/circle-close.svg");
 		mask-image: url("@/assets/icons/circle-close.svg");
+}
+.trash{
+								@extend i, .icon;
+		-webkit-mask-image: url("@/assets/icons/trash.svg");
+		mask-image: url("@/assets/icons/trash.svg");
+}
+.upload{
+								@extend i, .icon;
+		-webkit-mask-image: url("@/assets/icons/upload.svg");
+		mask-image: url("@/assets/icons/upload.svg");
+}
+.home-hotel{
+								@extend i, .icon;
+		-webkit-mask-image: url("@/assets/icons/home-hotel.svg");
+		mask-image: url("@/assets/icons/home-hotel.svg");
 }

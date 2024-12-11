@@ -1,22 +1,130 @@
 <template>
-  <section class="profile">
-    <div class="profile__wrapper">
-      <h1 class="profile__title title">Личный кабинет</h1>
+  <div class="profile-main">
+    <div class="profile-main__wrapper">
+      <div class="profile-main__side">
+        <div class="profile-main__box">
+          <img
+            class="profile-main__avatar"
+            src="@/assets/image/common/avatar-user.jpeg"
+            alt="Avatar"
+          />
+          <div class="profile-main__inner">
+            <div class="profile-main__inner-box">
+              <UiIcons color="blue-500" icon="upload"></UiIcons>
+              <p class="profile-main__box-text profile-main__box-text--upload">
+                Загрузить другое фото
+              </p>
+            </div>
+            <div class="profile-main__inner-box">
+              <UiIcons color="orange-200" icon="trash" size="size-14"></UiIcons>
+              <p class="profile-main__box-text profile-main__box-text--delete">
+                Удалить аватарку
+              </p>
+            </div>
+          </div>
+        </div>
 
-      <div class="profile__content"><TheProfileNav></TheProfileNav></div>
+        <UiInput label="Ваше имя" placeholder="Дана"></UiInput>
+        <UiInput
+          label="Номер телефона"
+          placeholder="+7 (777) 777 77 77"
+        ></UiInput>
+
+        <UiButton
+          class="profile-main__btn"
+          label="Сохранить"
+          background-color="blue-500"
+        ></UiButton>
+      </div>
+      <div class="profile-main__side">
+        <UiInput label="Ваша почта" placeholder="dana1234@gmail.com"></UiInput>
+
+        <UiCalendar label="Дата рождения" class="profile-main__calendar" />
+
+        <UiSelect
+          class="profile-main__select"
+          v-model="selectCity"
+          :options="cities"
+          label="Пол"
+        ></UiSelect>
+      </div>
     </div>
-  </section>
+  </div>
 </template>
 
 <script setup></script>
 
 <style lang="scss" scoped>
-.profile {
+.profile-main {
   &__wrapper {
-    margin: 80px 0 40px 0;
+    display: flex;
+    justify-content: space-between;
+    gap: 46px;
+    margin: 12px 0;
+  }
+  &__side {
     display: flex;
     flex-direction: column;
-    gap: 36px;
+    gap: 16px;
+    width: 100%;
+    height: 100%;
+    &:last-child {
+      margin-top: 14px;
+    }
+  }
+  &__select {
+    border-radius: 26px;
+    background-color: transparent;
+    border: 1px solid $surface-300;
+  }
+  &__btn {
+    padding: 8px;
+    display: flex;
+    justify-content: center;
+    margin-top: 16px;
+  }
+  &__calendar {
+    border-radius: 26px;
+    background-color: transparent;
+    border: 1px solid $surface-300;
+    width: 100%;
+    padding: 4px;
+    &-text {
+      color: $surface-900;
+      font-size: 14px;
+      font-weight: 400;
+    }
+  }
+  &__box {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    &-text {
+      font-size: 12px;
+      cursor: pointer;
+      &--upload {
+        color: $blue-500;
+      }
+      &--delete {
+        color: $orange-200;
+      }
+    }
+  }
+  &__inner {
+    display: flex;
+    gap: 4px;
+    flex-direction: column;
+    &-box {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+  }
+  &__avatar {
+    width: 66px;
+    height: 66px;
+    border-radius: 50%;
+    object-fit: cover;
   }
 }
 </style>

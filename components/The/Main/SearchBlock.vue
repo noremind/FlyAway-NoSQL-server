@@ -114,7 +114,7 @@ const selectedTab = ref(tabs[0]);
   &__start-date,
   &__end-date {
     border: 1px solid $surface-300;
-    padding: 10px;
+    padding: 5px;
     border-radius: 26px;
     display: flex;
   }

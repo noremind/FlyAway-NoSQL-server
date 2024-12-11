@@ -1,12 +1,19 @@
 <template>
   <div class="tabs">
-    <div class="tabs__wrapper">
-      <ul class="tabs__list">
+    <div
+      class="tabs__wrapper"
+      :class="{ 'tabs__wrapper--line': type === 'line' }"
+    >
+      <ul class="tabs__list" :class="{ 'tabs__list--line': type === 'line' }">
         <li
           class="tabs__list-item"
           v-for="tab in tabs"
           :key="tab.id"
-          :class="{ 'tabs__list-item--active': tab.id === modelValue.id }"
+          :class="{
+            'tabs__list-item--active': tab.id === modelValue.id,
+            'tabs__list-item--active-line':
+              tab.id === modelValue.id && type === 'line',
+          }"
           @click="emit('update:modelValue', tab)"
         >
           {{ tab.name }}
@@ -27,15 +34,28 @@ const props = defineProps({
     type: Array,
     default: () => [],
   },
+  type: {
+    type: String,
+    default: "block",
+  },
 });
 </script>
 
 <style lang="scss" scoped>
 .tabs {
+  &__wrapper {
+    &--line {
+      display: inline-block;
+      border-bottom: 1.5px solid $surface-300;
+    }
+  }
   &__list {
     display: flex;
     gap: 6px;
     align-items: center;
+    &--line {
+      gap: 0;
+    }
   }
   &__list-item {
     color: $surface-900;
@@ -48,6 +68,12 @@ const props = defineProps({
     &--active {
       background-color: $blue-500;
       color: $white;
+    }
+    &--active-line {
+      color: $blue-500;
+      background-color: transparent;
+      border-bottom: 3px solid $blue-500;
+      border-radius: 0;
     }
   }
 }

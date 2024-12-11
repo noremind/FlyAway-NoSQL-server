@@ -1,0 +1,68 @@
+@use '../variables.scss' as *;
+
+.p-paginator-content, .p-paginator {
+  display: flex !important;
+  justify-content: space-between !important;
+	flex-wrap: nowrap !important;
+	position: relative !important;
+	align-items: center !important;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+	.p-paginator-content, .p-paginator{
+		max-width: 100% !important;
+	}
+}
+
+@media (max-width: 768px) {
+	.p-paginator, .p-paginator-content{
+		max-width: 100% !important;
+	}
+}
+
+
+.p-paginator-pages{
+	display: flex !important;
+	align-items: center !important;
+	width: 100% !important;
+}
+
+
+
+.p-paginator-page{
+	padding: 7px 0 !important;
+	width: 32px !important ;
+	border-radius: 21px !important;
+	height: 32px !important;
+	margin-inline: 4px !important;
+	border: none !important;
+	background-color: transparent !important;
+	position: relative !important;
+
+	&:last-child{
+		display: none !important;
+	}
+}
+
+.p-paginator-page-selected{
+	color: $blue-500 !important;
+	background-color: $white !important;
+	border: 1px solid $blue-500 !important;
+}
+
+
+.p-paginator-prev,
+.p-paginator-next{
+	border: none !important;
+	background-color: transparent !important;
+}
+
+.p-paginator-next{
+	position: relative !important;
+	left: 53px !important;
+}
+
+.p-paginator-last,
+.p-paginator-first{
+	display: none !important;
+}

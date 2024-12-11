@@ -7,12 +7,17 @@
         alt=""
       />
       <div class="tour__header">
-        <span class="tour__icon">
-          <UiIcons icon="hot" color="orange-200" size="size-14"></UiIcons>
-        </span>
-        <div class="tour__price-box">
-          <p class="tour__new-price">66 750 ₸</p>
-          <p class="tour__old-price"><s>89 000 ₸</s></p>
+        <div class="tour__header-box">
+          <span class="tour__icon">
+            <UiIcons icon="hot" color="orange-200" size="size-14"></UiIcons>
+          </span>
+          <UiIcons icon="heart-fill" color="white" size="size-24"></UiIcons>
+        </div>
+        <div>
+          <div class="tour__price-box">
+            <p class="tour__new-price">66 750 ₸</p>
+            <p class="tour__old-price"><s>89 000 ₸</s></p>
+          </div>
         </div>
       </div>
 
@@ -42,8 +47,11 @@
           <span class="tour__count">3 места</span>
         </div>
         <div class="tour__inner">
-          <p class="tour__date">20-24 ноября 2024</p>
-          <span class="tour__discount">-25%</span>
+          <div class="tour__inner-box">
+            <p class="tour__date">24 декабря</p>
+            <span class="tour__date-plus">+5 дат</span>
+          </div>
+          <span class="tour__discount tour__discount--new">Новинка</span>
         </div>
       </div>
     </div>
@@ -61,15 +69,24 @@
     max-width: 292px;
     width: 100%;
     background-color: $white;
+    box-shadow: 0px 0px 20px 0px #0000001a;
   }
   &__header {
     position: relative;
+    width: 100%;
     height: 138px;
     padding: 0 0 24px 0;
     display: inline-flex;
     flex-direction: column;
     justify-content: space-between;
     cursor: pointer;
+    &-box {
+      display: flex;
+      width: 100%;
+      justify-content: space-between;
+      gap: 6px;
+      align-items: center;
+    }
   }
   &__img {
     position: absolute;
@@ -158,6 +175,11 @@
     gap: 4px;
     align-items: center;
     justify-content: space-between;
+    &-box {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
   }
   &__box {
     display: flex;
@@ -173,6 +195,15 @@
     color: $blue-500;
     font-weight: 700;
   }
+  &__date-plus {
+    padding: 4px 8px;
+    background-color: $surface-150;
+    white-space: nowrap;
+    font-size: 14px;
+    border-radius: 16px;
+    font-weight: 100;
+    color: $surface-900;
+  }
   &__date {
     font-size: 14px;
     font-weight: 400;
@@ -185,6 +216,10 @@
     font-size: 14px;
     background-color: $orange-200;
     font-weight: 400;
+    &--new {
+      background-color: $green-400;
+      padding: 4px 8px;
+    }
   }
 }
 
