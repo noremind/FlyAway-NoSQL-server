@@ -3,7 +3,9 @@
     <div class="ticket__wrapper">
       <div class="ticket__info">
         <p class="ticket__number">Билет №12345</p>
-        <h2 class="ticket__title title">Однодевный тур на Кольсай</h2>
+        <nuxt-link to="/profile/my-tours/1">
+          <h2 class="ticket__title title">Однодевный тур на Кольсай</h2>
+        </nuxt-link>
         <div class="ticket__info-box">
           <p class="ticket__date">Дата</p>
           <p class="ticket__day">25 декабря 2024</p>

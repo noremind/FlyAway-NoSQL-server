@@ -64,7 +64,7 @@
 .tour {
   &__wrapper {
     position: relative;
-    padding: 16px;
+    padding: 0 16px 16px 16px;
     border-radius: 16px;
     max-width: 292px;
     width: 100%;
@@ -75,7 +75,7 @@
     position: relative;
     width: 100%;
     height: 138px;
-    padding: 0 0 24px 0;
+    padding: 16px 0 24px 0;
     display: inline-flex;
     flex-direction: column;
     justify-content: space-between;
@@ -90,7 +90,7 @@
   }
   &__img {
     position: absolute;
-    top: 0;
+    // top: 0;
     left: 0;
     object-fit: cover;
     cursor: pointer;

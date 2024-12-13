@@ -52,7 +52,23 @@
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+const cities = reactive([
+  {
+    id: 1,
+    name: "Алматы",
+  },
+  {
+    id: 2,
+    name: "Астана",
+  },
+  {
+    id: 3,
+    name: "Қызылорда",
+  },
+]);
+const selectCity = ref(cities[0]);
+</script>
 
 <style lang="scss" scoped>
 .profile-main {
@@ -61,6 +77,9 @@
     justify-content: space-between;
     gap: 46px;
     margin: 12px 0;
+    background-color: $white;
+    padding: 16px;
+    border-radius: 16px;
   }
   &__side {
     display: flex;

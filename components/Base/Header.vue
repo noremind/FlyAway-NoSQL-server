@@ -32,7 +32,9 @@
           icon-color="blue-500"
         ></UiInput>
 
-        <UiIcons icon="heart" size="size-24" color="blue-500"></UiIcons>
+        <nuxt-link to="/profile/favourites">
+          <UiIcons icon="heart" size="size-24" color="blue-500"></UiIcons>
+        </nuxt-link>
 
         <div class="header__profile" ref="headerDropdown">
           <button

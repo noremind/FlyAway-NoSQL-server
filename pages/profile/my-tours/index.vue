@@ -9,13 +9,14 @@
       ></UiTabs>
 
       <div class="my-tours__cards">
-        <TheProfileTicket v-for="card in 8" :key="card"></TheProfileTicket>
+        <TheProfileTourTicket
+          v-for="card in 8"
+          :key="card"
+        ></TheProfileTourTicket>
       </div>
     </div>
     <br />
-    <center>
-      <UiPagination class="my-tours__paginatoin"></UiPagination>
-    </center>
+    <UiPagination class="my-tours__paginatoin"></UiPagination>
   </div>
 </template>
 
@@ -50,6 +51,11 @@ const selectedTab = ref(tabs[0]);
     flex-direction: column;
     gap: 16px;
     margin: 24px 0;
+  }
+  &__pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }
 </style>

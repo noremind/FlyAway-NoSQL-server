@@ -7,10 +7,16 @@
           v-for="list in navList"
           :key="list.id"
           @click="updateSelectedNav(list)"
-          :class="{ 'nav__list-item--active': list.id === selectedNav.id }"
+          :class="{ 'nav__list-item--active': list.link === selectedNav }"
         >
-          <UiIcons color="blue-500" size="size-24" :icon="list.icon"></UiIcons>
-          <p class="nav__list-text">{{ list.name }}</p>
+          <nuxt-link class="nav__link" :to="list.link">
+            <UiIcons
+              color="blue-500"
+              size="size-24"
+              :icon="list.icon"
+            ></UiIcons>
+            <p class="nav__list-text">{{ list.name }}</p>
+          </nuxt-link>
         </li>
       </ul>
     </div>
@@ -18,34 +24,35 @@
 </template>
 
 <script setup>
+const route = useRoute();
 const navList = reactive([
   {
     id: 1,
     icon: "profile-user",
     value: "",
     name: "Мои данные",
-    link: "",
+    link: "/profile",
   },
   {
     id: 2,
     icon: "heart",
     value: "",
     name: "Избранные",
-    link: "",
+    link: "/profile/favourites",
   },
   {
     id: 3,
     icon: "map",
     value: "",
     name: "Мои туры",
-    link: "",
+    link: "/profile/my-tours",
   },
   {
     id: 4,
     icon: "home-hotel",
     value: "",
     name: "Мои отели",
-    link: "",
+    link: "/profile/my-hotels",
   },
   {
     id: 5,
@@ -62,10 +69,10 @@ const navList = reactive([
     link: "",
   },
 ]);
-const selectedNav = ref(navList[0]);
+const selectedNav = ref(route.path || navList[0].link);
 
 const updateSelectedNav = (nav) => {
-  selectedNav.value = nav;
+  selectedNav.value = nav.link;
 };
 </script>
 
@@ -81,10 +88,13 @@ const updateSelectedNav = (nav) => {
     display: flex;
     flex-direction: column;
   }
-  &__list-item {
+  &__link {
     display: flex;
     gap: 8px;
     align-items: center;
+    color: $surface-900;
+  }
+  &__list-item {
     padding: 16px;
     font-size: 14px;
     cursor: pointer;

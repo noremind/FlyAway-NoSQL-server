@@ -13,9 +13,7 @@
       </div>
     </div>
     <br />
-    <center>
-      <UiPagination></UiPagination>
-    </center>
+    <UiPagination class="favourites__pagination"></UiPagination>
   </div>
 </template>
 
@@ -54,6 +52,11 @@ const selectedTab = ref(tabs[0]);
     grid-template-columns: repeat(3, 1fr);
     margin: 26px 0;
     gap: 16px;
+  }
+  &__pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 }
 </style>
