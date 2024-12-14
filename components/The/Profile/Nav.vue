@@ -6,8 +6,9 @@
           class="nav__list-item"
           v-for="list in navList"
           :key="list.id"
-          @click="updateSelectedNav(list)"
-          :class="{ 'nav__list-item--active': list.link === selectedNav }"
+          :class="{
+            'nav__list-item--active': isActive(list.link),
+          }"
         >
           <nuxt-link class="nav__link" :to="list.link">
             <UiIcons
@@ -24,6 +25,8 @@
 </template>
 
 <script setup>
+import { useRoute } from "vue-router";
+
 const route = useRoute();
 const navList = reactive([
   {
@@ -59,20 +62,26 @@ const navList = reactive([
     icon: "smile",
     value: "",
     name: "BaqytZone",
-    link: "",
+    link: "/profile/baqyt-zone",
   },
   {
     id: 6,
     icon: "credit-card",
     value: "",
     name: "Кошелек и бонусы",
-    link: "",
+    link: "/profile/transaction",
   },
 ]);
-const selectedNav = ref(route.path || navList[0].link);
 
-const updateSelectedNav = (nav) => {
-  selectedNav.value = nav.link;
+// Utility function to check active state
+const isActive = (link) => {
+  if (route.path === link) {
+    return true; // Exact match
+  }
+  if (route.path.startsWith(link) && link !== "/profile") {
+    return true; // Nested match for non-root routes
+  }
+  return false;
 };
 </script>
 

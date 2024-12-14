@@ -1,0 +1,73 @@
+<template>
+  <section class="ticket">
+    <div class="ticket__wrapper">
+      <div class="ticket__info">
+        <p class="ticket__number">Сертификат №12345</p>
+        <nuxt-link to="/profile/baqyt-zone/1">
+          <h2 class="ticket__title title">2 дня 1 ночь в горах</h2>
+        </nuxt-link>
+        <div class="ticket__info-box">
+          <p class="ticket__date">Однодневный тур в озеро Кольсай</p>
+        </div>
+      </div>
+      <div class="ticket__total">
+        <p class="ticket__total-text">Итого</p>
+        <p class="ticket__price">24 800 ₸</p>
+      </div>
+    </div>
+  </section>
+</template>
+
+<script setup></script>
+
+<style lang="scss" scoped>
+.ticket {
+  width: 100%;
+  border-radius: 16px;
+  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  border-right: 40px solid $blue-500;
+  &--nonactive {
+    border-right: 40px solid $surface-400;
+  }
+  &__wrapper {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    width: 90%;
+  }
+  &__title {
+    font-size: 24px;
+  }
+  &__number {
+    color: $surface-900;
+    font-weight: 400;
+  }
+  &__info {
+    max-width: 500px;
+    width: 100%;
+  }
+  &__info-box {
+    max-width: 350px;
+    width: 100%;
+    display: flex;
+    color: $surface-900;
+    justify-content: space-between;
+  }
+  &__total {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    &-text {
+      font-size: 14px;
+      color: $surface-900;
+      font-weight: 400;
+    }
+  }
+  &__price {
+    color: $blue-500;
+    font-size: 24px;
+    font-weight: 700;
+  }
+}
+</style>

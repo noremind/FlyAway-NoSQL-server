@@ -3,7 +3,7 @@
     <div class="ticket__wrapper">
       <div class="ticket__header">
         <h2 class="ticket__title title">Билет №12345</h2>
-        <button type="button" class="ticket__refund" @click="openRefundModal">
+        <button type="button" class="ticket__refund" @click="openRefundModal()">
           Оформить возврат
         </button>
       </div>
@@ -15,7 +15,7 @@
             src="@/assets/image/content/qr-code.png"
             alt="Qr Code"
           />
-          <button type="button" class="ticket__btn">Активный билет</button>
+          <button type="button" class="ticket__btn">Завершен</button>
         </div>
         <div class="ticket__content">
           <div class="ticket__content-box">
@@ -40,8 +40,8 @@
           </div>
 
           <section class="ticket__content-info">
-            <h3 class="ticket__content-title">Однодевный тур на Кольсай</h3>
-            <p class="ticket__content-about">О туре</p>
+            <h3 class="ticket__content-title">2 дня 1 ночь в горах</h3>
+            <p class="ticket__content-about">О сертификате</p>
             <p class="ticket__content-description">
               Приглашаем вас отправиться в увлекательное путешествие на
               Кольсайские озера — настоящую жемчужину Алматинской области, где
@@ -69,11 +69,13 @@
                   <td>Ваши билеты</td>
                 </tr>
                 <tr class="ticket__tr">
-                  <td class="ticket__td">Взрослый 23+</td>
+                  <td class="ticket__td">Однодневный тур в озеро Кольсай</td>
                   <td class="ticket__td">1 билет х 15 000 ₸</td>
                 </tr>
                 <tr class="ticket__tr">
-                  <td class="ticket__td">Детский от 7 до 13 лет</td>
+                  <td class="ticket__td">
+                    Однодневный тур на Чарынский каньон
+                  </td>
                   <td class="ticket__td">2 билета х 8 000 ₸</td>
                 </tr>
                 <tr class="ticket__tr ticket__tr--padding">
@@ -121,16 +123,45 @@
       </div>
     </div>
   </section>
+
   <UiModal
     max-width="600px"
     :is-show="isOpenRefundModal"
     @close="closeRefundModal"
   >
-    <ModalsRefund></ModalsRefund>
+    <ModalsRefund
+      @next-step="cancelledStatusRefundModal"
+      @close-modal="closeRefundModal"
+    ></ModalsRefund>
+  </UiModal>
+
+  <UiModal
+    max-width="600px"
+    :is-show="statusRefundModal === 'success'"
+    @close="closeStatusRefundModal"
+  >
+    <ModalsStatus
+      title="Возврат оформлен"
+      btn-label="Перейти в Туры"
+      goTo="/tours"
+    ></ModalsStatus>
+  </UiModal>
+
+  <UiModal
+    max-width="600px"
+    :is-show="statusRefundModal === 'cancelled'"
+    @close="closeStatusRefundModal"
+  >
+    <ModalsInfo
+      title="Возврат невозможен"
+      description="Возврат не возможен так как, вы до события осталось 72 часа, для дальнейнего выяснение обстоястельсво свяжитесь с службой поддержкой"
+      btn-label="Контакты"
+    ></ModalsInfo>
   </UiModal>
 </template>
 
 <script setup>
+const statusRefundModal = ref("");
 const isOpenRefundModal = ref(false);
 
 const openRefundModal = () => {
@@ -138,6 +169,18 @@ const openRefundModal = () => {
 };
 const closeRefundModal = () => {
   isOpenRefundModal.value = false;
+};
+
+const cancelledStatusRefundModal = () => {
+  statusRefundModal.value = "cancelled";
+};
+
+const successStatusRefundModal = () => {
+  statusRefundModal.value = "success";
+};
+
+const closeStatusRefundModal = () => {
+  statusRefundModal.value = "";
 };
 </script>
 
@@ -175,7 +218,7 @@ const closeRefundModal = () => {
     object-fit: cover;
   }
   &__btn {
-    background-color: $blue-500;
+    background-color: $surface-400;
     border-radius: 24px;
     padding: 10px 12px;
     color: $white;

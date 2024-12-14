@@ -5,11 +5,19 @@
     @next-step="nextStep"
     @prev-step="prevStep"
   />
-  <TheAuthStatus v-if="currentStep === 3" />
+  <ModalsStatus
+    v-if="currentStep === 3"
+    title="Вы зарегестрированы"
+    status="success"
+    btn-label="Перейти в личный кабинет"
+    go-to="/profile"
+    @action="userStore.closeAuthModal()"
+  />
 </template>
 
 <script setup>
 const currentStep = ref(1);
+const userStore = useAuthStore();
 
 const nextStep = () => {
   currentStep.value++;

@@ -3,7 +3,9 @@
     <div class="ticket__wrapper">
       <div class="ticket__header">
         <h2 class="ticket__title title">Билет №12345</h2>
-        <button type="button" class="ticket__refund">Оформить возврат</button>
+        <button type="button" class="ticket__refund" @click="openRefundModal">
+          Оформить возврат
+        </button>
       </div>
 
       <div class="ticket__box">
@@ -38,8 +40,8 @@
           </div>
 
           <section class="ticket__content-info">
-            <h3 class="ticket__content-title">Однодевный тур на Кольсай</h3>
-            <p class="ticket__content-about">О туре</p>
+            <h3 class="ticket__content-title">Звездный Комфорт</h3>
+            <p class="ticket__content-about">Об отеле</p>
             <p class="ticket__content-description">
               Приглашаем вас отправиться в увлекательное путешествие на
               Кольсайские озера — настоящую жемчужину Алматинской области, где
@@ -57,6 +59,15 @@
               </ul>
             </div>
 
+            <div class="ticket__premium">
+              <UiIcons
+                color="blue-500"
+                size="size-20"
+                icon="circle-check"
+              ></UiIcons>
+              <p class="ticket__premium-text">Вы выбрали премиум номер</p>
+            </div>
+
             <table class="ticket__table">
               <tbody>
                 <tr class="ticket__tr">
@@ -67,20 +78,20 @@
                   <td>Ваши билеты</td>
                 </tr>
                 <tr class="ticket__tr">
-                  <td class="ticket__td">Взрослый 23+</td>
-                  <td class="ticket__td">1 билет х 15 000 ₸</td>
+                  <td class="ticket__td">Дата от</td>
+                  <td class="ticket__td">24 декабря 2024</td>
                 </tr>
                 <tr class="ticket__tr">
-                  <td class="ticket__td">Детский от 7 до 13 лет</td>
-                  <td class="ticket__td">2 билета х 8 000 ₸</td>
+                  <td class="ticket__td">Дата до</td>
+                  <td class="ticket__td">26 декабря 2024</td>
+                </tr>
+                <tr class="ticket__tr ticket__tr--padding">
+                  <td class="ticket__td ticket__td--bold">Премиум</td>
+                  <td class="ticket__td">3 дня х 20 000 ₸</td>
                 </tr>
                 <tr class="ticket__tr ticket__tr--padding">
                   <td class="ticket__td ticket__td--bold">Скидка</td>
                   <td class="ticket__td">-20%</td>
-                </tr>
-                <tr class="ticket__tr">
-                  <td class="ticket__td ticket__td--bold">Промокод</td>
-                  <td class="ticket__td">0 ₸</td>
                 </tr>
                 <tr class="ticket__tr ticket__tr--padding">
                   <td class="ticket__td ticket__td--bold">Итого</td>
@@ -119,9 +130,25 @@
       </div>
     </div>
   </section>
+  <UiModal
+    max-width="600px"
+    :is-show="isOpenRefundModal"
+    @close="closeRefundModal"
+  >
+    <ModalsRefund></ModalsRefund>
+  </UiModal>
 </template>
 
-<script setup></script>
+<script setup>
+const isOpenRefundModal = ref(false);
+
+const openRefundModal = () => {
+  isOpenRefundModal.value = true;
+};
+const closeRefundModal = () => {
+  isOpenRefundModal.value = false;
+};
+</script>
 
 <style lang="scss" scoped>
 .ticket {
@@ -138,6 +165,15 @@
   &__refund {
     color: $orange-200;
     font-size: 14px;
+  }
+  &__premium {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    &-text {
+      color: $blue-500;
+      font-weight: 400;
+    }
   }
   &__box {
     display: flex;

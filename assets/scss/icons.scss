@@ -59,8 +59,18 @@ i.icon {
 	background-color: $yellow-500 !important;
 }
 
+.green-400{
+	background-color: $green-400 !important;
+}
+
 
 //Sizes
+.size-160 {
+  mask-size: 160px 160px;
+  width: 160px !important;
+  min-width: 160px;
+  height: 160px !important;
+}
 .size-52 {
   mask-size: 52px 52px;
   width: 52px !important;
@@ -247,4 +257,14 @@ i.icon {
 								@extend i, .icon;
 		-webkit-mask-image: url("@/assets/icons/home-hotel.svg");
 		mask-image: url("@/assets/icons/home-hotel.svg");
+}
+.circle-check{
+								@extend i, .icon;
+		-webkit-mask-image: url("@/assets/icons/circle-check.svg");
+		mask-image: url("@/assets/icons/circle-check.svg");
+}
+.copy{
+								@extend i, .icon;
+		-webkit-mask-image: url("@/assets/icons/copy.svg");
+		mask-image: url("@/assets/icons/copy.svg");
 }

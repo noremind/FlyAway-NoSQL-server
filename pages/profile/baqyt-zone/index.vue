@@ -1,22 +1,23 @@
 <template>
-  <div class="my-tours">
-    <div class="my-tours__wrapper">
+  <div class="baqyt-zone">
+    <div class="baqyt-zone__wrapper">
       <UiTabs
-        class="my-tours__tabs"
+        class="baqyt-zone__tabs"
         :tabs="tabs"
         type="line"
         v-model="selectedTab"
       ></UiTabs>
 
-      <div class="my-tours__cards">
-        <TheProfileTourTicket
+      <div class="baqyt-zone__cards">
+        <TheProfileBaqytZoneTicket
           v-for="card in 8"
           :key="card"
-        ></TheProfileTourTicket>
+        ></TheProfileBaqytZoneTicket>
       </div>
     </div>
     <br />
-    <UiPagination class="my-tours__pagination"></UiPagination>
+
+    <UiPagination class="baqyt-zone__pagination"></UiPagination>
   </div>
 </template>
 
@@ -35,7 +36,7 @@ const selectedTab = ref(tabs[0]);
 </script>
 
 <style lang="scss" scoped>
-.my-tours {
+.baqyt-zone {
   &__wrapper {
     background-color: $white;
     padding: 16px;

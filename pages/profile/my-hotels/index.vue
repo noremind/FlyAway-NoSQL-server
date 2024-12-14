@@ -10,7 +10,7 @@
     </div>
     <br />
 
-    <UiPagination class="my-hotels__paginatoin"></UiPagination>
+    <UiPagination class="my-hotels__pagination"></UiPagination>
   </div>
 </template>
 
@@ -33,6 +33,9 @@
     flex-direction: column;
     gap: 16px;
     margin: 24px 0;
+  }
+  &__pagination {
+    margin: 0 auto;
   }
 }
 </style>
