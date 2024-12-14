@@ -17,8 +17,15 @@
         ></UiSelect>
 
         <ul class="header__list">
-          <li v-for="list in navList" :key="list.id" class="header__list-item">
-            <nuxt-link class="header__list-link">{{ list.name }}</nuxt-link>
+          <li
+            v-for="list in navList"
+            :key="list.id"
+            :class="{ 'header__list-item--active': list.link === route.path }"
+            class="header__list-item"
+          >
+            <nuxt-link :to="list.link" class="header__list-link">{{
+              list.name
+            }}</nuxt-link>
           </li>
         </ul>
       </div>
@@ -63,6 +70,7 @@
 </template>
 
 <script setup>
+const route = useRoute();
 const headerDropdown = ref(null);
 const isOpenDropdownMenu = ref(false);
 const cities = reactive([
@@ -84,7 +92,7 @@ const navList = ref([
   {
     id: 1,
     name: "Туры",
-    link: "",
+    link: "/tours",
   },
   {
     id: 2,
@@ -161,8 +169,12 @@ const closeDropdownMenu = () => {
   &__list {
     display: flex;
     gap: 26px;
+    &-link {
+      color: inherit;
+    }
     &-item {
       font-size: 14px;
+      font-weight: 400;
       &--active {
         color: $blue-500;
       }

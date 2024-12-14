@@ -70,5 +70,10 @@ const clickButton = () => {
     background-color: $blue-500;
     color: $white;
   }
+  &__checkboxs {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
 }
 </style>

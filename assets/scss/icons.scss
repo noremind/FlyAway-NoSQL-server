@@ -55,6 +55,10 @@ i.icon {
 	background-color: $surface-900 !important;
 }
 
+.surface-400{
+	background-color: $surface-400 !important;
+}
+
 .yellow-500{
 	background-color: $yellow-500 !important;
 }
@@ -267,4 +271,14 @@ i.icon {
 								@extend i, .icon;
 		-webkit-mask-image: url("@/assets/icons/copy.svg");
 		mask-image: url("@/assets/icons/copy.svg");
+}
+.burger-list{
+								@extend i, .icon;
+		-webkit-mask-image: url("@/assets/icons/burger-list.svg");
+		mask-image: url("@/assets/icons/burger-list.svg");
+}
+.filter-burger{
+								@extend i, .icon;
+		-webkit-mask-image: url("@/assets/icons/filter-burger.svg");
+		mask-image: url("@/assets/icons/filter-burger.svg");
 }

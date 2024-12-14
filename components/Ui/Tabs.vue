@@ -10,13 +10,19 @@
           v-for="tab in tabs"
           :key="tab.id"
           :class="{
-            'tabs__list-item--active': tab.id === modelValue.id,
+            'tabs__list-item--active': tab.id === modelValue?.id,
             'tabs__list-item--active-line':
-              tab.id === modelValue.id && type === 'line',
+              tab.id === modelValue?.id && type === 'line',
           }"
           @click="emit('update:modelValue', tab)"
         >
-          {{ tab.name }}
+          <UiIcons
+            v-if="tab.icon"
+            :icon="tab.icon"
+            size="size-30"
+            :color="tab.id === modelValue?.id ? 'white' : 'blue-500'"
+          ></UiIcons>
+          <p class="tabs__list-name">{{ tab.name }}</p>
         </li>
       </ul>
     </div>
@@ -65,6 +71,9 @@ const props = defineProps({
     // font-size: 24px;
     font-size: clamp(0.875rem, 0.648rem + 1.14vw, 1.5rem);
     padding: 8px 16px;
+    display: flex;
+    gap: 6px;
+    align-items: center;
     &--active {
       background-color: $blue-500;
       color: $white;

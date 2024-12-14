@@ -135,11 +135,39 @@
     :is-show="isOpenRefundModal"
     @close="closeRefundModal"
   >
-    <ModalsRefund></ModalsRefund>
+    <ModalsRefund
+      @next-step="cancelledStatusRefundModal"
+      @close-modal="closeRefundModal"
+    ></ModalsRefund>
+  </UiModal>
+
+  <UiModal
+    max-width="600px"
+    :is-show="statusRefundModal === 'success'"
+    @close="closeStatusRefundModal"
+  >
+    <ModalsStatus
+      title="Возврат оформлен"
+      btn-label="Перейти в Туры"
+      goTo="/tours"
+    ></ModalsStatus>
+  </UiModal>
+
+  <UiModal
+    max-width="600px"
+    :is-show="statusRefundModal === 'cancelled'"
+    @close="closeStatusRefundModal"
+  >
+    <ModalsInfo
+      title="Возврат невозможен"
+      description="Возврат не возможен так как, вы до события осталось 72 часа, для дальнейнего выяснение обстоястельсво свяжитесь с службой поддержкой"
+      btn-label="Контакты"
+    ></ModalsInfo>
   </UiModal>
 </template>
 
 <script setup>
+const statusRefundModal = ref("");
 const isOpenRefundModal = ref(false);
 
 const openRefundModal = () => {
@@ -147,6 +175,18 @@ const openRefundModal = () => {
 };
 const closeRefundModal = () => {
   isOpenRefundModal.value = false;
+};
+
+const cancelledStatusRefundModal = () => {
+  statusRefundModal.value = "cancelled";
+};
+
+const successStatusRefundModal = () => {
+  statusRefundModal.value = "success";
+};
+
+const closeStatusRefundModal = () => {
+  statusRefundModal.value = "";
 };
 </script>
 

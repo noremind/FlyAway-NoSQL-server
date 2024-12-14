@@ -32,7 +32,6 @@ const selectedOptions = ref([]);
 .checkbox-container {
   display: flex;
   align-items: center;
-  margin-bottom: 12px;
   font-size: 16px;
   cursor: pointer;
 }

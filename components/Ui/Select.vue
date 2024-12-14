@@ -43,9 +43,11 @@ const model = ref(props.modelValue);
 .select {
   position: relative;
   margin-top: 10px;
+  border: 1px solid $surface-300;
+  border-radius: 26px;
   &__label {
     position: absolute;
-    top: -18px;
+    top: -22px;
     font-size: 14px;
     font-weight: 400;
   }
