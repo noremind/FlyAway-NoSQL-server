@@ -1,43 +1,47 @@
 <template>
-  <section class="tours">
-    <div class="tours__wrapper">
-      <div class="tours__header">
-        <h1 class="tours__title title">Туры</h1>
-        <UiTabs class="tours__tabs" :tabs="tabs" v-model="selectedTab"></UiTabs>
+  <section class="hotels">
+    <div class="hotels__wrapper">
+      <div class="hotels__header">
+        <h1 class="hotels__title title">Туры</h1>
+        <UiTabs
+          class="hotels__tabs"
+          :tabs="tabs"
+          v-model="selectedTab"
+        ></UiTabs>
       </div>
 
-      <div class="tours__content">
-        <div class="tours__content-left">
-          <section class="tours__filters">
-            <div class="tours__filters-header">
+      <div class="hotels__content">
+        <div class="hotels__content-left">
+          <section class="hotels__filters">
+            <div class="hotels__filters-header">
               <UiIcons
                 icon="filter-burger"
                 size="size-36"
                 color="blue-500"
               ></UiIcons>
-              <h2 class="tours__filters-title">Фильтр</h2>
+              <h2 class="hotels__filters-title">Фильтр</h2>
             </div>
 
-            <div class="tours__filters-box">
+            <div class="hotels__filters-box">
               <UiInput
                 placeholder="Введите название"
                 after-icon="lupa"
                 icon-color="surface-900"
               ></UiInput>
 
-              <div class="tours__filters-range">
+              <div class="hotels__filters-range">
                 <div>
-                  <p class="tours__filters-text">Цена</p>
+                  <p class="hotels__filters-text">Цена</p>
                   <UiRange></UiRange>
                 </div>
 
-                <div class="tours__filters-inner">
+                <div class="hotels__filters-inner">
                   <span>от</span>
                   <UiInput></UiInput>
                   <span>₸</span>
                 </div>
 
-                <div class="tours__filters-inner">
+                <div class="hotels__filters-inner">
                   <span>до</span>
                   <UiInput></UiInput>
                   <span>₸</span>
@@ -45,7 +49,12 @@
               </div>
 
               <div>
-                <p class="tours__filters-text">Продолжительность</p>
+                <p class="hotels__filters-text">Регион</p>
+                <UiSelect></UiSelect>
+              </div>
+
+              <div>
+                <p class="hotels__filters-text">Рейтинг</p>
                 <UiSelect></UiSelect>
               </div>
 
@@ -54,49 +63,19 @@
           </section>
           <TheCommonAdBanner></TheCommonAdBanner>
         </div>
-        <div class="tours__block">
-          <section class="tours__sort">
-            <h2 class="tours__sort-title">Сортировка</h2>
+        <div class="hotels__block">
+          <section class="hotels__sort">
+            <h2 class="hotels__sort-title">Сортировка</h2>
             <UiCheckbox
               v-for="(item, index) in options"
               :key="index"
               :label="item.label"
             ></UiCheckbox>
           </section>
-          <div v-if="selectedTab?.id === 1" class="tours__cards">
-            <TheCommonTourCard
-              v-for="card in 6"
-              :key="card"
-            ></TheCommonTourCard>
-
-            <TheCommonPopularBanner
-              class="tours__banner"
-            ></TheCommonPopularBanner>
-
-            <TheCommonTourCard
-              v-for="card in 6"
-              :key="card"
-            ></TheCommonTourCard>
-          </div>
-          <div class="tours__location">
-            <div class="tours__map" ref="mapContainer"></div>
-            <div class="tours__scroll-wrapper">
-              <div class="tours__scroll-cards">
-                <TheCommonTourCard
-                  v-for="card in 4"
-                  :key="card"
-                ></TheCommonTourCard>
-                <div class="tours__scroll-pagination">
-                  <UiPagination
-                    class="tours__pagination tours__pagination--scroll"
-                  ></UiPagination>
-                </div>
-              </div>
-            </div>
-          </div>
+          <div v-if="selectedTab?.id === 1" class="hotels__cards"></div>
           <UiPagination
             v-if="selectedTab?.id === 1"
-            class="tours__pagination"
+            class="hotels__pagination"
           ></UiPagination>
         </div>
       </div>
@@ -171,7 +150,7 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
-.tours {
+.hotels {
   &__wrapper {
     margin: 60px 0 30px 0;
   }
@@ -289,7 +268,6 @@ onMounted(() => {
   &__scroll-cards {
     max-width: 320px;
     width: 100%;
-    padding: 12px;
     overflow-y: scroll;
     display: flex;
     flex-direction: column;

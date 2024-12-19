@@ -155,6 +155,7 @@ const closeDropdownMenu = () => {
     background-color: $surface-150;
     font-size: 14px;
     border-radius: 16px;
+    border: none;
   }
   &__inner {
     display: flex;

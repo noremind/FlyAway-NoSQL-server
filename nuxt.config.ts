@@ -7,6 +7,18 @@ export default defineNuxtConfig({
 		"@nuxtjs/i18n"
 	],
 
+	app: {
+    head: {
+      script: [
+        {
+          src: "https://api-maps.yandex.ru/2.1/?apikey=YOUR_API_KEY&lang=ru_RU",
+          type: "text/javascript",
+          defer: true,
+        },
+      ],
+    },
+  },
+
 	components: {
     global: true,
     dirs: ["@/components"],

@@ -49,7 +49,14 @@
         <div class="tour__inner">
           <div class="tour__inner-box">
             <p class="tour__date">24 декабря</p>
-            <span class="tour__date-plus">+5 дат</span>
+            <span @click="toggleDropdown" class="tour__date-plus">+5 дат</span>
+            <div v-if="isOpenDropdown" class="tour__date-dropdown">
+              <ul class="tour__date-list">
+                <li class="tour__date-item">24 декабря</li>
+                <li class="tour__date-item">24 декабря</li>
+                <li class="tour__date-item">24 декабря</li>
+              </ul>
+            </div>
           </div>
           <span class="tour__discount tour__discount--new">Новинка</span>
         </div>
@@ -58,7 +65,13 @@
   </section>
 </template>
 
-<script setup></script>
+<script setup>
+const isOpenDropdown = ref(false);
+
+const toggleDropdown = () => {
+  isOpenDropdown.value = !isOpenDropdown.value;
+};
+</script>
 
 <style scoped lang="scss">
 .tour {
@@ -75,7 +88,7 @@
     position: relative;
     width: 100%;
     height: 138px;
-    padding: 16px 0 24px 0;
+    padding: 16px 0 16px 0;
     display: inline-flex;
     flex-direction: column;
     justify-content: space-between;
@@ -159,6 +172,7 @@
     display: flex;
     flex-direction: column;
     gap: 12px;
+    position: relative;
   }
   &__title {
     font-size: 24px;
@@ -203,11 +217,28 @@
     border-radius: 16px;
     font-weight: 100;
     color: $surface-900;
+    cursor: pointer;
   }
   &__date {
     font-size: 14px;
     font-weight: 400;
     color: $surface-900;
+    position: relative;
+    &-dropdown {
+      position: absolute;
+      bottom: 25px;
+      left: 62px;
+      background-color: $white;
+      padding: 4px 8px;
+      border-radius: 12px;
+      box-shadow: 0px 0px 20px 8px rgba(0, 0, 0, 0.1);
+    }
+    &__list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      color: $surface-900;
+    }
   }
   &__discount {
     padding: 8px 16px;

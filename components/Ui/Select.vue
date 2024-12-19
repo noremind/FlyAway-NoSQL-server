@@ -1,5 +1,5 @@
 <template>
-  <div class="select">
+  <div class="select" :class="{ 'select--margin': !!label }">
     <p class="select__label">{{ label }}</p>
     <Select
       v-model="model"
@@ -42,12 +42,14 @@ const model = ref(props.modelValue);
 <style lang="scss" scoped>
 .select {
   position: relative;
-  margin-top: 10px;
   border: 1px solid $surface-300;
   border-radius: 26px;
+  &--margin {
+    margin-top: 17px;
+  }
   &__label {
     position: absolute;
-    top: -22px;
+    top: -18px;
     font-size: 14px;
     font-weight: 400;
   }
