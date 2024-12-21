@@ -38,7 +38,9 @@
         </div>
       </div>
       <div class="tour__content">
-        <h3 class="tour__title">Кольсай</h3>
+        <h3 class="tour__title">
+          <nuxt-link class="tour__link" to="/tours/1">Кольсай</nuxt-link>
+        </h3>
         <p class="tour__description">
           Погрузитесь в природу Казахстана посетив озеро Кольсай.
         </p>
@@ -133,6 +135,9 @@ const toggleDropdown = () => {
     color: $surface-900;
     font-size: 14px;
     margin-top: 5px;
+  }
+  &__link {
+    color: inherit;
   }
   &__info {
     display: flex;

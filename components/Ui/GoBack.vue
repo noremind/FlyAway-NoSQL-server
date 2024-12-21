@@ -3,7 +3,7 @@
     <div class="go-back__wrapper">
       <UiIcons
         icon="arrow"
-        class="down"
+        class="go-back__icon down"
         size="size-24"
         color="surface-900"
         @click="goTo"
@@ -39,6 +39,9 @@ const goTo = () => {
     font-size: 20px;
     font-weight: 400;
     color: $surface-900;
+  }
+  &__icon {
+    cursor: pointer;
   }
 }
 </style>

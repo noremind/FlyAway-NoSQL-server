@@ -282,3 +282,28 @@ i.icon {
 		-webkit-mask-image: url("@/assets/icons/filter-burger.svg");
 		mask-image: url("@/assets/icons/filter-burger.svg");
 }
+.x-icon{
+								@extend i, .icon;
+		-webkit-mask-image: url("@/assets/icons/x-icon.svg");
+		mask-image: url("@/assets/icons/x-icon.svg");
+}
+.side-bar{
+								@extend i, .icon;
+		-webkit-mask-image: url("@/assets/icons/side-bar.svg");
+		mask-image: url("@/assets/icons/side-bar.svg");
+}
+.coffee{
+								@extend i, .icon;
+		-webkit-mask-image: url("@/assets/icons/coffee.svg");
+		mask-image: url("@/assets/icons/coffee.svg");
+}
+.star-unfill{
+								@extend i, .icon;
+		-webkit-mask-image: url("@/assets/icons/star-unfill.svg");
+		mask-image: url("@/assets/icons/star-unfill.svg");
+}
+.globe{
+								@extend i, .icon;
+		-webkit-mask-image: url("@/assets/icons/globe.svg");
+		mask-image: url("@/assets/icons/globe.svg");
+}

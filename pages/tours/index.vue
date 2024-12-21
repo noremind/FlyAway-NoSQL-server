@@ -78,7 +78,7 @@
               :key="card"
             ></TheCommonTourCard>
           </div>
-          <div class="tours__location">
+          <div v-show="selectedTab?.id === 2" class="tours__location">
             <div class="tours__map" ref="mapContainer"></div>
             <div class="tours__scroll-wrapper">
               <div class="tours__scroll-cards">

@@ -1,6 +1,9 @@
 <template>
   <section class="review">
-    <div class="review__wrapper">
+    <div
+      class="review__wrapper"
+      :class="{ 'review__wrapper--full': type === 'single' }"
+    >
       <div class="review__inner">
         <div class="review__header">
           <div class="review__header-box">
@@ -36,7 +39,7 @@
         </p>
       </div>
 
-      <div class="review__footer">
+      <div class="review__footer" v-if="type !== 'single'">
         <div class="review__footer-box">
           <img
             class="review__avatar review__avatar--small"
@@ -51,7 +54,14 @@
   </section>
 </template>
 
-<script setup></script>
+<script setup>
+const props = defineProps({
+  type: {
+    type: String,
+    default: "many",
+  },
+});
+</script>
 
 <style lang="scss" scoped>
 .review {
@@ -66,6 +76,9 @@
     justify-content: space-between;
     max-width: 480px;
     min-width: 327px;
+    &--full {
+      max-width: 100%;
+    }
   }
   &__header {
     display: flex;

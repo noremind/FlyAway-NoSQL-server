@@ -143,6 +143,101 @@
               ></div>
             </section>
           </div>
+
+          <div v-if="selectedTab.id === 3" class="details__tourist">
+            <div class="details__tourist-box">
+              <p class="details__tourist-text">Что взять с собой?</p>
+              <ul class="details__tourist-list">
+                <li class="details__tourist-item">Одежда</li>
+                <li class="details__tourist-item">Одежда</li>
+                <li class="details__tourist-item">Одежда</li>
+                <li class="details__tourist-item">Одежда</li>
+              </ul>
+            </div>
+
+            <div class="details__tourist-box">
+              <p class="details__tourist-text">
+                Рекомендации и важная информация
+              </p>
+              <ul class="details__tourist-list">
+                <li class="details__tourist-item">Одежда</li>
+                <li class="details__tourist-item">Одежда</li>
+                <li class="details__tourist-item">Одежда</li>
+                <li class="details__tourist-item">Одежда</li>
+              </ul>
+            </div>
+
+            <div class="details__tourist-box">
+              <p class="details__tourist-text">Условия</p>
+              <ul class="details__tourist-list details__tourist-list--icon">
+                <li class="details__tourist-item details__tourist-item--icon">
+                  <UiIcons
+                    icon="star-unfill"
+                    color="blue-500"
+                    size="size-24"
+                  ></UiIcons>
+                  <p>Проживание 1 ночь</p>
+                </li>
+                <li class="details__tourist-item details__tourist-item--icon">
+                  <UiIcons
+                    icon="home"
+                    color="blue-500"
+                    size="size-24"
+                  ></UiIcons>
+                  <p>Одноместный номер в Лоло</p>
+                </li>
+                <li class="details__tourist-item details__tourist-item--icon">
+                  <UiIcons
+                    icon="x-icon"
+                    color="orange-200"
+                    size="size-24"
+                  ></UiIcons>
+                  <p>Личные расходы</p>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div v-if="selectedTab.id === 4" class="details__contacts">
+            <div class="details__contacts-box">
+              <p class="details__contacts-text">Контакты</p>
+
+              <div class="details__contacts-inner">
+                <div class="details__contacts-info">
+                  <UiIcons
+                    icon="globe"
+                    color="blue-500"
+                    size="size-24"
+                  ></UiIcons>
+                  <p class="details__contacts-desc">website</p>
+                </div>
+                <div class="details__contacts-info">
+                  <UiIcons
+                    icon="phone"
+                    color="blue-500"
+                    size="size-24"
+                  ></UiIcons>
+                  <p class="details__contacts-desc">phone number</p>
+                </div>
+                <div class="details__contacts-info">
+                  <UiIcons
+                    icon="location"
+                    color="blue-500"
+                    size="size-24"
+                  ></UiIcons>
+                  <p class="details__contacts-desc">address</p>
+                </div>
+                <div class="details__contacts-info">
+                  <UiIcons
+                    icon="instagram"
+                    color="blue-500"
+                    size="size-24"
+                  ></UiIcons>
+                  <p class="details__contacts-desc">instagram</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </section>
         <div class="details__totals">
           <div class="details__totals-header">
@@ -156,6 +251,8 @@
             </div>
             <p class="details__baige">-20%</p>
           </div>
+
+          <Calendar class="details__calendar" v-model="date" inline />
 
           <p class="details__bold">Выберите билет</p>
 
@@ -234,6 +331,7 @@
           <UiButton
             label="Перейти к оплате"
             class="details__totals-btn"
+            @click="openPaymentModal"
           ></UiButton>
         </div>
       </div>
@@ -248,7 +346,9 @@
             <p class="details__reviews-average">4,1</p>
           </div>
         </div>
-        <nuxt-link class="details__reviews-link">Все отзывы</nuxt-link>
+        <nuxt-link class="details__reviews-link" to="/tours/1/reviews"
+          >Все отзывы</nuxt-link
+        >
       </div>
 
       <UiSwiper :per-slides="2.5" :loop="false">
@@ -258,9 +358,35 @@
       </UiSwiper>
     </section>
   </section>
+
+  <UiModal
+    :is-show="isOpenPayment"
+    max-width="600px"
+    @close="closePaymentModal"
+  >
+    <ModalsPayment @payed="statusPayed"></ModalsPayment>
+  </UiModal>
+
+  <UiModal
+    :is-show="isOpenStatusPayment"
+    max-width="600px"
+    @close="closePaymentModal"
+  >
+    <ModalsStatus
+      v-if="isOpenStatusPayment === 'success'"
+      title="Ваш заказ оплачен"
+      status="success"
+      btn-label="Перейти в Мои туры"
+      go-to="/profile/my-tours"
+      @action="closeStatusPaymentModal"
+    />
+  </UiModal>
 </template>
 
 <script setup>
+const isOpenPayment = ref(false);
+const isOpenStatusPayment = ref(null);
+
 const yandexMapInfo = ref(null);
 const yandexMapPath = ref(null);
 const tabs = reactive([
@@ -281,7 +407,7 @@ const tabs = reactive([
     name: "Контакты",
   },
 ]);
-const selectedTab = ref(tabs[1]);
+const selectedTab = ref(tabs[0]);
 const isMapReady = ref(false);
 
 onMounted(() => {
@@ -299,6 +425,23 @@ onMounted(() => {
     }
   });
 });
+
+const statusPayed = () => {
+  isOpenPayment.value = false;
+  isOpenStatusPayment.value = "success";
+};
+
+const closeStatusPaymentModal = () => {
+  isOpenStatusPayment.value = null;
+};
+
+const openPaymentModal = () => {
+  isOpenPayment.value = true;
+};
+
+const closePaymentModal = () => {
+  isOpenPayment.value = false;
+};
 
 const getInfoMap = () => {
   if (typeof ymaps !== "undefined") {
@@ -395,6 +538,10 @@ watch(
     display: flex;
     flex-direction: column;
     gap: 26px;
+  }
+  &__calendar {
+    width: 100%;
+    border: none !important;
   }
   &__totals {
     background-color: $white;
@@ -660,6 +807,52 @@ watch(
       width: 100%;
       border-radius: 16px;
       max-height: 430px;
+    }
+  }
+  &__tourist {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    color: $surface-900;
+    &-list {
+      &--icon {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+    }
+    &-item {
+      list-style-type: disc;
+      margin-left: 28px;
+      &--icon {
+        display: flex;
+        gap: 6px;
+        align-items: center;
+        margin-left: 0;
+      }
+    }
+    &-text {
+      margin-bottom: 12px;
+      font-weight: 400;
+    }
+  }
+  &__contacts {
+    color: $surface-900;
+    font-size: 14px;
+    &-text {
+      font-weight: 400;
+      font-size: 16px;
+      margin-bottom: 12px;
+    }
+    &-inner {
+      display: grid;
+      grid-template-columns: repeat(2, 200px);
+      gap: 16px;
+    }
+    &-info {
+      display: flex;
+      gap: 6px;
+      align-items: center;
     }
   }
 }
