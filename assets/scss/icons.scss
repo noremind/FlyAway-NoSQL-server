@@ -307,3 +307,8 @@ i.icon {
 		-webkit-mask-image: url("@/assets/icons/globe.svg");
 		mask-image: url("@/assets/icons/globe.svg");
 }
+.check{
+								@extend i, .icon;
+		-webkit-mask-image: url("@/assets/icons/check.svg");
+		mask-image: url("@/assets/icons/check.svg");
+}

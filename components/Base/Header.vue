@@ -97,7 +97,7 @@ const navList = ref([
   {
     id: 2,
     name: "Отели",
-    link: "",
+    link: "/hotels",
   },
   {
     id: 3,

@@ -72,11 +72,20 @@
               :label="item.label"
             ></UiCheckbox>
           </section>
-          <div v-if="selectedTab?.id === 1" class="hotels__cards"></div>
-          <UiPagination
-            v-if="selectedTab?.id === 1"
-            class="hotels__pagination"
-          ></UiPagination>
+          <div class="hotels__cards">
+            <div
+              v-show="selectedTab.id === 2"
+              class="hotels__map"
+              ref="mapContainer"
+            ></div>
+
+            <TheHotelsBlock v-for="block in 4" :key="block"></TheHotelsBlock>
+
+            <TheCommonPopularBanner></TheCommonPopularBanner>
+
+            <TheHotelsBlock v-for="block in 2" :key="block"></TheHotelsBlock>
+          </div>
+          <UiPagination class="hotels__pagination"></UiPagination>
         </div>
       </div>
     </div>
@@ -237,8 +246,8 @@ onMounted(() => {
   &__cards {
     background-color: $white;
     border-radius: 16px;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    display: flex;
+    flex-direction: column;
     padding: 16px;
     gap: 16px;
     box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.04);
@@ -261,7 +270,7 @@ onMounted(() => {
     height: 610px;
   }
   &__map {
-    max-width: 610px;
+    max-width: 100%;
     width: 100%;
     height: 610px;
   }
