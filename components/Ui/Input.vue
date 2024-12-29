@@ -10,6 +10,7 @@
       ></UiIcons>
       <input
         class="input__field"
+        :class="{ 'input__field--center': isCenter }"
         :type="type"
         name=""
         :value="modelValue"
@@ -44,6 +45,7 @@ const props = defineProps({
   iconSize: String,
   iconColor: String,
   customClass: String,
+  isCenter: String,
 });
 </script>
 
@@ -64,6 +66,11 @@ const props = defineProps({
     font-size: 14px;
   }
   &__field {
+    &--center {
+      text-align: center;
+      font-size: 16px;
+      font-weight: 400;
+    }
     &[placeholder] {
       color: $surface-900;
     }

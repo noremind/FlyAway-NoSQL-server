@@ -38,13 +38,19 @@
           </tr>
           <tr class="payment__tr">
             <td class="payment__td payment__td--box">
-              <UiCheckbox label="Банковская карта"></UiCheckbox>
+              <UiCheckbox
+                type="checkmark"
+                label="Банковская карта"
+              ></UiCheckbox>
             </td>
             <td class="payment__td"></td>
           </tr>
           <tr class="payment__tr">
             <td class="payment__td payment__td--box">
-              <UiCheckbox label="Рассрочка на 3 месяца"></UiCheckbox>
+              <UiCheckbox
+                type="checkmark"
+                label="Рассрочка на 3 месяца"
+              ></UiCheckbox>
               <img src="@/assets/icons/freedom-bank.svg" alt="Freedom Bank" />
             </td>
             <td class="payment__td"></td>

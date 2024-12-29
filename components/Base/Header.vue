@@ -102,7 +102,7 @@ const navList = ref([
   {
     id: 3,
     name: "BaqytZone",
-    link: "",
+    link: "/baqyt-zone",
   },
   {
     id: 4,

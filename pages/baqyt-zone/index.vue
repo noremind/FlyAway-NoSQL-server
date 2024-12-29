@@ -1,47 +1,47 @@
 <template>
-  <section class="hotels">
-    <div class="hotels__wrapper">
-      <div class="hotels__header">
-        <h1 class="hotels__title title">Отели</h1>
+  <section class="baqyt-zone">
+    <div class="baqyt-zone__wrapper">
+      <div class="baqyt-zone__header">
+        <h1 class="baqyt-zone__title title">BaqytZone</h1>
         <UiTabs
-          class="hotels__tabs"
+          class="baqyt-zone__tabs"
           :tabs="tabs"
           v-model="selectedTab"
         ></UiTabs>
       </div>
 
-      <div class="hotels__content">
-        <div class="hotels__content-left">
-          <section class="hotels__filters">
-            <div class="hotels__filters-header">
+      <div class="baqyt-zone__content">
+        <div class="baqyt-zone__content-left">
+          <section class="baqyt-zone__filters">
+            <div class="baqyt-zone__filters-header">
               <UiIcons
                 icon="filter-burger"
                 size="size-36"
                 color="blue-500"
               ></UiIcons>
-              <h2 class="hotels__filters-title">Фильтр</h2>
+              <h2 class="baqyt-zone__filters-title">Фильтр</h2>
             </div>
 
-            <div class="hotels__filters-box">
+            <div class="baqyt-zone__filters-box">
               <UiInput
                 placeholder="Введите название"
                 after-icon="lupa"
                 icon-color="surface-900"
               ></UiInput>
 
-              <div class="hotels__filters-range">
+              <div class="baqyt-zone__filters-range">
                 <div>
-                  <p class="hotels__filters-text">Цена</p>
+                  <p class="baqyt-zone__filters-text">Цена</p>
                   <UiRange></UiRange>
                 </div>
 
-                <div class="hotels__filters-inner">
+                <div class="baqyt-zone__filters-inner">
                   <span>от</span>
                   <UiInput></UiInput>
                   <span>₸</span>
                 </div>
 
-                <div class="hotels__filters-inner">
+                <div class="baqyt-zone__filters-inner">
                   <span>до</span>
                   <UiInput></UiInput>
                   <span>₸</span>
@@ -49,43 +49,51 @@
               </div>
 
               <div>
-                <p class="hotels__filters-text">Регион</p>
+                <p class="baqyt-zone__filters-text">Продолжительность</p>
                 <UiSelect></UiSelect>
               </div>
 
-              <div>
-                <p class="hotels__filters-text">Рейтинг</p>
-                <UiSelect></UiSelect>
+              <div class="baqyt-zone__filters-checkboxs">
+                <p class="baqyt-zone__filters-text">Вид активности</p>
+                <UiCheckbox
+                  v-for="(item, index) in options"
+                  :key="index"
+                  :label="item.label"
+                  type="checkmark"
+                ></UiCheckbox>
               </div>
-
-              <UiHashTag :tags="tags" label="Тип отдыха"></UiHashTag>
             </div>
           </section>
           <TheCommonAdBanner></TheCommonAdBanner>
         </div>
-        <div class="hotels__block">
-          <section class="hotels__sort">
-            <h2 class="hotels__sort-title">Сортировка</h2>
+        <div class="baqyt-zone__block">
+          <section class="baqyt-zone__sort">
+            <h2 class="baqyt-zone__sort-title">Сортировка</h2>
             <UiCheckbox
               v-for="(item, index) in options"
               :key="index"
               :label="item.label"
             ></UiCheckbox>
           </section>
-          <div class="hotels__cards">
-            <div
-              v-show="selectedTab.id === 2"
-              class="hotels__map"
-              ref="mapContainer"
-            ></div>
+          <div v-if="selectedTab?.id === 1" class="baqyt-zone__cards">
+            <TheBaqytZoneBlock
+              v-for="card in 6"
+              :key="card"
+            ></TheBaqytZoneBlock>
 
-            <TheHotelsBlock v-for="block in 4" :key="block"></TheHotelsBlock>
+            <TheCommonPopularBanner
+              class="baqyt-zone__banner"
+            ></TheCommonPopularBanner>
 
-            <TheCommonPopularBanner></TheCommonPopularBanner>
-
-            <TheHotelsBlock v-for="block in 2" :key="block"></TheHotelsBlock>
+            <TheBaqytZoneBlock
+              v-for="card in 6"
+              :key="card"
+            ></TheBaqytZoneBlock>
           </div>
-          <UiPagination class="hotels__pagination"></UiPagination>
+          <UiPagination
+            v-if="selectedTab?.id === 1"
+            class="baqyt-zone__pagination"
+          ></UiPagination>
         </div>
       </div>
     </div>
@@ -93,7 +101,6 @@
 </template>
 
 <script setup>
-const mapContainer = ref(null);
 const tabs = reactive([
   {
     id: 1,
@@ -111,55 +118,10 @@ const options = [
   { label: "по цене", value: "price" },
   { label: "по популярности", value: "popularity" },
 ];
-
-const tags = reactive([
-  {
-    id: 1,
-    name: "активный",
-  },
-  {
-    id: 2,
-    name: "экскурсионный",
-  },
-  {
-    id: 3,
-    name: "wellness",
-  },
-  {
-    id: 4,
-    name: "активный",
-  },
-]);
-
-onMounted(() => {
-  if (typeof ymaps !== "undefined") {
-    ymaps.ready(() => {
-      const map = new ymaps.Map(mapContainer.value, {
-        center: [43.238949, 76.889709],
-        zoom: 10,
-        controls: [],
-      });
-      const placemark = new ymaps.Placemark(
-        [55.751574, 37.573856],
-        {
-          balloonContent: "This is Almaty!",
-        },
-        {
-          preset: "islands#icon",
-          iconColor: "#0095b6",
-        }
-      );
-
-      map.geoObjects.add(placemark);
-    });
-  } else {
-    console.error("Yandex Maps API is not loaded.");
-  }
-});
 </script>
 
 <style lang="scss" scoped>
-.hotels {
+.baqyt-zone {
   &__wrapper {
     margin: 60px 0 30px 0;
   }
@@ -193,6 +155,11 @@ onMounted(() => {
       padding: 20px;
     }
     &-range {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    &-checkboxs {
       display: flex;
       flex-direction: column;
       gap: 12px;
@@ -246,8 +213,8 @@ onMounted(() => {
   &__cards {
     background-color: $white;
     border-radius: 16px;
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     padding: 16px;
     gap: 16px;
     box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.04);
@@ -263,45 +230,6 @@ onMounted(() => {
       z-index: 3;
       margin-bottom: 12px;
     }
-  }
-  &__location {
-    display: flex;
-    justify-content: space-between;
-    height: 610px;
-  }
-  &__map {
-    max-width: 100%;
-    width: 100%;
-    height: 610px;
-  }
-  &__scroll-cards {
-    max-width: 320px;
-    width: 100%;
-    overflow-y: scroll;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    height: inherit;
-    background-color: $white;
-    border-top-right-radius: 16px;
-    border-bottom-right-radius: 16px;
-  }
-  &__scroll-wrapper {
-    display: flex;
-    flex-direction: column;
-    position: relative;
-  }
-  &__scroll-pagination {
-    position: absolute;
-    bottom: 0;
-    background-color: $white;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    left: 0;
-    height: 60px;
-    border-bottom-right-radius: 16px;
   }
 }
 </style>

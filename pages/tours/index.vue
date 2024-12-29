@@ -114,7 +114,7 @@ const tabs = reactive([
   },
   {
     id: 2,
-    name: "Список",
+    name: "Локация",
     icon: "location",
   },
 ]);
