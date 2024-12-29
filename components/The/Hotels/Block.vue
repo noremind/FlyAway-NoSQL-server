@@ -42,7 +42,9 @@
 
         <div class="block__box">
           <div class="block__texts">
-            <h2 class="block__title">Звездный Комфорт</h2>
+            <nuxt-link to="/hotels/1">
+              <h2 class="block__title">Звездный Комфорт</h2>
+            </nuxt-link>
             <div class="block__ratings">
               <UiIcons
                 v-for="star in 5"
@@ -189,6 +191,7 @@
   &__title {
     font-size: 24px;
     font-weight: 700;
+    color: $surface-900;
   }
   &__description {
     font-size: 14px;

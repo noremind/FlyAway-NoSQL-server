@@ -2,7 +2,7 @@
   <section class="hotels">
     <div class="hotels__wrapper">
       <div class="hotels__header">
-        <h1 class="hotels__title title">Туры</h1>
+        <h1 class="hotels__title title">Отели</h1>
         <UiTabs
           class="hotels__tabs"
           :tabs="tabs"

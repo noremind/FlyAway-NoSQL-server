@@ -1,5 +1,5 @@
 <template>
-  <div class="button" :class="backgroundColor">
+  <div class="button" :class="{ backgroundColor: backgroundColor }">
     <UiIcons
       v-if="beforeIcon"
       :icon="beforeIcon"
@@ -7,7 +7,7 @@
       :size="iconSize"
     ></UiIcons>
     <button
-      :style="{ color: backgroundColor ? 'white' : '' }"
+      :style="{ color: backgroundColor }"
       class="button__btn"
       type="button"
     >
@@ -44,8 +44,9 @@ const props = defineProps({
   gap: 6px;
   align-items: center;
   &__btn {
-    font-size: 15.5px;
+    font-size: inherit;
     color: inherit;
+    font-weight: inherit;
   }
 }
 </style>
