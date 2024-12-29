@@ -27,6 +27,7 @@
             >
               <swiper-slide v-for="slide in 5" :key="slide">
                 <img
+                  @click="openPreviewPicture"
                   class="details__swiper-img"
                   src="@/assets/image/content/main-image.png"
                   alt="Image"
@@ -381,7 +382,7 @@
           </ul>
 
           <UiButton
-            label="Перейти к оплате"
+            label="Забронировать"
             class="details__totals-btn"
             @click="openPaymentModal"
           ></UiButton>
@@ -416,31 +417,49 @@
     max-width="600px"
     @close="closePaymentModal"
   >
-    <ModalsPayment @payed="statusPayed"></ModalsPayment>
+    <ModalsBookHotelPayment
+      @next-step="openBookingForm"
+    ></ModalsBookHotelPayment>
   </UiModal>
 
   <UiModal
     :is-show="isOpenStatusPayment"
     max-width="600px"
-    @close="closePaymentModal"
+    @close="closeStatusPaymentModal"
   >
     <ModalsStatus
-      v-if="isOpenStatusPayment === 'success'"
-      title="Ваш заказ оплачен"
+      title="Наш менеджер с вами свяжется"
       status="success"
-      btn-label="Перейти в Мои туры"
-      go-to="/profile/my-tours"
+      btn-label="Готово"
       @action="closeStatusPaymentModal"
     />
+  </UiModal>
+
+  <UiModal
+    :is-show="isOpenPreviewPicture"
+    max-width="600px"
+    @close="closePreviewPicture"
+  >
+    <ModalsPicture></ModalsPicture>
+  </UiModal>
+
+  <UiModal
+    :is-show="isOpenBookingForm"
+    max-width="600px"
+    @close="closeBookingForm"
+  >
+    <ModalsBookHotelInfo @next-step="statusPayed"></ModalsBookHotelInfo>
   </UiModal>
 </template>
 
 <script setup>
 const isOpenPayment = ref(false);
-const isOpenStatusPayment = ref(null);
+const isOpenStatusPayment = ref(false);
+const isOpenPreviewPicture = ref(false);
+const isOpenBookingForm = ref(false);
 
+const date = new Date();
 const yandexMapInfo = ref(null);
-const yandexMapPath = ref(null);
 
 const isMapReady = ref(false);
 
@@ -449,12 +468,29 @@ onMounted(() => {
 });
 
 const statusPayed = () => {
+  isOpenBookingForm.value = false;
+  isOpenStatusPayment.value = true;
+};
+
+const closeBookingForm = () => {
+  isOpenBookingForm.value = false;
+};
+
+const openBookingForm = () => {
   isOpenPayment.value = false;
-  isOpenStatusPayment.value = "success";
+  isOpenBookingForm.value = true;
+};
+
+const closePreviewPicture = () => {
+  isOpenPreviewPicture.value = false;
+};
+
+const openPreviewPicture = () => {
+  isOpenPreviewPicture.value = true;
 };
 
 const closeStatusPaymentModal = () => {
-  isOpenStatusPayment.value = null;
+  isOpenStatusPayment.value = false;
 };
 
 const openPaymentModal = () => {

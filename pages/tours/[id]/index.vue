@@ -387,6 +387,7 @@
 const isOpenPayment = ref(false);
 const isOpenStatusPayment = ref(null);
 
+const date = new Date();
 const yandexMapInfo = ref(null);
 const yandexMapPath = ref(null);
 const tabs = reactive([
