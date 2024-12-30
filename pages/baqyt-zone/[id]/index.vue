@@ -259,7 +259,7 @@
     max-width="600px"
     @close="closePaymentModal"
   >
-    <ModalsPayment @payed="statusPayed"></ModalsPayment>
+    <ModalsPaymentBaqytZone @payed="statusPayed"></ModalsPaymentBaqytZone>
   </UiModal>
 
   <UiModal
