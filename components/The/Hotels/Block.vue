@@ -133,6 +133,10 @@
     object-fit: cover;
     border-radius: 16px;
   }
+  &__region {
+    font-size: 12.5px;
+    color: $surface-400;
+  }
   &__icon-hot {
     width: 28px;
     height: 28px;

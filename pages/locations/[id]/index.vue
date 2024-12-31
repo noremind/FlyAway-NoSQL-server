@@ -1,10 +1,10 @@
 <template>
   <section class="details">
     <div class="details__wrapper">
-      <UiGoBack label="Блог и Статьи" go-back="/blog" />
+      <UiGoBack label="Локации" go-back="/locations" />
 
       <div class="details__content">
-        <h1 class="details__title title">Почему стоит отправиться в поход?</h1>
+        <h1 class="details__title title">Бурабай</h1>
 
         <img
           class="details__img"
@@ -44,15 +44,37 @@
       </div>
 
       <div class="details__footer">
-        <h3 class="details__bold details__bold--large">Похожие статьи</h3>
-        <nuxt-link to="/blog">
-          <p class="details__more">Все статьи</p>
-        </nuxt-link>
+        <h3 class="details__bold details__bold--large">Туры по этой локации</h3>
+        <nuxt-link to="/locations"
+          ><p class="details__more">Все туры</p></nuxt-link
+        >
       </div>
 
-      <div class="details__cards">
-        <TheBlogBlock v-for="blog in 4" :key="blog"></TheBlogBlock>
-      </div>
+      <UiSwiper
+        :pagination="{ clickable: true }"
+        :autoplay="true"
+        :breakpoints="{
+          1100: {
+            slidesPerView: 4,
+          },
+          924: {
+            slidesPerView: 3,
+          },
+          640: {
+            slidesPerView: 2,
+          },
+          320: {
+            slidesPerView: 1,
+          },
+          0: {
+            slidesPerView: 1,
+          },
+        }"
+      >
+        <swiper-slide v-for="slide in 5" :key="slide">
+          <TheCommonTourCard></TheCommonTourCard>
+        </swiper-slide>
+      </UiSwiper>
     </div>
   </section>
 </template>

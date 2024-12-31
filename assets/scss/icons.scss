@@ -317,3 +317,8 @@ i.icon {
 		-webkit-mask-image: url("@/assets/icons/plus.svg");
 		mask-image: url("@/assets/icons/plus.svg");
 }
+.youtube{
+								@extend i, .icon;
+		-webkit-mask-image: url("@/assets/icons/youtube.svg");
+		mask-image: url("@/assets/icons/youtube.svg");
+}
