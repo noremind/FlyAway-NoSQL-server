@@ -1,0 +1,57 @@
+@use '../variables.scss' as *;
+
+.p-treeselect{
+	border: 1px solid $surface-300 !important;
+	border-radius: 16px !important;
+	padding: 8px 12px !important;
+	width: 100%;
+	
+	&-dropdown{
+		svg{
+			margin-top: 3px;
+		}
+		svg path[fill]{
+			color: #00B8FA !important;
+		}
+	}
+}
+
+.p-tree-root-children{
+			background-color: #f7f5f5 !important;
+		padding: 8px 12px !important;
+		border-radius: 12px !important;
+		font-size: 14px;
+		margin-top: 2px !important;
+		display: flex;
+		flex-direction: column;
+		gap: 10px !important;
+}
+
+.p-tree-node-children{
+	margin-left: 12px !important;
+	margin-top: 8px !important;
+	display: flex !important;
+	flex-direction: column !important;
+	gap: 4px !important;
+}
+
+.p-checkbox-checked{
+	display: flex !important;
+	justify-content: center !important;
+	align-items: center !important;
+	background-color: $blue-500 !important;
+	color: $white;
+}
+
+.p-tree-node-checkbox{
+	width: 18px !important;
+	height: 18px !important;
+	background-color: #ddd;
+	border-radius: 2px !important;
+}
+
+.p-tree-node-content{
+	display: flex !important;
+	gap: 4px !important;
+	align-items: center !important;
+}

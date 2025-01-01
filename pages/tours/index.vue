@@ -49,6 +49,11 @@
                 <UiSelect></UiSelect>
               </div>
 
+              <div>
+                <p class="tours__filters-text">Локация</p>
+                <UiTreeSelect></UiTreeSelect>
+              </div>
+
               <UiHashTag :tags="tags" label="Тип отдыха"></UiHashTag>
             </div>
           </section>
