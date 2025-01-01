@@ -61,7 +61,6 @@ const changeSelected = (list) => {
     display: flex;
     flex-direction: column;
     color: $surface-900;
-    gap: 12px;
     &-item {
       padding: 22px 16px;
       cursor: pointer;
