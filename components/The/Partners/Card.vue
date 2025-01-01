@@ -6,13 +6,29 @@
         src="@/assets/image/common/tour-avatar.png"
         alt="Partner"
       />
-      <h2 class="card__author">Mili Tour</h2>
-      <div class="card__reviews">
-        <p class="card__count">20 отзывов</p>
-        <UiIcons icon="star" color="yellow-500" size="size-14"></UiIcons>
-        <p class="card__average">4,1</p>
+      <div class="card__box">
+        <h2 class="card__author">Mili Tour</h2>
+        <div class="card__reviews card__reviews--laptop">
+          <p class="card__count">20 отзывов</p>
+          <UiIcons icon="star" color="yellow-500" size="size-14"></UiIcons>
+          <p class="card__average">4,1</p>
+        </div>
+        <ul class="card__list card__list--mobile">
+          <li class="card__list-item">
+            <p class="card__text">Количество туров</p>
+            <p class="card__number">3</p>
+          </li>
+          <li class="card__list-item">
+            <p class="card__text">Количество отелей</p>
+            <p class="card__number">3</p>
+          </li>
+          <li class="card__list-item">
+            <p class="card__text">Количество активностей</p>
+            <p class="card__number">3</p>
+          </li>
+        </ul>
       </div>
-      <ul class="card__list">
+      <ul class="card__list card__list--laptop">
         <li class="card__list-item">
           <p class="card__text">Количество туров</p>
           <p class="card__number">3</p>
@@ -26,6 +42,12 @@
           <p class="card__number">3</p>
         </li>
       </ul>
+
+      <div class="card__reviews card__reviews--mobile">
+        <p class="card__count">20 отзывов</p>
+        <UiIcons icon="star" color="yellow-500" size="size-14"></UiIcons>
+        <p class="card__average">4,1</p>
+      </div>
     </div>
   </section>
 </template>
@@ -60,6 +82,9 @@
     gap: 4px;
     align-items: center;
     margin: 0 auto;
+    &--mobile {
+      display: none;
+    }
   }
   &__count {
     font-size: 12.5px;
@@ -73,6 +98,9 @@
     display: flex;
     flex-direction: column;
     gap: 4px;
+    &--mobile {
+      display: none;
+    }
     &-item {
       display: flex;
       gap: 4px;
@@ -87,6 +115,54 @@
     color: $blue-500;
     font-weight: 400;
     font-size: 14px;
+  }
+  &__box {
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+}
+
+@media (max-width: 375px) {
+  .card {
+    &__wrapper {
+      display: flex;
+      flex-direction: row;
+      padding: 12px;
+      gap: 6px;
+    }
+    &__avatar {
+      margin: auto;
+    }
+    &__author {
+      font-size: 16px;
+      margin: 0;
+    }
+    &__reviews {
+      white-space: nowrap;
+
+      &--laptop {
+        display: none;
+      }
+      &--mobile {
+        display: flex;
+        align-items: flex-start;
+      }
+    }
+    &__list {
+      font-size: 10px;
+      gap: 2px;
+      &-item {
+        white-space: nowrap;
+      }
+      &--mobile {
+        display: flex;
+      }
+      &--laptop {
+        display: none;
+      }
+    }
   }
 }
 </style>

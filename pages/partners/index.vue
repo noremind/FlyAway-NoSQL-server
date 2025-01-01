@@ -1,6 +1,14 @@
 <template>
   <section class="partners">
     <div class="partners__wrapper">
+      <div class="partners__top">
+        <UiInput
+          class="partners__top-search"
+          placeholder="Введите название"
+          after-icon="lupa"
+        ></UiInput>
+        <p class="partners__top-text" @click="openFilterMobile">Фильтр</p>
+      </div>
       <div class="partners__header">
         <h1 class="partners__title title">Партнеры</h1>
       </div>
@@ -28,7 +36,7 @@
               <UiHashTag :tags="tags"></UiHashTag>
             </div>
           </section>
-          <TheCommonAdBanner></TheCommonAdBanner>
+          <TheCommonAdBanner class="partners__ad"></TheCommonAdBanner>
         </div>
         <div class="partners__block">
           <section class="partners__sort">
@@ -49,9 +57,35 @@
       </div>
     </div>
   </section>
+
+  <UiOverlay
+    :is-show="isOpenFilterMobile"
+    @close="closeFilterMobile"
+    title="Фильтр"
+  >
+    <div class="partners__overlay-checkboxs">
+      <p class="partners__overlay-bold">Сортировка</p>
+      <UiCheckbox
+        v-for="(item, index) in options"
+        :key="index"
+        :label="item.label"
+      ></UiCheckbox>
+    </div>
+    <UiHashTag :tags="tags"></UiHashTag>
+  </UiOverlay>
 </template>
 
 <script setup>
+const isOpenFilterMobile = ref(false);
+
+const openFilterMobile = () => {
+  isOpenFilterMobile.value = true;
+};
+
+const closeFilterMobile = () => {
+  isOpenFilterMobile.value = false;
+};
+
 const options = [
   { label: "по цене", value: "price" },
   { label: "по популярности", value: "popularity" },
@@ -176,6 +210,66 @@ const tags = reactive([
       bottom: 0;
       z-index: 3;
       margin-bottom: 12px;
+    }
+  }
+  &__overlay {
+    &-checkboxs {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 32px;
+    }
+    &-bold {
+      font-weight: 400;
+      font-size: 14px;
+    }
+  }
+}
+
+@media (max-width: 375px) {
+  .partners {
+    &__wrapper {
+      padding: 0;
+      margin-top: 12px;
+    }
+    &__title {
+      margin: 16px 0 0 0;
+    }
+    &__top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      &-text {
+        color: $blue-500;
+        font-weight: 400;
+        cursor: pointer;
+      }
+      &-search {
+        width: 100%;
+        background-color: $white;
+        border-radius: 26px;
+      }
+    }
+    &__content {
+      display: flex;
+      flex-direction: column;
+      margin-top: 0;
+    }
+    &__filters {
+      display: none;
+    }
+    &__ad {
+      display: none;
+    }
+    &__sort {
+      display: none;
+    }
+    &__cards {
+      display: flex;
+      flex-direction: column;
+      background-color: transparent;
+      padding: 0;
     }
   }
 }
