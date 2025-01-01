@@ -53,4 +53,12 @@ const toggleAccordion = () => {
     padding: 8px 16px;
   }
 }
+
+@media (max-width: 375px) {
+  .accordion {
+    &__title {
+      font-size: 16px;
+    }
+  }
+}
 </style>

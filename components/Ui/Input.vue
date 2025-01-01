@@ -59,6 +59,7 @@ const props = defineProps({
     display: flex;
     gap: 6px;
     align-items: center;
+    justify-content: space-between;
   }
   &__label {
     color: $surface-900;

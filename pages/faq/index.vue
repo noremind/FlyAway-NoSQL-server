@@ -1,6 +1,11 @@
 <template>
   <section class="faq">
     <div class="faq__wrapper">
+      <UiInput
+        class="faq__search"
+        placeholder="Введите название"
+        after-icon="lupa"
+      ></UiInput>
       <h1 class="faq__title title">Часто задаваемые вопросы (FAQ)</h1>
 
       <div class="faq__content">
@@ -33,6 +38,11 @@
     margin: 36px 0;
     color: $surface-900;
   }
+  &__search {
+    background-color: $white;
+    border-radius: 24px;
+    display: none;
+  }
   &__title {
     margin-bottom: 6px;
   }
@@ -57,6 +67,17 @@
       display: flex;
       flex-direction: column;
       gap: 16px;
+    }
+  }
+}
+
+@media (max-width: 375px) {
+  .faq {
+    &__wrapper {
+      margin: 12px 0;
+    }
+    &__search {
+      display: block;
     }
   }
 }

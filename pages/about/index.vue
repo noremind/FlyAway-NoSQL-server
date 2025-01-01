@@ -31,7 +31,14 @@
             дорог до современных мегаполисов, от бескрайних степей до
             величественных гор — здесь каждый найдёт свою историю.
           </p>
-          <div class="about__box">
+
+          <img
+            class="about__img about__img--mobile"
+            src="@/assets/image/content/about-img2.png"
+            alt="SaparTime"
+          />
+
+          <div class="about__box about__box--hide">
             <p class="about__text">Что мы предлагаем?</p>
             <ul class="about__list">
               <li class="about__list-item">
@@ -48,38 +55,69 @@
               </li>
             </ul>
           </div>
-          <p class="about__text">
+          <p class="about__text about__text--hide">
             Sapartime — это не просто путешествие. Это опыт, который останется с
             вами навсегда. Добро пожаловать в мир, где каждая поездка становится
             приключением, а каждый день — открытием.
           </p>
 
-          <p class="about__text">
+          <p class="about__text about__text--hide">
             Sapartime — это не просто путешествие. Это опыт, который останется с
             вами навсегда. Добро пожаловать в мир, где каждая поездка становится
             приключением, а каждый день — открытием.
           </p>
         </div>
 
-        <div class="about__digitals">
-          <div class="about__inner">
-            <p class="about__number">24</p>
-            <p class="about__info">партнеров</p>
-          </div>
+        <div class="about__flex">
+          <div class="about__digitals">
+            <div class="about__inner">
+              <p class="about__number">24</p>
+              <p class="about__info">партнеров</p>
+            </div>
 
-          <div class="about__inner">
-            <p class="about__number">126</p>
-            <p class="about__info">активных туров</p>
-          </div>
+            <div class="about__inner">
+              <p class="about__number">126</p>
+              <p class="about__info">активных туров</p>
+            </div>
 
-          <div class="about__inner">
-            <p class="about__number">24</p>
-            <p class="about__info">отелей</p>
-          </div>
+            <div class="about__inner">
+              <p class="about__number">24</p>
+              <p class="about__info">отелей</p>
+            </div>
 
-          <div class="about__inner">
-            <p class="about__number">2165</p>
-            <p class="about__info">новых клиентов</p>
+            <div class="about__inner">
+              <p class="about__number">2165</p>
+              <p class="about__info">новых клиентов</p>
+            </div>
+          </div>
+          <div class="about__texts about__texts--mobile">
+            <div class="about__box">
+              <p class="about__text">Что мы предлагаем?</p>
+              <ul class="about__list">
+                <li class="about__list-item">
+                  Удобную платформу для поиска и бронирования туров, проживания
+                  и экскурсий.
+                </li>
+                <li class="about__list-item">
+                  Уникальные маршруты, созданные профессиональными гидами и
+                  местными экспертами.
+                </li>
+                <li class="about__list-item">
+                  Возможность открыть для себя культуру, традиции и кухню
+                  Казахстана в новом свете.
+                </li>
+              </ul>
+            </div>
+            <p class="about__text">
+              Sapartime — это не просто путешествие. Это опыт, который останется
+              с вами навсегда. Добро пожаловать в мир, где каждая поездка
+              становится приключением, а каждый день — открытием.
+            </p>
+            <p class="about__text">
+              Sapartime — это не просто путешествие. Это опыт, который останется
+              с вами навсегда. Добро пожаловать в мир, где каждая поездка
+              становится приключением, а каждый день — открытием.
+            </p>
           </div>
         </div>
       </div>
@@ -93,16 +131,24 @@
         <h2 class="about__opportunity-title">Хотите стать нашим партнером?</h2>
         <p class="about__opportunity-description">
           Мы предлагаем удобный и надежный инструмент для продвижения ваших
-          услуг в сфере туризма и гостиничного бизнеса. Станьте частью команды,
-          которая помогает путешественникам находить лучшие туры, отели и
-          подарочные сертификаты.
+          услуг в сфере туризма и гостиничного бизнеса.
+          <span
+            class="about__opportunity-description about__opportunity-description--hide"
+          >
+            Станьте частью команды, которая помогает путешественникам находить
+            лучшие туры, отели и подарочные сертификаты.</span
+          >
         </p>
 
         <UiButton
-          class="about__opportunity-btn"
+          class="about__opportunity-btn about__opportunity-btn--laptop"
           label="Стать партнером"
         ></UiButton>
       </section>
+      <UiButton
+        class="about__opportunity-btn about__opportunity-btn--mobile"
+        label="Стать партнером"
+      ></UiButton>
     </div>
   </section>
 </template>
@@ -136,6 +182,9 @@
     max-width: 525px;
     width: 100%;
     border-radius: 16px;
+    &--mobile {
+      display: none;
+    }
   }
   &__texts {
     display: flex;
@@ -143,6 +192,13 @@
     gap: 16px;
     max-width: 405px;
     flex-grow: 1;
+    font-size: 14px;
+    &--mobile {
+      display: none;
+    }
+  }
+  &__flex {
+    display: block;
   }
   &__text {
     font-weight: 400;
@@ -172,7 +228,7 @@
   }
   &__opportunity {
     position: relative;
-    height: 600px;
+    height: clamp(16rem, 8.182rem + 39.09vw, 37.5rem);
     display: flex;
     flex-direction: column;
     border-radius: 24px;
@@ -181,10 +237,13 @@
       position: absolute;
       top: 0;
       border-radius: 24px;
-      height: 600px;
+      height: clamp(16rem, 8.182rem + 39.09vw, 37.5rem);
+      &--mobile {
+        display: none;
+      }
     }
     &-title {
-      font-size: 40px;
+      font-size: clamp(1.25rem, 0.795rem + 2.27vw, 2.5rem);
       font-weight: 700;
       color: $white;
       position: relative;
@@ -194,7 +253,7 @@
     &-description {
       position: relative;
       z-index: 2;
-      font-size: 24px;
+      font-size: clamp(0.875rem, 0.648rem + 1.14vw, 1.5rem);
       font-weight: 100;
       padding: 36px;
       color: $white;
@@ -215,6 +274,67 @@
       width: 100%;
       margin: auto 0 32px 32px;
       height: 60px;
+      &--mobile {
+        display: none;
+      }
+    }
+  }
+}
+
+@media (max-width: 375px) {
+  .about {
+    &__content {
+      display: flex;
+      flex-direction: column;
+    }
+    &__img {
+      &:last-child {
+        display: none;
+      }
+      &--mobile {
+        display: block;
+      }
+    }
+    &__texts {
+      &--mobile {
+        display: block;
+      }
+    }
+    &__box,
+    &__text {
+      &--hide {
+        display: none;
+      }
+    }
+    &__flex {
+      display: flex;
+      gap: 12px;
+    }
+    &__digitals {
+      border-left: none;
+      border-right: 1px solid #000;
+      padding: 0 0 0 0px;
+    }
+    &__opportunity {
+      &-title {
+        margin: 16px 0 0 16px;
+      }
+      &-description {
+        margin: auto 0 0 0;
+        padding: 16px;
+        &--hide {
+          display: none;
+        }
+      }
+      &-btn {
+        &--laptop {
+          display: none;
+        }
+        &--mobile {
+          display: flex;
+          margin: 0 auto;
+        }
+      }
     }
   }
 }

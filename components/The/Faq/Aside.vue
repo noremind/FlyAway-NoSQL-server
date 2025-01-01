@@ -81,4 +81,10 @@ const changeSelected = (list) => {
     }
   }
 }
+
+@media (max-width: 375px) {
+  .aside {
+    display: none;
+  }
+}
 </style>
