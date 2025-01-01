@@ -18,6 +18,16 @@
           конфиденциальность ваших данных в соответствии с применимым
           законодательством о защите персональной информации.
         </p>
+        <div class="agreement__box">
+          <p class="agreement__text">
+            Собранные данные используются для следующих целей:
+          </p>
+          <ul class="agreement__list">
+            <li class="agreement__list-item">
+              Обеспечение работы сервиса и предоставления запрашиваемых услуг.
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   </section>
@@ -44,6 +54,15 @@
   }
   &__bold {
     font-weight: 400;
+  }
+  &__list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    &-item {
+      list-style: disc;
+      margin-left: 24px;
+    }
   }
 }
 </style>
