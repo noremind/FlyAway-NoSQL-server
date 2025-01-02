@@ -4,7 +4,7 @@
       <div class="overlay__wrapper">
         <div class="overlay__header">
           <UiIcons
-            class="overlay__back down"
+            class="overlay__icon down"
             icon="arrow"
             size="size-20"
             color="blue-500"
@@ -13,7 +13,14 @@
 
           <h2 class="overlay__title">{{ title }}</h2>
 
-          <p class="overlay__reset">Сбросить</p>
+          <UiIcons
+            v-if="headerIcon"
+            size="size-20"
+            class="overlay__icon"
+            color="blue-500"
+            :icon="headerIcon"
+          ></UiIcons>
+          <p v-else class="overlay__reset">Сбросить</p>
         </div>
 
         <div class="overlay__content">
@@ -26,6 +33,7 @@
           :label="btnLabel"
           @click="emit('action')"
         ></UiButton>
+        <BaseFooter v-if="haveFooter" class="overlay__footer"></BaseFooter>
       </div>
     </section>
   </transition>
@@ -43,73 +51,28 @@ const props = defineProps({
     type: String,
     default: () => "",
   },
+  headerIcon: {
+    type: String,
+    default: () => "",
+  },
+  haveFooter: {
+    type: Boolean,
+    default: false,
+  },
 });
 </script>
 
 <style lang="scss" scoped>
 .overlay {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  left: 0;
-  z-index: 1000;
-  background-color: $surface-150;
-  width: 100%;
-  overflow-y: scroll;
-  height: 100%;
-  &__wrapper {
-    width: 100%;
-    height: 100%;
-    color: $surface-900;
-    overflow-y: scroll;
-    // position: relative;
-  }
+  // visibility: hidden;
+  position: static;
   &__header {
-    display: flex;
-    justify-content: space-between;
-    gap: 6px;
-    align-items: center;
-    height: 85px;
-    padding: 20px 16px 0 16px;
-    background-color: $white;
+    display: none;
   }
-  &__reset {
-    color: $blue-500;
-    font-weight: 400;
-    font-size: 14px;
-    cursor: pointer;
-  }
-  &__back {
-    cursor: pointer;
-  }
-  &__title {
-    font-size: 20px;
-    font-weight: 400;
-    flex-grow: 1;
-    text-align: center;
-    margin-left: 26px;
-  }
-  &__content {
-    margin-top: 16px;
-    padding: 0 16px;
-  }
-  &__btn {
-    position: absolute;
-    bottom: 0;
-    height: 44px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: calc(100% - 32px);
-    background-color: $blue-500;
-    color: $white;
-    font-weight: 400;
-    margin: 0 auto 16px 0;
-    left: 17px;
+  &__footer {
+    display: none;
   }
 }
-
 .show-enter-active {
   animation: show 0.5s;
 }
@@ -122,6 +85,74 @@ const props = defineProps({
   }
   100% {
     transform: translateY(0%);
+  }
+}
+@media (max-width: 375px) {
+  .overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    z-index: 1000;
+    background-color: $surface-150;
+    width: 100%;
+    overflow-y: scroll;
+    height: 100%;
+    &__wrapper {
+      width: 100%;
+      height: 100%;
+      color: $surface-900;
+      overflow-y: scroll;
+      // position: relative;
+    }
+    &__header {
+      display: flex;
+      justify-content: space-between;
+      gap: 6px;
+      align-items: center;
+      height: 85px;
+      padding: 20px 16px 0 16px;
+      background-color: $white;
+    }
+    &__reset {
+      color: $blue-500;
+      font-weight: 400;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    &__icon {
+      cursor: pointer;
+    }
+    &__title {
+      font-size: 20px;
+      font-weight: 400;
+      flex-grow: 1;
+      text-align: center;
+      margin-left: 26px;
+    }
+    &__content {
+      margin-top: 16px;
+      padding: 0 16px;
+    }
+    &__btn {
+      position: absolute;
+      bottom: 0;
+      height: 44px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: calc(100% - 32px);
+      background-color: $blue-500;
+      color: $white;
+      font-weight: 400;
+      margin: 0 auto 16px 0;
+      left: 17px;
+    }
+    &__footer {
+      display: block;
+      // margin-top: 86px;
+    }
   }
 }
 </style>

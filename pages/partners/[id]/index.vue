@@ -1,149 +1,219 @@
 <template>
-  <section class="partner">
-    <div class="partner__wrapper">
-      <UiGoBack label="Партнеры" go-back="/partners"></UiGoBack>
+  <UiOverlay :is-show="true" header-icon="upload" :have-footer="true">
+    <section class="partner">
+      <div class="partner__wrapper">
+        <UiGoBack
+          class="partner__go-back"
+          label="Партнеры"
+          go-back="/partners"
+        ></UiGoBack>
 
-      <div class="partner__box">
-        <div class="partner__info">
-          <img
-            class="partner__avatar"
-            src="@/assets/image/common/tour-avatar.png"
-            alt="Partner"
-          />
-          <h2 class="partner__author">Mili Tour</h2>
-          <div class="partner__review">
-            <p class="partner__count">20 отзывов</p>
-            <UiIcons icon="star" color="yellow-500" size="size-14"></UiIcons>
-            <p class="partner__average">4,1</p>
-          </div>
-          <ul class="partner__list">
-            <li class="partner__list-item">
-              <p class="partner__text">Количество туров</p>
-              <p class="partner__number">3</p>
-            </li>
-            <li class="partner__list-item">
-              <p class="partner__text">Количество отелей</p>
-              <p class="partner__number">3</p>
-            </li>
-            <li class="partner__list-item">
-              <p class="partner__text">Количество активностей</p>
-              <p class="partner__number">3</p>
-            </li>
-          </ul>
+        <div class="partner__box">
+          <div class="partner__info">
+            <img
+              class="partner__avatar"
+              src="@/assets/image/common/tour-avatar.png"
+              alt="Partner"
+            />
+            <h2 class="partner__author">Mili Tour</h2>
+            <div class="partner__review">
+              <p class="partner__count">20 отзывов</p>
+              <UiIcons icon="star" color="yellow-500" size="size-14"></UiIcons>
+              <p class="partner__average">4,1</p>
+            </div>
+            <ThePartnersCard class="partner__info-card"></ThePartnersCard>
+            <ul class="partner__list">
+              <li class="partner__list-item">
+                <p class="partner__text">Количество туров</p>
+                <p class="partner__number">3</p>
+              </li>
+              <li class="partner__list-item">
+                <p class="partner__text">Количество отелей</p>
+                <p class="partner__number">3</p>
+              </li>
+              <li class="partner__list-item">
+                <p class="partner__text">Количество активностей</p>
+                <p class="partner__number">3</p>
+              </li>
+            </ul>
 
-          <p class="partner__bold">О нас</p>
-          <p class="partner__description">
-            Мы организуем уникальные туры, чтобы каждый наш клиент мог открыть
-            для себя самые красивые уголки природы, испытать незабываемые эмоции
-            и почувствовать настоящий дух приключений. Ваш комфорт, безопасность
-            и яркие впечатления — наш главный приоритет!
-          </p>
+            <p class="partner__bold">О нас</p>
+            <p class="partner__description">
+              Мы организуем уникальные туры, чтобы каждый наш клиент мог открыть
+              для себя самые красивые уголки природы, испытать незабываемые
+              эмоции и почувствовать настоящий дух приключений. Ваш комфорт,
+              безопасность и яркие впечатления — наш главный приоритет!
+            </p>
 
-          <div class="partner__baige">
-            <UiIcons
-              icon="circle-check"
-              color="blue-500"
-              size="size-24"
-            ></UiIcons>
-            <p class="partner__baige-text">Есть рассрочка</p>
-          </div>
-
-          <p class="partner__bold">Контакты</p>
-          <ul class="partner__contacts">
-            <li
-              class="partner__contacts-item"
-              v-for="item in contacts"
-              :key="item.id"
-            >
+            <div class="partner__baige">
               <UiIcons
-                :icon="item.icon"
+                icon="circle-check"
                 color="blue-500"
                 size="size-24"
               ></UiIcons>
-              <p class="partner__contacts-text">{{ item.name }}</p>
-            </li>
-          </ul>
-        </div>
-        <div class="partner__content">
-          <section class="partner__block">
-            <div class="partner__block-header">
-              <h2 class="title">Туры</h2>
-              <nuxt-link class="partner__block-link" to="/tours"
-                >Все туры</nuxt-link
+              <p class="partner__baige-text">Есть рассрочка</p>
+            </div>
+
+            <p class="partner__bold">Контакты</p>
+            <ul class="partner__contacts">
+              <li
+                class="partner__contacts-item"
+                v-for="item in contacts"
+                :key="item.id"
               >
-            </div>
-            <div class="partner__tours">
-              <TheCommonTourCard v-for="card in 6" :key="card" />
-            </div>
-          </section>
-
-          <section class="partner__block">
-            <div class="partner__block-header">
-              <h2 class="title">Отели</h2>
-            </div>
-            <div class="partner__hotels">
-              <TheHotelsBlock v-for="hotel in 2" :key="hotel"></TheHotelsBlock>
-            </div>
-          </section>
-
-          <section class="partner__block">
-            <div class="partner__block-header">
-              <h2 class="title">BaqytZone</h2>
-            </div>
-            <div class="partner__baqyt-zone">
-              <TheBaqytZoneBlock
-                v-for="zone in 4"
-                :key="zone"
-              ></TheBaqytZoneBlock>
-            </div>
-          </section>
-
-          <section class="partner__block">
-            <div class="partner__block-header">
-              <h2 class="title">Наша команда</h2>
-            </div>
-            <div class="partner__teams">
-              <ThePartnersEmployee
-                v-for="employee in 5"
-                :key="employee"
-              ></ThePartnersEmployee>
-            </div>
-          </section>
-        </div>
-      </div>
-
-      <div class="partner__footer">
-        <section class="partner__reviews">
-          <div class="partner__reviews-box">
-            <div>
-              <h3 class="partner__reviews-title">Отзывы путешественников</h3>
-              <div class="partner__reviews-inner">
-                <p class="partner__reviews-count">20 отзывов</p>
                 <UiIcons
-                  icon="star"
-                  color="yellow-500"
-                  size="size-14"
+                  :icon="item.icon"
+                  color="blue-500"
+                  size="size-24"
                 ></UiIcons>
-                <p class="partner__reviews-average">4,1</p>
+                <p class="partner__contacts-text">{{ item.name }}</p>
+              </li>
+            </ul>
+          </div>
+          <div class="partner__content">
+            <section class="partner__block">
+              <div class="partner__block-header">
+                <h2 class="title">Туры</h2>
+                <nuxt-link class="partner__block-link" to="/tours"
+                  >Все туры</nuxt-link
+                >
               </div>
-            </div>
-            <nuxt-link class="partner__reviews-link" to="/tours/1/reviews"
-              >Все отзывы</nuxt-link
-            >
+              <div class="partner__tours">
+                <TheCommonTourCard v-for="card in 6" :key="card" />
+              </div>
+            </section>
+
+            <section class="partner__block">
+              <div class="partner__block-header">
+                <h2 class="title">Отели</h2>
+              </div>
+              <div class="partner__hotels">
+                <TheHotelsBlock
+                  v-for="hotel in 2"
+                  :key="hotel"
+                ></TheHotelsBlock>
+              </div>
+            </section>
+
+            <section class="partner__block">
+              <div class="partner__block-header">
+                <h2 class="title">BaqytZone</h2>
+              </div>
+              <div class="partner__baqyt-zone">
+                <TheBaqytZoneBlock
+                  v-for="zone in 4"
+                  :key="zone"
+                ></TheBaqytZoneBlock>
+              </div>
+            </section>
+
+            <section class="partner__block">
+              <div class="partner__block-header">
+                <h2 class="title">Наша команда</h2>
+              </div>
+              <div class="partner__teams">
+                <ThePartnersEmployee
+                  v-for="employee in 5"
+                  :key="employee"
+                ></ThePartnersEmployee>
+              </div>
+            </section>
           </div>
 
-          <UiSwiper :per-slides="1.8" :loop="false">
-            <swiper-slide v-for="review in 5" :key="review">
-              <TheCommonReview />
-            </swiper-slide>
-          </UiSwiper>
-        </section>
+          <UiTabs
+            class="partner__tabs"
+            type="line"
+            v-model="selectedTab"
+            :tabs="tabs"
+          ></UiTabs>
+
+          <div class="partner__tours partner__tours--mobile">
+            <TheCommonTourCard v-for="card in 6" :key="card" />
+          </div>
+
+          <UiButton
+            class="partner__btn partner__btn--mobile"
+            label="Все туры"
+            after-icon="chevron"
+            icon-color="blue-500"
+            icon-size="size-20"
+          ></UiButton>
+        </div>
+
+        <div class="partner__footer">
+          <section class="partner__reviews">
+            <div class="partner__reviews-box">
+              <div>
+                <h3 class="partner__reviews-title">Отзывы посетителей</h3>
+                <div class="partner__reviews-inner">
+                  <p class="partner__reviews-count">20 отзывов</p>
+                  <UiIcons
+                    icon="star"
+                    color="yellow-500"
+                    size="size-14"
+                  ></UiIcons>
+                  <p class="partner__reviews-average">4,1</p>
+                </div>
+              </div>
+              <nuxt-link class="partner__reviews-link" to="/tours/1/reviews"
+                >Все отзывы</nuxt-link
+              >
+            </div>
+
+            <UiSwiper
+              :loop="false"
+              :breakpoints="{
+                1000: {
+                  slidesPerView: 1.8,
+                },
+                375: {
+                  slidesPerView: 1,
+                },
+                0: {
+                  slidesPerView: 1,
+                },
+              }"
+            >
+              <swiper-slide v-for="review in 5" :key="review">
+                <TheCommonReview />
+              </swiper-slide>
+            </UiSwiper>
+
+            <UiButton
+              class="partner__btn partner__btn--mobile"
+              label="Все отзывы"
+              after-icon="chevron"
+              icon-color="blue-500"
+              icon-size="size-20"
+            ></UiButton>
+          </section>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </UiOverlay>
 </template>
 
 <script setup>
+const isOpenOverlayMobile = ref(false);
+
+const tabs = reactive([
+  {
+    id: 1,
+    name: "Туры",
+    value: "tours",
+  },
+  {
+    id: 2,
+    name: "Отели",
+    value: "hotels",
+  },
+  {
+    id: 3,
+    name: "Активности",
+    value: "actives",
+  },
+]);
+const selectedTab = ref(tabs[0]);
 const contacts = [
   {
     id: 1,
@@ -300,9 +370,15 @@ const contacts = [
   }
   &__baqyt-zone,
   &__tours {
-    display: grid !important;
-    grid-template-columns: repeat(3, 1fr) !important;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     gap: 16px;
+    &--mobile {
+      display: none;
+    }
+  }
+  &__tabs {
+    display: none;
   }
   &__hotels {
     display: flex;
@@ -360,6 +436,79 @@ const contacts = [
   &__footer {
     position: relative;
     height: 395px;
+  }
+  &__info-card {
+    display: none;
+  }
+  &__tabs {
+    margin: 0 auto;
+  }
+  &__btn {
+    display: none;
+  }
+}
+
+@media (max-width: 375px) {
+  .partner {
+    &__wrapper {
+      padding: 0;
+    }
+    &__box {
+      display: flex;
+      flex-direction: column;
+    }
+    &__footer {
+      height: 450px;
+    }
+    &__info {
+      width: 100%;
+      padding: 0;
+      background-color: transparent;
+    }
+    &__btn {
+      &--mobile {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0 auto;
+        border: 1px solid $blue-500;
+        width: 100%;
+        color: $blue-500;
+        padding: 8px 12px;
+      }
+    }
+    &__info-card {
+      display: flex;
+    }
+    &__avatar,
+    &__author,
+    &__list,
+    &__content,
+    &__go-back,
+    &__review {
+      display: none;
+    }
+    &__tabs {
+      display: flex;
+    }
+    &__tours {
+      &--mobile {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 6px;
+      }
+    }
+    &__reviews {
+      display: flex;
+      position: absolute;
+      width: 100%;
+      &-inner {
+        display: none;
+      }
+      &-link {
+        display: none;
+      }
+    }
   }
 }
 </style>

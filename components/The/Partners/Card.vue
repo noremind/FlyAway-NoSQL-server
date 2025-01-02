@@ -129,7 +129,7 @@
     &__wrapper {
       display: flex;
       flex-direction: row;
-      padding: 12px;
+      padding: 6px;
       gap: 6px;
     }
     &__avatar {

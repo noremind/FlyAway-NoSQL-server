@@ -37,6 +37,9 @@
           <p class="tour__reviews-average">4,1</p>
         </div>
       </div>
+      <span class="tour__discount tour__discount--new tour__discount--mobile"
+        >Новинка</span
+      >
       <div class="tour__content">
         <h3 class="tour__title">
           <nuxt-link class="tour__link" to="/tours/1">Кольсай</nuxt-link>
@@ -256,6 +259,9 @@ const toggleDropdown = () => {
       background-color: $green-400;
       padding: 4px 8px;
     }
+    &--mobile {
+      display: none;
+    }
   }
 }
 
@@ -266,6 +272,49 @@ const toggleDropdown = () => {
     }
     &__info {
       margin-top: 12px;
+    }
+  }
+}
+
+@media (max-width: 375px) {
+  .tour {
+    &__wrapper {
+      padding: 0 6px 6px 6px;
+      max-width: 100%;
+    }
+    &__header {
+      padding-top: 6px;
+      padding-bottom: 6px;
+    }
+    &__date-item,
+    &__date {
+      white-space: nowrap;
+    }
+    &__img {
+      // width: 160px;
+      height: 140px;
+      max-width: 100%;
+      border-radius: 16px;
+    }
+    &__old-price,
+    &__new-price {
+      white-space: nowrap;
+    }
+    &__info {
+      margin-top: 12px;
+    }
+    &__info-box {
+      display: none;
+    }
+    &__discount {
+      display: none;
+      &--mobile {
+        display: inline-block;
+        margin-bottom: 6px;
+      }
+    }
+    &__box {
+      display: none;
     }
   }
 }
