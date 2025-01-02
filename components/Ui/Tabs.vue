@@ -66,7 +66,6 @@ const props = defineProps({
   &__list-item {
     color: $surface-900;
     cursor: pointer;
-    padding: 8px;
     border-radius: 24px;
     // font-size: 24px;
     font-size: clamp(0.875rem, 0.648rem + 1.14vw, 1.5rem);
@@ -83,6 +82,18 @@ const props = defineProps({
       background-color: transparent;
       border-bottom: 3px solid $blue-500;
       border-radius: 0;
+    }
+  }
+}
+
+@media (max-width: 375px) {
+  .tabs {
+    &__list {
+      justify-content: space-between;
+    }
+    &__list-item {
+      flex-grow: 1;
+      padding: 2px 8px;
     }
   }
 }

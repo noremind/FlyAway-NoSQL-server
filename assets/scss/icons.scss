@@ -327,3 +327,8 @@ i.icon {
 		-webkit-mask-image: url("@/assets/icons/share.svg");
 		mask-image: url("@/assets/icons/share.svg");
 }
+.tablets{
+								@extend i, .icon;
+		-webkit-mask-image: url("@/assets/icons/tablets.svg");
+		mask-image: url("@/assets/icons/tablets.svg");
+}

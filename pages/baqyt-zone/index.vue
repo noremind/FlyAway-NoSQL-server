@@ -1,6 +1,19 @@
 <template>
   <section class="baqyt-zone">
     <div class="baqyt-zone__wrapper">
+      <div class="baqyt-zone__top">
+        <UiInput
+          class="baqyt-zone__top-search"
+          placeholder="Введите название"
+          after-icon="lupa"
+        ></UiInput>
+        <p class="baqyt-zone__top-text" @click="openFilterMobile">Фильтр</p>
+      </div>
+      <UiTabs
+        class="baqyt-zone__tabs baqyt-zone__tabs--mobile"
+        :tabs="tabsMobile"
+        v-model="selectedTabMobile"
+      ></UiTabs>
       <div class="baqyt-zone__header">
         <h1 class="baqyt-zone__title title">BaqytZone</h1>
         <UiTabs
@@ -64,7 +77,7 @@
               </div>
             </div>
           </section>
-          <TheCommonAdBanner></TheCommonAdBanner>
+          <TheCommonAdBanner class="baqyt-zone__ad"></TheCommonAdBanner>
         </div>
         <div class="baqyt-zone__block">
           <section class="baqyt-zone__sort">
@@ -75,10 +88,14 @@
               :label="item.label"
             ></UiCheckbox>
           </section>
-          <div v-if="selectedTab?.id === 1" class="baqyt-zone__cards">
+          <div
+            class="baqyt-zone__cards"
+            :class="{ 'baqyt-zone__cards--tablet': selectedTabMobile.id === 1 }"
+          >
             <TheBaqytZoneBlock
               v-for="card in 6"
               :key="card"
+              :view-type="selectedTabMobile.id === 1 ? 'tablet' : 'list'"
             ></TheBaqytZoneBlock>
 
             <TheCommonPopularBanner
@@ -98,9 +115,75 @@
       </div>
     </div>
   </section>
+
+  <UiOverlay
+    :is-show="isOpenFilterMobile"
+    @close="closeFilterMobile"
+    title="Фильтр"
+  >
+    <div class="baqyt-zone__filters-box">
+      <div>
+        <p class="baqyt-zone__filters-text">Сортировка</p>
+        <div class="baqyt-zone__filters-checkboxs">
+          <UiCheckbox
+            v-for="(item, index) in options"
+            :key="index"
+            :label="item.label"
+          ></UiCheckbox>
+        </div>
+      </div>
+
+      <div>
+        <p class="baqyt-zone__filters-text">Цена</p>
+        <UiRange></UiRange>
+      </div>
+      <div class="baqyt-zone__filters-range">
+        <div class="baqyt-zone__filters-inner">
+          <span>от</span>
+          <UiInput class="baqyt-zone__filters-input--mobile"></UiInput>
+          <span>₸</span>
+        </div>
+
+        <div class="baqyt-zone__filters-inner">
+          <span>до</span>
+          <UiInput class="baqyt-zone__filters-input--mobile"></UiInput>
+          <span>₸</span>
+        </div>
+      </div>
+
+      <div>
+        <p class="baqyt-zone__filters-text">Тип</p>
+        <UiSelect placeholder="Выберите тип активности"></UiSelect>
+      </div>
+
+      <div>
+        <p class="baqyt-zone__filters-text">Продолжительность</p>
+        <UiSelect></UiSelect>
+      </div>
+
+      <div class="baqyt-zone__filters-checkboxs">
+        <p class="baqyt-zone__filters-text">Вид активности</p>
+        <UiCheckbox
+          v-for="(item, index) in options"
+          :key="index"
+          :label="item.label"
+          type="checkmark"
+        ></UiCheckbox>
+      </div>
+    </div>
+  </UiOverlay>
 </template>
 
 <script setup>
+const isOpenFilterMobile = ref(false);
+
+const openFilterMobile = () => {
+  isOpenFilterMobile.value = true;
+};
+
+const closeFilterMobile = () => {
+  isOpenFilterMobile.value = false;
+};
 const tabs = reactive([
   {
     id: 1,
@@ -113,7 +196,25 @@ const tabs = reactive([
     icon: "location",
   },
 ]);
+const tabsMobile = reactive([
+  {
+    id: 1,
+    name: "Плитка",
+    icon: "tablets",
+  },
+  {
+    id: 2,
+    name: "Список",
+    icon: "burger-list",
+  },
+  {
+    id: 3,
+    name: "Локация",
+    icon: "location",
+  },
+]);
 const selectedTab = ref(tabs[0]);
+const selectedTabMobile = ref(tabsMobile[0]);
 const options = [
   { label: "по цене", value: "price" },
   { label: "по популярности", value: "popularity" },
@@ -134,6 +235,9 @@ const options = [
   &__tabs {
     background-color: $white;
     border-radius: 24px;
+    &--mobile {
+      display: none;
+    }
   }
   &__content {
     width: 100%;
@@ -153,6 +257,16 @@ const options = [
       flex-direction: column;
       gap: 36px;
       padding: 20px;
+    }
+    &-checkboxs {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    &-input {
+      &--mobile {
+        flex-grow: 1;
+      }
     }
     &-range {
       display: flex;
@@ -229,6 +343,69 @@ const options = [
       bottom: 0;
       z-index: 3;
       margin-bottom: 12px;
+    }
+  }
+  &__top {
+    display: none;
+  }
+}
+
+@media (max-width: 375px) {
+  .baqyt-zone {
+    &__wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin: 16px 0;
+    }
+    &__top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      &-text {
+        color: $blue-500;
+        font-weight: 400;
+        cursor: pointer;
+      }
+      &-search {
+        width: 100%;
+        background-color: $white;
+        border-radius: 26px;
+      }
+    }
+    &__tabs {
+      display: none;
+      &--mobile {
+        display: block;
+      }
+    }
+    &__ad,
+    &__filters,
+    &__sort {
+      display: none;
+    }
+    &__title {
+      font-size: 24px;
+    }
+    &__content {
+      display: flex;
+      flex-direction: column;
+      margin: 0;
+      gap: 0;
+    }
+    &__cards {
+      display: flex;
+      flex-direction: column;
+      padding: 0;
+      background-color: transparent;
+      align-items: center;
+      box-shadow: none;
+      &--tablet {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 6px;
+      }
     }
   }
 }

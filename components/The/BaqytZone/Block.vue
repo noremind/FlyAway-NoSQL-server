@@ -22,7 +22,7 @@
       </div>
 
       <div class="baqyt-block__info">
-        <div class="baqyt-block__info-box">
+        <div class="baqyt-block__info-box" v-if="viewType === 'list'">
           <img
             class="baqyt-block__avatar"
             src="@/assets/image/common/tour-avatar.png"
@@ -36,6 +36,9 @@
           <UiIcons icon="star" color="yellow-500" size="size-14"></UiIcons>
           <p class="baqyt-block__reviews-average">4,1</p>
         </div>
+      </div>
+      <div v-if="viewType === 'tablet'">
+        <p class="baqyt-block__discount baqyt-block__discount--mobile">-25%</p>
       </div>
       <div class="baqyt-block__content">
         <h3 class="baqyt-block__title">
@@ -55,7 +58,14 @@
   </section>
 </template>
 
-<script setup></script>
+<script setup>
+const props = defineProps({
+  viewType: {
+    type: String,
+    default: "list",
+  },
+});
+</script>
 
 <style scoped lang="scss">
 .baqyt-block {
@@ -71,7 +81,7 @@
   &__header {
     position: relative;
     width: 100%;
-    height: 138px;
+    height: 155px;
     padding: 16px 0 16px 0;
     display: inline-flex;
     flex-direction: column;
@@ -202,6 +212,47 @@
     }
     &__info {
       margin-top: 12px;
+    }
+  }
+}
+
+@media (max-width: 375px) {
+  .baqyt-block {
+    &__wrapper {
+      padding: 0 6px 6px 6px;
+      max-width: 100%;
+    }
+    &__header {
+      padding-top: 6px;
+      padding-bottom: 6px;
+      height: 136px;
+    }
+    &__date-item,
+    &__date {
+      white-space: nowrap;
+    }
+    &__img {
+      // width: 160px;
+      height: 140px;
+      max-width: 100%;
+      border-radius: 16px;
+    }
+    &__old-price,
+    &__new-price {
+      white-space: nowrap;
+    }
+    &__info {
+      margin-top: 12px;
+    }
+    &__discount {
+      display: none;
+      &--mobile {
+        display: inline-block;
+        margin-bottom: 6px;
+      }
+    }
+    &__box {
+      display: none;
     }
   }
 }
