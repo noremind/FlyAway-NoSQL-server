@@ -224,6 +224,9 @@ const tags = reactive([
       font-size: 14px;
     }
   }
+  &__top {
+    display: none;
+  }
 }
 
 @media (max-width: 375px) {

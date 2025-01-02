@@ -1,6 +1,14 @@
 <template>
   <section class="locations">
     <div class="locations__wrapper">
+      <div class="locations__top">
+        <UiInput
+          class="locations__top-search"
+          placeholder="Введите название"
+          after-icon="lupa"
+        ></UiInput>
+        <p class="locations__top-text" @click="openFilterMobile">Фильтр</p>
+      </div>
       <div class="locations__header">
         <h1 class="locations__title title">Локации</h1>
       </div>
@@ -28,7 +36,7 @@
               <UiHashTag :tags="tags"></UiHashTag>
             </div>
           </section>
-          <TheCommonAdBanner></TheCommonAdBanner>
+          <TheCommonAdBanner class="locations__ad"></TheCommonAdBanner>
         </div>
         <div class="locations__block">
           <section class="locations__sort">
@@ -52,9 +60,34 @@
       </div>
     </div>
   </section>
+
+  <UiOverlay
+    :is-show="isOpenFilterMobile"
+    @close="closeFilterMobile"
+    title="Фильтр"
+  >
+    <div class="locations__overlay-checkboxs">
+      <p class="locations__overlay-bold">Сортировка</p>
+      <UiCheckbox
+        v-for="(item, index) in options"
+        :key="index"
+        :label="item.label"
+      ></UiCheckbox>
+    </div>
+    <UiHashTag :tags="tags"></UiHashTag>
+  </UiOverlay>
 </template>
 
 <script setup>
+const isOpenFilterMobile = ref(false);
+
+const openFilterMobile = () => {
+  isOpenFilterMobile.value = true;
+};
+
+const closeFilterMobile = () => {
+  isOpenFilterMobile.value = false;
+};
 const options = [
   { label: "по цене", value: "price" },
   { label: "по популярности", value: "popularity" },
@@ -177,6 +210,60 @@ const tags = reactive([
       bottom: 0;
       z-index: 3;
       margin-bottom: 12px;
+    }
+  }
+  &__overlay {
+    &-checkboxs {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 32px;
+    }
+    &-bold {
+      font-weight: 400;
+      font-size: 14px;
+    }
+  }
+  &__top {
+    display: none;
+  }
+}
+
+@media (max-width: 375px) {
+  .locations {
+    &__wrapper {
+      margin: 16px 0;
+    }
+    &__top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      &-text {
+        color: $blue-500;
+        font-weight: 400;
+        cursor: pointer;
+      }
+      &-search {
+        width: 100%;
+        background-color: $white;
+        border-radius: 26px;
+      }
+    }
+    &__title {
+      margin: 12px 0;
+    }
+    &__ad,
+    &__filters,
+    &__sort {
+      display: none;
+    }
+    &__content {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      gap: 12px;
+      margin: 0;
     }
   }
 }

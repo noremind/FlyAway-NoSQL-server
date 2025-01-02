@@ -322,3 +322,8 @@ i.icon {
 		-webkit-mask-image: url("@/assets/icons/youtube.svg");
 		mask-image: url("@/assets/icons/youtube.svg");
 }
+.share{
+								@extend i, .icon;
+		-webkit-mask-image: url("@/assets/icons/share.svg");
+		mask-image: url("@/assets/icons/share.svg");
+}

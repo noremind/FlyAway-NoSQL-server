@@ -1,5 +1,5 @@
 <template>
-  <UiOverlay :is-show="true" header-icon="upload" :have-footer="true">
+  <UiOverlay :is-show="true" header-icon="share" :have-footer="true">
     <section class="partner">
       <div class="partner__wrapper">
         <UiGoBack
