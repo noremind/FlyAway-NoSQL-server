@@ -66,8 +66,10 @@ const toggleExpand = () => {
   }
   &__img {
     border-radius: 16px;
-    width: 240px;
+    max-width: 240px;
+    width: 100%;
     object-fit: cover;
+    height: 100%;
   }
   &__title {
     font-size: 20px;
@@ -101,6 +103,33 @@ const toggleExpand = () => {
     font-weight: 400;
     cursor: pointer;
     display: block;
+  }
+}
+
+@media (max-width: 375px) {
+  .block {
+    &__wrapper {
+      padding: 0;
+      gap: 6px;
+    }
+    &__img {
+      max-width: 145px;
+      height: 130px;
+    }
+    &__description {
+      font-size: 10px;
+    }
+    &__title {
+      margin-top: 6px;
+      font-size: 16px;
+    }
+    &__box {
+      padding: 0 6px 0 0;
+      font-size: 10px;
+    }
+    &__content {
+      gap: 4px;
+    }
   }
 }
 </style>

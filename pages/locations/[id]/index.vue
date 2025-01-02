@@ -1,5 +1,10 @@
 <template>
-  <UiOverlay :is-show="true" header-icon="share" :have-footer="true">
+  <UiOverlay
+    :is-show="true"
+    header-icon="share"
+    :have-footer="true"
+    @close="goTo('/locations')"
+  >
     <section class="details">
       <div class="details__wrapper">
         <UiGoBack

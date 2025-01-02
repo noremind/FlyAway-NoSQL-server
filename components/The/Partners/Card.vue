@@ -7,7 +7,9 @@
         alt="Partner"
       />
       <div class="card__box">
-        <h2 class="card__author">Mili Tour</h2>
+        <nuxt-link to="/partners/1">
+          <h2 class="card__author">Mili Tour</h2>
+        </nuxt-link>
         <div class="card__reviews card__reviews--laptop">
           <p class="card__count">20 отзывов</p>
           <UiIcons icon="star" color="yellow-500" size="size-14"></UiIcons>
@@ -76,6 +78,7 @@
     font-size: 24px;
     font-weight: 700;
     margin: 0 auto;
+    color: $surface-900;
   }
   &__reviews {
     display: flex;

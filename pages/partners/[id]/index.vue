@@ -1,5 +1,10 @@
 <template>
-  <UiOverlay :is-show="true" header-icon="share" :have-footer="true">
+  <UiOverlay
+    :is-show="true"
+    header-icon="share"
+    :have-footer="true"
+    @close="goTo('/partners')"
+  >
     <section class="partner">
       <div class="partner__wrapper">
         <UiGoBack
