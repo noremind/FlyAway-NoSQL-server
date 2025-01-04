@@ -2,10 +2,15 @@
   <header class="header">
     <div class="header__wrapper">
       <div class="header__inner">
-        <nuxt-link to="/">
+        <nuxt-link to="/" class="header__link">
           <img
             class="header__logo"
             src="@/assets/image/logo/Sapar-time-logo.svg"
+            alt="SaparTime Logo"
+          />
+          <img
+            class="header__logo header__logo--mobile"
+            src="@/assets/image/logo/Sapar-time-logo-full.svg"
             alt="SaparTime Logo"
           />
         </nuxt-link>
@@ -136,6 +141,8 @@ const closeDropdownMenu = () => {
 
 <style lang="scss" scoped>
 .header {
+  position: relative;
+  z-index: 2;
   background-color: $white;
   &__wrapper {
     width: 100%;
@@ -150,6 +157,9 @@ const closeDropdownMenu = () => {
   &__logo {
     margin: 0 12px 0 0;
     cursor: pointer;
+    &--mobile {
+      display: none;
+    }
   }
   &__city {
     background-color: $surface-150;
@@ -216,6 +226,29 @@ const closeDropdownMenu = () => {
     &__burger {
       display: block;
       cursor: pointer;
+    }
+  }
+}
+
+@media (max-width: 375px) {
+  .header {
+    &__wrapper {
+      padding: 0 6px;
+    }
+    &__logo {
+      display: none;
+      &--mobile {
+        display: flex;
+      }
+    }
+    &__inner {
+      gap: 16px;
+    }
+    &__link {
+      order: 2;
+    }
+    &__city {
+      order: 1;
     }
   }
 }

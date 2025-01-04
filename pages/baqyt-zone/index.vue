@@ -1,5 +1,10 @@
 <template>
   <section class="baqyt-zone">
+    <div
+      class="baqyt-zone__map"
+      v-show="selectedTabMobile.id === 3"
+      ref="mapContainer"
+    ></div>
     <div class="baqyt-zone__wrapper">
       <div class="baqyt-zone__top">
         <UiInput
@@ -14,7 +19,12 @@
         :tabs="tabsMobile"
         v-model="selectedTabMobile"
       ></UiTabs>
-      <div class="baqyt-zone__header">
+      <div
+        class="baqyt-zone__header"
+        :class="{
+          'baqyt-zone__header--visible': selectedTabMobile.id === 3,
+        }"
+      >
         <h1 class="baqyt-zone__title title">BaqytZone</h1>
         <UiTabs
           class="baqyt-zone__tabs"
@@ -23,7 +33,7 @@
         ></UiTabs>
       </div>
 
-      <div class="baqyt-zone__content">
+      <div class="baqyt-zone__content" v-show="selectedTabMobile.id !== 3">
         <div class="baqyt-zone__content-left">
           <section class="baqyt-zone__filters">
             <div class="baqyt-zone__filters-header">
@@ -176,7 +186,7 @@
 
 <script setup>
 const isOpenFilterMobile = ref(false);
-
+const mapContainer = ref(null);
 const openFilterMobile = () => {
   isOpenFilterMobile.value = true;
 };
@@ -219,10 +229,45 @@ const options = [
   { label: "по цене", value: "price" },
   { label: "по популярности", value: "popularity" },
 ];
+
+onMounted(() => {
+  if (typeof ymaps !== "undefined") {
+    ymaps.ready(() => {
+      const map = new ymaps.Map(mapContainer.value, {
+        center: [43.238949, 76.889709],
+        zoom: 10,
+        controls: [],
+      });
+      const placemark = new ymaps.Placemark(
+        [55.751574, 37.573856],
+        {
+          balloonContent: "This is Almaty!",
+        },
+        {
+          preset: "islands#icon",
+          iconColor: "#0095b6",
+        }
+      );
+
+      map.geoObjects.add(placemark);
+    });
+  } else {
+    console.error("Yandex Maps API is not loaded.");
+  }
+});
 </script>
 
 <style lang="scss" scoped>
 .baqyt-zone {
+  position: relative;
+  &__map {
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: -0px;
+  }
   &__wrapper {
     margin: 60px 0 30px 0;
   }
@@ -231,6 +276,12 @@ const options = [
     justify-content: space-between;
     gap: 16px;
     align-items: center;
+    &--visible {
+      display: block;
+      position: relative;
+      z-index: 2;
+      color: $surface-900;
+    }
   }
   &__tabs {
     background-color: $white;
@@ -246,6 +297,17 @@ const options = [
     gap: 24px;
     margin: 36px 0;
   }
+  &__title {
+    &--visible {
+      display: none;
+      position: relative;
+      z-index: 2;
+      color: $surface-900;
+    }
+    &--hide {
+      display: none;
+    }
+  }
   &__filters {
     max-width: 255px;
     width: 100%;
@@ -258,6 +320,7 @@ const options = [
       gap: 36px;
       padding: 20px;
     }
+
     &-checkboxs {
       display: flex;
       flex-direction: column;
@@ -347,6 +410,8 @@ const options = [
   }
   &__top {
     display: none;
+    position: relative;
+    z-index: 2;
   }
 }
 
@@ -376,6 +441,8 @@ const options = [
     }
     &__tabs {
       display: none;
+      position: relative;
+      z-index: 2;
       &--mobile {
         display: block;
       }
@@ -387,6 +454,9 @@ const options = [
     }
     &__title {
       font-size: 24px;
+      &--visible {
+        display: block;
+      }
     }
     &__content {
       display: flex;

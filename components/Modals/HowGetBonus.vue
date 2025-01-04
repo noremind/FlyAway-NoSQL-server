@@ -3,7 +3,7 @@
     <div class="bonus__wrapper">
       <img
         class="bonus__logo"
-        src="@/assets/image/logo/sapartime-logo.png"
+        src="@/assets/image/logo/Sapar-time-logo-full.svg"
         alt="Sapartime"
       />
 

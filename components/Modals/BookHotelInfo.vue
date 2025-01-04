@@ -3,7 +3,7 @@
     <div class="info__wrapper">
       <img
         class="info__logo"
-        src="@/assets/image/logo/sapartime-logo.png"
+        src="@/assets/image/logo/Sapar-time-logo-full.svg"
         alt="Sapartime"
       />
 

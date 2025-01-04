@@ -1,5 +1,5 @@
 <template>
-  <transition name="show">
+  <transition name="overlay">
     <section v-if="isShow" class="overlay">
       <div class="overlay__wrapper">
         <div class="overlay__header">
@@ -73,13 +73,13 @@ const props = defineProps({
     display: none;
   }
 }
-.show-enter-active {
-  animation: show 0.5s;
+.overlay-enter-active {
+  animation: overlay 0.5s;
 }
-.show-leave-active {
-  animation: show 0.5s reverse;
+.overlay-leave-active {
+  animation: overlay 0.5s reverse;
 }
-@keyframes show {
+@keyframes overlay {
   0% {
     transform: translateY(100%);
   }
@@ -94,7 +94,7 @@ const props = defineProps({
     bottom: 0;
     right: 0;
     left: 0;
-    z-index: 1000;
+    z-index: 200;
     background-color: $surface-150;
     width: 100%;
     overflow-y: scroll;
@@ -104,7 +104,6 @@ const props = defineProps({
       height: 100%;
       color: $surface-900;
       overflow-y: scroll;
-      // position: relative;
     }
     &__header {
       display: flex;
@@ -148,10 +147,10 @@ const props = defineProps({
       font-weight: 400;
       margin: 0 auto 16px 0;
       left: 17px;
+      z-index: 100;
     }
     &__footer {
       display: block;
-      // margin-top: 86px;
     }
   }
 }

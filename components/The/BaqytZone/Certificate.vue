@@ -4,11 +4,24 @@
       <div class="certificate__box">
         <h3 class="certificate__title">Однодневный тур в озеро Кольсай</h3>
         <ul class="certificate__list">
-          <li class="certificate__list-item" v-for="list in 3" :key="list">
-            Горы, леса и поля позволяют отдалиться от городского шума и
-            окунуться в мир, где царят тишина, пение птиц и шелест листьев.
+          <li
+            class="certificate__list-item"
+            :class="{
+              'certificate__list-item--mobile': index + 1 > 2 && !showMore,
+            }"
+            v-for="(list, index) in lists"
+            :key="list.id"
+          >
+            {{ list.name }}
           </li>
         </ul>
+        <p
+          class="certificate__more"
+          @click="toggleShowList"
+          v-if="lists.length > 2"
+        >
+          {{ !showMore ? "подробнее..." : "скрыть" }}
+        </p>
       </div>
       <div class="certificate__inner">
         <UiButton label="15 000 ₸" class="certificate__price"></UiButton>
@@ -25,19 +38,43 @@
             icon="chevron"
           ></UiIcons>
         </div>
-        <UiButton
+        <!-- <UiButton
           label="Добавить"
           before-icon="plus"
           icon-color="blue-500"
           icon-size="size-24"
           class="certificate__btn-add"
-        ></UiButton>
+        ></UiButton> -->
       </div>
     </div>
   </section>
 </template>
 
-<script setup></script>
+<script setup>
+const showMore = ref(false);
+const lists = reactive([
+  {
+    id: 1,
+    name: "1Горы, леса и поля позволяют отдалиться от городского шума и окунуться в мир, где царят тишина, пение птиц и шелест листьев.",
+  },
+  {
+    id: 2,
+    name: "2Горы, леса и поля позволяют отдалиться от городского шума и окунуться в мир, где царят тишина, пение птиц и шелест листьев.",
+  },
+  {
+    id: 3,
+    name: "3Горы, леса и поля позволяют отдалиться от городского шума и окунуться в мир, где царят тишина, пение птиц и шелест листьев.",
+  },
+  {
+    id: 4,
+    name: "4Горы, леса и поля позволяют отдалиться от городского шума и окунуться в мир, где царят тишина, пение птиц и шелест листьев.",
+  },
+]);
+
+const toggleShowList = () => {
+  showMore.value = !showMore.value;
+};
+</script>
 
 <style lang="scss" scoped>
 .certificate {
@@ -52,6 +89,11 @@
   }
   &__title {
     font-weight: 600;
+  }
+  &__more {
+    color: $blue-500;
+    font-weight: 400;
+    font-size: 12px;
   }
   &__box {
     display: flex;
@@ -75,6 +117,9 @@
       list-style: disc;
       margin-left: 20px;
       font-size: 12px;
+      &--mobile {
+        display: none;
+      }
     }
   }
   &__count {
@@ -103,6 +148,40 @@
     background-color: transparent;
     color: $blue-500;
     font-weight: 600;
+  }
+}
+
+@media (max-width: 375px) {
+  .certificate {
+    &__wrapper {
+      display: flex;
+      flex-direction: column;
+      padding: 12px;
+    }
+    &__inner {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 100%;
+      gap: 26px;
+    }
+    &__price {
+      background-color: transparent;
+      color: $blue-500;
+      white-space: nowrap;
+      padding: 0;
+      justify-content: flex-start;
+      flex-grow: 1;
+    }
+    &__btn-add {
+      flex-grow: 1;
+      max-width: 160px;
+    }
+    &__input {
+      padding: 0;
+      flex-grow: 0;
+      max-width: 130px;
+    }
   }
 }
 </style>

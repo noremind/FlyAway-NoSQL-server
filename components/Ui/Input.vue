@@ -45,7 +45,7 @@ const props = defineProps({
   iconSize: String,
   iconColor: String,
   customClass: String,
-  isCenter: String,
+  isCenter: Boolean,
 });
 </script>
 
