@@ -2,7 +2,11 @@
   <teleport to="body">
     <div class="modal" v-if="isShow">
       <div class="modal__wrapper" @click="emit('close')"></div>
-      <div class="modal__block" :style="{ maxWidth: maxWidth }">
+      <div
+        class="modal__block"
+        :style="{ maxWidth: maxWidth }"
+        :class="{ 'modal__block--full': fullScreen }"
+      >
         <div class="modal__head" :class="{ 'p-0': withoutPadding }">
           <div class="modal__title" v-if="title">{{ title }}</div>
           <UiIcons
@@ -14,7 +18,10 @@
             :class="{ '-only': !title }"
           />
         </div>
-        <div class="modal__content" :class="{ 'p-0': withoutPadding }">
+        <div
+          class="modal__content"
+          :class="{ 'modal__content--padding': fullScreen }"
+        >
           <slot></slot>
         </div>
       </div>
@@ -26,6 +33,10 @@
 const props = defineProps({
   isShow: Boolean,
   maxWidth: String,
+  fullScreen: {
+    type: Boolean,
+    default: false,
+  },
   hideClose: {
     type: Boolean,
     default: true,
@@ -48,7 +59,7 @@ const emit = defineEmits(["close"]);
   left: 0;
   right: 0;
   display: flex;
-  z-index: 100;
+  z-index: 400;
   align-items: center;
   justify-content: center;
   &__head {
@@ -78,6 +89,10 @@ const emit = defineEmits(["close"]);
     max-width: 300px;
     width: 100%;
     position: relative;
+    &--full {
+      height: 100%;
+      border-radius: 0;
+    }
   }
   &__close {
     cursor: pointer;
@@ -90,6 +105,9 @@ const emit = defineEmits(["close"]);
   }
   &__content {
     padding: 16px;
+    &--padding {
+      margin-top: 80px;
+    }
   }
 }
 

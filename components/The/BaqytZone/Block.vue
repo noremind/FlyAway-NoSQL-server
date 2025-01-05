@@ -51,7 +51,12 @@
         </p>
 
         <div>
-          <p class="baqyt-block__discount">-25%</p>
+          <p
+            class="baqyt-block__discount"
+            :class="{ 'baqyt-block__discount--show': viewType === 'list' }"
+          >
+            -25%
+          </p>
         </div>
       </div>
     </div>
@@ -249,6 +254,9 @@ const props = defineProps({
       &--mobile {
         display: inline-block;
         margin-bottom: 6px;
+      }
+      &--show {
+        display: inline-block;
       }
     }
     &__box {

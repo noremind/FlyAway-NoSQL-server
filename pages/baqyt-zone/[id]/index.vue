@@ -3,8 +3,10 @@
     :is-show="true"
     header-icon="share"
     btn-label="Выбрать сертификат"
+    @action="openPartialModalInfo"
     :have-footer="true"
     @close="goTo('/baqyt-zone')"
+    :have-favorite-icon="true"
   >
     <section class="details">
       <div class="details__wrapper">
@@ -384,8 +386,8 @@
   </UiModal>
 
   <UiPartialModal
-    :is-show="openPartialModal"
-    @close="closePartialModal"
+    :is-show="isOpenPartialModalInfo"
+    @close="closePartialModalInfo"
     height="85%"
   >
     <template #body>
@@ -405,23 +407,206 @@
     </template>
     <template #fixed>
       <UiButton
+        v-if="false"
         class="details__partial-btn"
         label="Добавить"
         before-icon="plus"
         icon-size="size-20"
         icon-color="blue-500"
       ></UiButton>
+      <div v-else class="details__partial-count">
+        <UiIcons icon="chevron" size="size-20" class="down"></UiIcons>
+        <UiInput :is-center="true"></UiInput>
+        <UiIcons icon="chevron" size="size-20"></UiIcons>
+      </div>
     </template>
   </UiPartialModal>
+
+  <UiPartialModal
+    :is-show="isOpenPartialModalPayment"
+    height="85%"
+    @close="closePartialModalPayment"
+  >
+    <template #body>
+      <div class="details__partial-payment-box">
+        <div class="details__certificates">
+          <p class="details__bold">Виды сертификатов</p>
+          <div class="details__blocks">
+            <TheBaqytZoneCertificate
+              v-for="block in 3"
+              :key="block"
+            ></TheBaqytZoneCertificate>
+          </div>
+        </div>
+
+        <div class="details__input-box">
+          <p class="details__bold">Промокод</p>
+          <UiInput
+            class="details__input details__input--bg"
+            placeholder="Введите промокод"
+          ></UiInput>
+          <p class="details__accept">Применить</p>
+        </div>
+
+        <ul class="details__totals-list">
+          <li class="details__totals-item">
+            <p class="details__totals-answer">Всего:</p>
+            <p class="details__totals-question">45 000 ₸</p>
+          </li>
+          <li class="details__totals-item">
+            <p class="details__totals-answer">Скидка:</p>
+            <p
+              class="details__totals-question details__totals-question--discount"
+            >
+              -20%
+            </p>
+          </li>
+          <li class="details__totals-item details__totals-item--result">
+            <p class="details__totals-answer">Итого:</p>
+            <p class="details__totals-question details__totals-question">
+              36 000₸
+            </p>
+          </li>
+        </ul>
+
+        <UiButton
+          class="details__partial-payment-btn"
+          label="Перейти к оплате"
+        ></UiButton>
+      </div>
+    </template>
+  </UiPartialModal>
+
+  <UiOverlay
+    :is-show="isOpenOverlayPayment"
+    title="Платежи"
+    @close="closeOverlayPayment"
+    btn-label="Оплатить"
+    :show-header-icons="false"
+  >
+    <div class="overlay-payment">
+      <div class="overlay-payment__wrapper">
+        <div class="overlay-payment__preview">
+          <img
+            class="overlay-payment__img"
+            src="@/assets/image/content/tour-card.png"
+            alt="Preview"
+          />
+          <h2 class="overlay-payment__title title">
+            Однодевный тур на Кольсай
+          </h2>
+        </div>
+        <table class="overlay-payment__table">
+          <tbody>
+            <tr class="overlay-payment__tr">
+              <td class="overlay-payment__td">Дата</td>
+              <td class="overlay-payment__td">25 декабря 2024</td>
+            </tr>
+            <tr class="overlay-payment__tr overlay-payment__tr--blue">
+              <td>Ваши сертификаты</td>
+            </tr>
+            <tr class="overlay-payment__tr">
+              <td class="overlay-payment__td">
+                Однодневный тур в озеро Кольсай
+              </td>
+              <td class="overlay-payment__td">1 билет х 15 000 ₸</td>
+            </tr>
+            <tr class="overlay-payment__tr">
+              <td class="overlay-payment__td">
+                Однодневный тур на Чарынский каньон
+              </td>
+              <td class="overlay-payment__td">2 билета х 8 000 ₸</td>
+            </tr>
+            <tr class="overlay-payment__tr overlay-payment__tr--padding">
+              <td class="overlay-payment__td payment__td--bold">Скидка</td>
+              <td class="overlay-payment__td">-20%</td>
+            </tr>
+            <tr class="overlay-payment__tr">
+              <td class="overlay-payment__td overlay-payment__td--bold">
+                Промокод
+              </td>
+              <td class="overlay-payment__td">0 ₸</td>
+            </tr>
+            <tr class="overlay-payment__tr overlay-payment__tr--padding">
+              <td class="overlay-payment__td overlay-payment__td--bold">
+                Итого
+              </td>
+              <td class="overlay-payment__td">24 800 ₸</td>
+            </tr>
+            <tr class="overlay-payment__tr overlay-payment__tr--blue">
+              <td>Способ оплаты</td>
+            </tr>
+            <tr class="overlay-payment__tr">
+              <td class="overlay-payment__td overlay-payment__td--box">
+                <UiCheckbox
+                  type="checkmark"
+                  label="Банковская карта"
+                ></UiCheckbox>
+              </td>
+              <td class="overlay-payment__td"></td>
+            </tr>
+            <tr class="overlay-payment__tr">
+              <td class="overlay-payment__td overlay-payment__td--box">
+                <UiCheckbox
+                  type="checkmark"
+                  label="Рассрочка на 3 месяца"
+                ></UiCheckbox>
+                <img
+                  class="overlay-payment__td-img"
+                  src="@/assets/icons/freedom-bank.svg"
+                  alt="Freedom Bank"
+                />
+              </td>
+              <td class="overlay-payment__td"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </UiOverlay>
+
+  <UiModal
+    :is-show="true"
+    max-width="600px"
+    @close="closePaymentModal"
+    :full-screen="true"
+  >
+    <ModalsStatus
+      v-if="true"
+      title="Ваш заказ оплачен"
+      status="success"
+      btn-label="Перейти в BaqytZone"
+      go-to="/profile/baqyt-zone"
+      @action="closeStatusPaymentModal"
+    />
+  </UiModal>
 </template>
 
 <script setup>
-const openPartialModal = ref(true);
+const isOpenOverlayPayment = ref(false);
+const isOpenPartialModalPayment = ref(false);
+const isOpenPartialModalInfo = ref(false);
 const isOpenPayment = ref(false);
 const isOpenStatusPayment = ref(null);
 
-const closePartialModal = () => {
-  openPartialModal.value = false;
+const closeOverlayPayment = () => {
+  isOpenOverlayPayment.value = false;
+};
+
+const closePartialModalInfo = () => {
+  isOpenPartialModalInfo.value = false;
+};
+
+const openPartialModalInfo = () => {
+  isOpenPartialModalInfo.value = true;
+};
+
+const closePartialModalPayment = () => {
+  isOpenPartialModalPayment.value = false;
+};
+
+const openPartialModalPayment = () => {
+  isOpenPartialModalPayment.value = true;
 };
 
 const yandexMapInfo = ref(null);
@@ -878,6 +1063,28 @@ watch(
       flex-direction: column;
       gap: 12px;
     }
+    &-count {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+    &-payment {
+      &-box {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+      &-btn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: $blue-500;
+        color: $white;
+        padding: 10px;
+        margin-top: 12px;
+        font-weight: 700;
+      }
+    }
     &-title {
       font-size: 16px;
     }
@@ -914,6 +1121,74 @@ watch(
 .details .details__imgs :deep(.custom-swiper::part(pagination)) {
   position: absolute !important;
 }
+
+.overlay-payment {
+  &__wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  &__btn {
+    width: 90%;
+    margin-top: 12px;
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    background-color: $blue-500;
+    color: $white;
+    font-weight: 700;
+  }
+  &__preview {
+    width: 100%;
+  }
+  &__img {
+    width: 100%;
+    height: 137px;
+    object-fit: cover;
+    border-radius: 16px;
+    margin: 0 auto;
+  }
+  &__table {
+    color: $surface-900;
+    font-size: 14px;
+  }
+  &__tr &__td:last-child {
+    text-align: right;
+    font-weight: 400;
+    white-space: nowrap;
+  }
+  &__td {
+    font-weight: 100;
+    padding-top: 4px;
+    font-size: 14px;
+
+    &--bold {
+      font-weight: 400;
+    }
+    &-img {
+      width: 80px;
+      margin-left: 28px;
+    }
+    &--box {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+  }
+  &__tr {
+    &--padding td {
+      padding-top: 24px;
+    }
+    &--blue {
+      color: $blue-500;
+      font-weight: 400;
+      & td {
+        padding-top: 16px;
+      }
+    }
+  }
+}
+
 @media (max-width: 375px) {
   .details {
     &__wrapper {

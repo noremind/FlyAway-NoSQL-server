@@ -1,7 +1,10 @@
 <template>
   <transition name="overlay">
     <section v-if="isShow" class="overlay">
-      <div class="overlay__wrapper">
+      <div
+        class="overlay__wrapper"
+        :class="{ 'overlay__wrapper--padding': btnLabel }"
+      >
         <div class="overlay__header">
           <UiIcons
             class="overlay__icon down"
@@ -11,16 +14,30 @@
             @click="emit('close')"
           ></UiIcons>
 
-          <h2 class="overlay__title">{{ title }}</h2>
+          <h2
+            class="overlay__title"
+            :class="{ 'overlay__title--center': !showHeaderIcons }"
+          >
+            {{ title }}
+          </h2>
 
           <UiIcons
-            v-if="headerIcon"
+            v-if="headerIcon && showHeaderIcons"
             size="size-20"
             class="overlay__icon"
             color="blue-500"
             :icon="headerIcon"
           ></UiIcons>
-          <p v-else class="overlay__reset">Сбросить</p>
+          <p v-if="!headerIcon && showHeaderIcons" class="overlay__reset">
+            Сбросить
+          </p>
+          <UiIcons
+            v-if="haveFavoriteIcon"
+            size="size-20"
+            class="overlay__icon"
+            color="blue-500"
+            icon="heart"
+          ></UiIcons>
         </div>
 
         <div class="overlay__content">
@@ -59,6 +76,14 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  showHeaderIcons: {
+    type: Boolean,
+    default: true,
+  },
+  haveFavoriteIcon: {
+    type: Boolean,
+    default: false,
+  },
 });
 </script>
 
@@ -69,6 +94,7 @@ const props = defineProps({
   &__header {
     display: none;
   }
+  &__btn,
   &__footer {
     display: none;
   }
@@ -104,6 +130,9 @@ const props = defineProps({
       height: 100%;
       color: $surface-900;
       overflow-y: scroll;
+      &--padding {
+        padding-bottom: 80px;
+      }
     }
     &__header {
       display: flex;
@@ -129,6 +158,10 @@ const props = defineProps({
       flex-grow: 1;
       text-align: center;
       margin-left: 26px;
+      display: inline-block;
+      &--center {
+        transform: translateX(-10%);
+      }
     }
     &__content {
       margin-top: 16px;

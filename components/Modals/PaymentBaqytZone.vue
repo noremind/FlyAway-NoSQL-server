@@ -51,7 +51,11 @@
                 type="checkmark"
                 label="Рассрочка на 3 месяца"
               ></UiCheckbox>
-              <img src="@/assets/icons/freedom-bank.svg" alt="Freedom Bank" />
+              <img
+                class="payment__td-img"
+                src="@/assets/icons/freedom-bank.svg"
+                alt="Freedom Bank"
+              />
             </td>
             <td class="payment__td"></td>
           </tr>
@@ -110,13 +114,17 @@ const emit = defineEmits(["payed"]);
   &__td {
     font-weight: 100;
     padding-top: 4px;
+    &-img {
+      width: 80px;
+      margin-left: 28px;
+    }
     &--bold {
       font-weight: 400;
     }
     &--box {
       display: flex;
+      flex-direction: column;
       gap: 4px;
-      align-items: center;
     }
   }
   &__tr {

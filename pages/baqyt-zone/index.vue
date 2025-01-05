@@ -115,6 +115,7 @@
             <TheBaqytZoneBlock
               v-for="card in 6"
               :key="card"
+              :view-type="selectedTabMobile.id === 1 ? 'tablet' : 'list'"
             ></TheBaqytZoneBlock>
           </div>
           <UiPagination
@@ -182,11 +183,39 @@
       </div>
     </div>
   </UiOverlay>
+
+  <UiPartialModal
+    :is-show="selectedTabMobile.id === 3 && isOpenPartialLocationCards"
+    :dark-bg="false"
+    @close="closePartialLocationCards"
+  >
+    <template #body>
+      <div class="baqyt-zone__cards">
+        <TheBaqytZoneBlock
+          v-for="card in 6"
+          :key="card"
+          :view-type="'list'"
+        ></TheBaqytZoneBlock>
+      </div>
+    </template>
+  </UiPartialModal>
 </template>
 
 <script setup>
+const isOpenPartialLocationCards = ref(false);
 const isOpenFilterMobile = ref(false);
 const mapContainer = ref(null);
+
+const closePartialLocationCards = () => {
+  isOpenPartialLocationCards.value = false;
+};
+
+const openPartialLocationCards = () => {
+  isOpenPartialLocationCards.value = true;
+};
+
+openPartialLocationCards();
+
 const openFilterMobile = () => {
   isOpenFilterMobile.value = true;
 };
@@ -255,6 +284,13 @@ onMounted(() => {
     console.error("Yandex Maps API is not loaded.");
   }
 });
+
+watch(
+  () => selectedTabMobile.value,
+  (newVal) => {
+    newVal.id === 3 ? openPartialLocationCards() : null;
+  }
+);
 </script>
 
 <style lang="scss" scoped>
