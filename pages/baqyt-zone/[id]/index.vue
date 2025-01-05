@@ -566,13 +566,12 @@
   </UiOverlay>
 
   <UiModal
-    :is-show="true"
+    :is-show="false"
     max-width="600px"
     @close="closePaymentModal"
     :full-screen="true"
   >
     <ModalsStatus
-      v-if="true"
       title="Ваш заказ оплачен"
       status="success"
       btn-label="Перейти в BaqytZone"
