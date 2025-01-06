@@ -46,7 +46,7 @@
 
         <UiButton
           v-if="btnLabel"
-          class="overlay__btn"
+          class="overlay__btn button-primary"
           :label="btnLabel"
           @click="emit('action')"
         ></UiButton>
@@ -171,13 +171,7 @@ const props = defineProps({
       position: absolute;
       bottom: 0;
       height: 44px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
       width: calc(100% - 32px);
-      background-color: $blue-500;
-      color: $white;
-      font-weight: 400;
       margin: 0 auto 16px 0;
       left: 17px;
       z-index: 100;

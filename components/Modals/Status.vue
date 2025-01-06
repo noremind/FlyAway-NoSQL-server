@@ -15,7 +15,10 @@
       <h4 class="status__title">{{ title }}</h4>
 
       <nuxt-link :to="goTo" @click="emit('action')" class="status__link">
-        <UiButton :label="btnLabel" class="status__btn"></UiButton>
+        <UiButton
+          :label="btnLabel"
+          class="status__btn button-primary"
+        ></UiButton>
       </nuxt-link>
     </div>
   </div>
@@ -60,12 +63,6 @@ const checkStatus = computed(() => {
   }
   &__btn {
     width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: $blue-500;
-    color: $white;
-    padding: 12px;
   }
   &__link {
     width: 100%;

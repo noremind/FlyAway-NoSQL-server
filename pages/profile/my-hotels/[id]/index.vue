@@ -15,7 +15,9 @@
             src="@/assets/image/content/qr-code.png"
             alt="Qr Code"
           />
-          <button type="button" class="ticket__btn">Активный билет</button>
+          <button type="button" class="ticket__btn button-primary">
+            Активный билет
+          </button>
         </div>
         <div class="ticket__content">
           <div class="ticket__content-box">
@@ -233,10 +235,6 @@ const closeStatusRefundModal = () => {
     object-fit: cover;
   }
   &__btn {
-    background-color: $blue-500;
-    border-radius: 24px;
-    padding: 10px 12px;
-    color: $white;
     font-weight: 600;
     font-size: 14px;
   }

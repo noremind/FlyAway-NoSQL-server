@@ -94,6 +94,7 @@ const props = defineProps({
     &__list-item {
       flex-grow: 1;
       padding: 2px 8px;
+      font-weight: 400;
     }
   }
 }

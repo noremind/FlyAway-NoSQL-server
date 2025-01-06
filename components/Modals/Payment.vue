@@ -60,7 +60,7 @@
 
       <UiButton
         @click="emit('payed')"
-        class="payment__btn"
+        class="payment__btn button-primary"
         label="Оплатить"
       ></UiButton>
     </div>
@@ -92,11 +92,6 @@ const emit = defineEmits(["payed"]);
   &__btn {
     width: 90%;
     margin-top: 12px;
-    display: flex;
-    justify-content: center;
-    padding: 10px;
-    background-color: $blue-500;
-    color: $white;
     font-weight: 700;
   }
 

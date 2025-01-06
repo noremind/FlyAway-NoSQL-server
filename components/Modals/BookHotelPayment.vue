@@ -40,7 +40,7 @@
 
       <UiButton
         @click="emit('nextStep')"
-        class="book__btn"
+        class="book__btn button-primary"
         label="Оплатить"
       ></UiButton>
     </div>
@@ -72,11 +72,6 @@ const emit = defineEmits(["nextStep"]);
   &__btn {
     width: 90%;
     margin-top: 12px;
-    display: flex;
-    justify-content: center;
-    padding: 10px;
-    background-color: $blue-500;
-    color: $white;
     font-weight: 700;
   }
   &__message {

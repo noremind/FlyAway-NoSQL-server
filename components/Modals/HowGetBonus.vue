@@ -24,7 +24,7 @@
 
       <UiButton
         label="Поделиться с друзьями ссылкой"
-        class="bonus__btn"
+        class="bonus__btn button-primary"
         before-icon="copy"
         icon-color="white"
         icon-size="size-20"
@@ -77,11 +77,6 @@
   }
   &__btn {
     width: 100%;
-    display: flex;
-    justify-content: center;
-    padding: 10px;
-    color: $white;
-    background-color: $blue-500;
     font-weight: 400;
     margin-top: 16px;
   }

@@ -37,7 +37,7 @@ const props = defineProps({
 .button {
   padding: 6px 12px;
   border-radius: 26px;
-  background-color: $surface-150;
+  // background-color: initial;
   cursor: pointer;
   height: 100%;
   display: flex;

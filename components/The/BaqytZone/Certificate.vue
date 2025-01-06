@@ -43,7 +43,7 @@
           before-icon="plus"
           icon-color="blue-500"
           icon-size="size-24"
-          class="certificate__btn-add"
+          class="certificate__btn-add button-secondary"
         ></UiButton> -->
       </div>
     </div>
@@ -141,12 +141,6 @@ const toggleShowList = () => {
     color: $white;
   }
   &__btn-add {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 1px solid $blue-500;
-    background-color: transparent;
-    color: $blue-500;
     font-weight: 600;
   }
 }

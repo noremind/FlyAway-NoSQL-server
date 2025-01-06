@@ -22,7 +22,7 @@
       </div>
 
       <div class="tour__info">
-        <div class="tour__info-box">
+        <div class="tour__info-box" v-if="viewType === 'list'">
           <img
             class="tour__avatar"
             src="@/assets/image/common/tour-avatar.png"
@@ -37,7 +37,9 @@
           <p class="tour__reviews-average">4,1</p>
         </div>
       </div>
-      <span class="tour__discount tour__discount--new tour__discount--mobile"
+      <span
+        v-if="viewType === 'tablet'"
+        class="tour__discount tour__discount--new tour__discount--mobile"
         >Новинка</span
       >
       <div class="tour__content">
@@ -63,7 +65,11 @@
               </ul>
             </div>
           </div>
-          <span class="tour__discount tour__discount--new">Новинка</span>
+          <span
+            :class="{ 'tour__discount--show': viewType === 'list' }"
+            class="tour__discount tour__discount--new"
+            >Новинка</span
+          >
         </div>
       </div>
     </div>
@@ -72,6 +78,12 @@
 
 <script setup>
 const isOpenDropdown = ref(false);
+const props = defineProps({
+  viewType: {
+    type: String,
+    default: "list",
+  },
+});
 
 const toggleDropdown = () => {
   isOpenDropdown.value = !isOpenDropdown.value;
@@ -303,14 +315,14 @@ const toggleDropdown = () => {
     &__info {
       margin-top: 12px;
     }
-    &__info-box {
-      display: none;
-    }
     &__discount {
       display: none;
       &--mobile {
         display: inline-block;
         margin-bottom: 6px;
+      }
+      &--show {
+        display: inline-block;
       }
     }
     &__box {

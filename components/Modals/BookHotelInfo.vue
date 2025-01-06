@@ -20,7 +20,7 @@
         <UiButton
           label="Отправить"
           @click="emit('nextStep')"
-          class="info__btn"
+          class="info__btn button-primary"
         ></UiButton>
       </form>
     </div>
@@ -55,13 +55,6 @@ const emit = defineEmits(["nextStep"]);
     display: flex;
     flex-direction: column;
     gap: 20px;
-  }
-  &__btn {
-    background-color: $blue-500;
-    display: flex;
-    justify-content: center;
-    color: $white;
-    padding: 8px 0;
   }
 }
 </style>

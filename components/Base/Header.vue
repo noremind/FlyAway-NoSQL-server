@@ -112,7 +112,7 @@ const navList = ref([
   {
     id: 4,
     name: "Блог и Статьи",
-    link: "",
+    link: "/blog",
   },
 ]);
 
@@ -249,6 +249,7 @@ const closeDropdownMenu = () => {
     }
     &__city {
       order: 1;
+      background-color: transparent;
     }
   }
 }

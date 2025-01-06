@@ -89,7 +89,10 @@
             </button>
 
             <div>
-              <UiButton label="Забронировать" class="block__btn"></UiButton>
+              <UiButton
+                label="Забронировать"
+                class="block__btn button-primary"
+              ></UiButton>
             </div>
           </div>
         </div>
@@ -240,16 +243,6 @@
       font-size: 10px;
       color: $surface-900;
     }
-  }
-  &__btn {
-    border: 1px solid $blue-500;
-    border-radius: 24px;
-    padding: 12px 16px;
-    display: flex;
-    justify-content: center;
-    background-color: $white;
-    color: $blue-500;
-    font-weight: 400;
   }
   &__price {
     background-color: $blue-500;

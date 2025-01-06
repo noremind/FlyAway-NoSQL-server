@@ -1127,16 +1127,6 @@ watch(
     flex-direction: column;
     gap: 12px;
   }
-  &__btn {
-    width: 90%;
-    margin-top: 12px;
-    display: flex;
-    justify-content: center;
-    padding: 10px;
-    background-color: $blue-500;
-    color: $white;
-    font-weight: 700;
-  }
   &__preview {
     width: 100%;
   }

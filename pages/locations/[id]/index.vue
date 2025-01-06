@@ -95,7 +95,7 @@
           <TheCommonTourCard v-for="tour in 4" :key="tour"></TheCommonTourCard>
         </div>
         <UiButton
-          class="details__btn details__btn--mobile"
+          class="details__btn button-secondary details__btn--mobile"
           label="Все туры"
           after-icon="chevron"
           icon-color="blue-500"
@@ -188,6 +188,7 @@
     display: none;
   }
   &__btn {
+    display: none;
     &--mobile {
       display: none;
     }
@@ -231,13 +232,7 @@
     &__btn {
       &--mobile {
         display: flex;
-        justify-content: center;
-        align-items: center;
-        margin: 0 auto;
-        border: 1px solid $blue-500;
         width: 100%;
-        color: $blue-500;
-        padding: 8px 12px;
       }
     }
   }

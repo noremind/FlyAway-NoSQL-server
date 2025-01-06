@@ -137,7 +137,7 @@
           </div>
 
           <UiButton
-            class="partner__btn partner__btn--mobile"
+            class="partner__btn button-secondary partner__btn--mobile"
             label="Все туры"
             after-icon="chevron"
             icon-color="blue-500"
@@ -185,7 +185,7 @@
             </UiSwiper>
 
             <UiButton
-              class="partner__btn partner__btn--mobile"
+              class="partner__btn button-secondary partner__btn--mobile"
               label="Все отзывы"
               after-icon="chevron"
               icon-color="blue-500"
@@ -473,13 +473,8 @@ const contacts = [
     &__btn {
       &--mobile {
         display: flex;
-        justify-content: center;
-        align-items: center;
         margin: 0 auto;
-        border: 1px solid $blue-500;
         width: 100%;
-        color: $blue-500;
-        padding: 8px 12px;
       }
     }
     &__info-card {

@@ -16,7 +16,7 @@
         </p>
 
         <UiButton
-          class="banner__btn"
+          class="banner__btn button-secondary"
           afterIcon="arrow"
           iconColor="blue-400"
           label="подробнее"
@@ -83,13 +83,7 @@
     color: $white;
   }
   &__btn {
-    color: $blue-400;
-    font-size: 14px;
-    border: 1px solid $blue-400;
     width: 150px;
-    background-color: transparent;
-    display: flex;
-    justify-content: center;
   }
 }
 

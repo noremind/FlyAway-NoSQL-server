@@ -18,7 +18,7 @@
 
       <UiButton
         @click="clickButton"
-        class="refund__btn"
+        class="refund__btn button-primary"
         label="Оформить возврат"
       ></UiButton>
     </div>
@@ -62,13 +62,6 @@ const clickButton = () => {
     font-size: 14px;
     color: $surface-900;
     font-weight: 400;
-  }
-  &__btn {
-    display: flex;
-    justify-content: center;
-    padding: 12px;
-    background-color: $blue-500;
-    color: $white;
   }
   &__checkboxs {
     display: flex;

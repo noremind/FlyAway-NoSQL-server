@@ -27,7 +27,7 @@
           ></UiCalendar>
         </div>
         <UiButton
-          class="search__btn"
+          class="search__btn button-secondary"
           label="Найти туры"
           before-icon="lupa"
           icon-color="blue-500"
@@ -86,16 +86,10 @@ const selectedTab = ref(tabs[0]);
     margin: 12px;
   }
   &__btn {
-    background-color: transparent;
-    border: 1px solid $blue-500;
-    color: $blue-500;
     max-width: 215px;
     width: 100%;
-    display: flex;
-    justify-content: center;
     margin: auto 0 0 0;
     padding: 12px 16px;
-    border-radius: 24px;
     white-space: nowrap;
   }
   &__text {

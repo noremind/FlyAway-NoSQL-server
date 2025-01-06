@@ -7,7 +7,7 @@
       </p>
       <UiButton
         @click="emit('goTo')"
-        class="info-modal__btn"
+        class="info-modal__btn button-primary"
         :label="btnLabel"
       ></UiButton>
     </div>
@@ -51,10 +51,6 @@ const props = defineProps({
   }
   &__btn {
     padding: 12px;
-    color: $white;
-    display: flex;
-    justify-content: center;
-    background-color: $blue-500;
     width: 100%;
   }
 }

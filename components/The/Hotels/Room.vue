@@ -28,7 +28,10 @@
 
           <div class="room__benefits">
             <UiButton label="15 000 ₸" class="room__price"></UiButton>
-            <UiButton label="Выбрать" class="room__btn"></UiButton>
+            <UiButton
+              label="Выбрать"
+              class="room__btn button-secondary"
+            ></UiButton>
             <UiButton
               before-icon="circle-check"
               icon-size="size-20"
@@ -115,14 +118,7 @@
     }
   }
   &__btn {
-    border: 1px solid $blue-500;
-    border-radius: 24px;
-    padding: 4px 12px;
-    display: flex;
     justify-content: center;
-    background-color: $white;
-    color: $blue-500;
-    font-weight: 400;
     &--active {
       background-color: $blue-500;
       color: $white;

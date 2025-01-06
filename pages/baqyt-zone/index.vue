@@ -14,6 +14,7 @@
         ></UiInput>
         <p class="baqyt-zone__top-text" @click="openFilterMobile">Фильтр</p>
       </div>
+
       <UiTabs
         class="baqyt-zone__tabs baqyt-zone__tabs--mobile"
         :tabs="tabsMobile"
@@ -213,8 +214,6 @@ const closePartialLocationCards = () => {
 const openPartialLocationCards = () => {
   isOpenPartialLocationCards.value = true;
 };
-
-openPartialLocationCards();
 
 const openFilterMobile = () => {
   isOpenFilterMobile.value = true;

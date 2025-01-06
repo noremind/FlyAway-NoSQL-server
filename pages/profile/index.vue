@@ -31,9 +31,8 @@
         ></UiInput>
 
         <UiButton
-          class="profile-main__btn"
+          class="profile-main__btn button-primary"
           label="Сохранить"
-          background-color="blue-500"
         ></UiButton>
       </div>
       <div class="profile-main__side">
@@ -97,9 +96,6 @@ const selectCity = ref(cities[0]);
     border: 1px solid $surface-300;
   }
   &__btn {
-    padding: 8px;
-    display: flex;
-    justify-content: center;
     margin-top: 16px;
   }
   &__calendar {
