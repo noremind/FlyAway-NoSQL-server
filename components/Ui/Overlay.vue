@@ -46,7 +46,7 @@
 
         <UiButton
           v-if="btnLabel"
-          class="overlay__btn button-primary"
+          class="overlay__btn"
           :label="btnLabel"
           @click="emit('action')"
         ></UiButton>
@@ -131,7 +131,7 @@ const props = defineProps({
       color: $surface-900;
       overflow-y: scroll;
       &--padding {
-        padding-bottom: 80px;
+        padding-bottom: 75px;
       }
     }
     &__header {
@@ -175,6 +175,12 @@ const props = defineProps({
       margin: 0 auto 16px 0;
       left: 17px;
       z-index: 100;
+      background-color: $blue-500;
+      padding: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: $white;
     }
     &__footer {
       display: block;

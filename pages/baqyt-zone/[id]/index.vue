@@ -472,6 +472,7 @@
         <UiButton
           class="details__partial-payment-btn"
           label="Перейти к оплате"
+          @click="openPartialModalPayment"
         ></UiButton>
       </div>
     </template>
@@ -483,6 +484,7 @@
     @close="closeOverlayPayment"
     btn-label="Оплатить"
     :show-header-icons="false"
+    @action="openOverlayPayment"
   >
     <div class="overlay-payment">
       <div class="overlay-payment__wrapper">
@@ -590,6 +592,10 @@ const isOpenStatusPayment = ref(null);
 
 const closeOverlayPayment = () => {
   isOpenOverlayPayment.value = false;
+};
+
+const openOverlayPayment = () => {
+  isOpenOverlayPayment.value = true;
 };
 
 const closePartialModalInfo = () => {

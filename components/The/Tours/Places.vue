@@ -32,4 +32,12 @@
     text-align: center;
   }
 }
+
+@media (max-width: 375px) {
+  .places {
+    &__wrapper {
+      width: 190px;
+    }
+  }
+}
 </style>

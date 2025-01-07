@@ -75,7 +75,7 @@ const props = defineProps({
 <style lang="scss" scoped>
 .pagination {
   position: relative;
-  max-width: 300px;
+  max-width: 240px;
   display: flex;
   &__last-page {
     position: relative;
