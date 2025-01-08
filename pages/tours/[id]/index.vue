@@ -691,6 +691,7 @@ const tabs = reactive([
 const selectedTab = ref(tabs[0]);
 const isMapReady = ref(false);
 
+// Step 1
 const closePartialModalPayment = () => {
   isOpenPartialModalPayment.value = false;
 };
@@ -699,6 +700,7 @@ const openPartialModalPayment = () => {
   isOpenPartialModalPayment.value = true;
 };
 
+// Step 2
 const openMobileStatusPayment = () => {
   isOpenPartialModalPayment.value = false;
   isOpenMobileStatusPayment.value = true;
@@ -708,6 +710,7 @@ const closeMobileStatusPayment = () => {
   isOpenMobileStatusPayment.value = false;
 };
 
+// Step 3
 const closeOverlayPayment = () => {
   isOpenOverlayPayment.value = false;
 };

@@ -1,416 +1,483 @@
 <template>
-  <section class="details">
-    <div class="details__wrapper">
-      <UiGoBack label="Отели" go-back="/hotels" />
+  <UiOverlay
+    :is-show="true"
+    header-icon="share"
+    btn-label="Выбрать"
+    :have-footer="true"
+    :have-favorite-icon="true"
+    @close="goTo('/hotels')"
+    @action="openPartialModalPayment"
+  >
+    <section class="details">
+      <div class="details__wrapper">
+        <UiGoBack class="details__go-back" label="Отели" go-back="/hotels" />
 
-      <div class="details__box">
-        <section class="details__content">
-          <div class="details__header">
-            <h1 class="details__title title">Business po kazakhsky</h1>
-            <div class="details__icons">
-              <UiIcons icon="heart" size="size-24" color="blue-500"></UiIcons>
-            </div>
-          </div>
-
-          <div class="details__imgs">
-            <UiIcons
-              icon="chevron"
-              class="prev-img down"
-              size="size-30"
-              color="surface-900"
-            ></UiIcons>
-            <UiSwiper
-              :loop="false"
-              :pagination="{ clickable: true }"
-              next-btn-class=".next-img"
-              prev-btn-class=".prev-img"
-            >
-              <swiper-slide v-for="slide in 5" :key="slide">
-                <img
-                  @click="openPreviewPicture"
-                  class="details__swiper-img"
-                  src="@/assets/image/content/main-image.png"
-                  alt="Image"
-                />
-              </swiper-slide>
-            </UiSwiper>
-            <UiIcons
-              icon="chevron"
-              class="next-img"
-              size="size-30"
-              color="surface-900"
-            ></UiIcons>
-          </div>
-
-          <div class="details__info">
-            <p class="details__about">Об отеле</p>
-
-            <p class="details__description">
-              Приглашаем вас отправиться в увлекательное путешествие на
-              Кольсайские озера — настоящую жемчужину Алматинской области, где
-              природа поражает своей первозданной красотой и чистотой.
-            </p>
-
-            <div class="details__category">
-              <p class="details__category-title">Категория</p>
-              <div class="details__category-stars">
-                <UiIcons
-                  icon="star"
-                  color="yellow-500"
-                  v-for="star in 5"
-                  :key="star"
-                  size="size-20"
-                ></UiIcons>
+        <div class="details__box">
+          <section class="details__content">
+            <div class="details__header">
+              <h1 class="details__title title">Business po kazakhsky</h1>
+              <div class="details__icons">
+                <UiIcons icon="heart" size="size-24" color="blue-500"></UiIcons>
               </div>
-              <p class="details__category-info">4 звездочный отель</p>
             </div>
 
-            <div class="details__location">
-              <p class="details__bold">Расположение</p>
-              <p class="details__address">
-                г. Алматы, Пересечение улиц Байтурсынова и Абая
+            <div class="details__imgs">
+              <UiIcons
+                icon="chevron"
+                class="prev-img down"
+                size="size-30"
+                color="surface-900"
+              ></UiIcons>
+              <UiSwiper
+                :loop="false"
+                :pagination="{ clickable: true }"
+                next-btn-class=".next-img"
+                prev-btn-class=".prev-img"
+              >
+                <swiper-slide v-for="slide in 5" :key="slide">
+                  <img
+                    @click="openPreviewPicture"
+                    class="details__swiper-img"
+                    src="@/assets/image/content/main-image.png"
+                    alt="Image"
+                  />
+                </swiper-slide>
+              </UiSwiper>
+              <UiIcons
+                icon="chevron"
+                class="next-img"
+                size="size-30"
+                color="surface-900"
+              ></UiIcons>
+            </div>
+
+            <div class="details__reviews-inner details__reviews-inner--mobile">
+              <p class="details__reviews-count details__reviews-count">
+                20 отзывов
+              </p>
+              <UiIcons icon="star" color="yellow-500" size="size-14"></UiIcons>
+              <p class="details__reviews-average">4,1</p>
+            </div>
+
+            <div class="details__totals-header details__totals-header--mobile">
+              <div class="details__totals-box">
+                <img
+                  class="details__avatar"
+                  src="@/assets/image/common/tour-avatar.png"
+                  alt="Avatar"
+                />
+              </div>
+              <h1 class="details__title details__title--mobile title">
+                Звездный Комфорт
+              </h1>
+            </div>
+
+            <div
+              class="details__category-stars details__category-stars--mobile"
+            >
+              <UiIcons
+                icon="star"
+                color="yellow-500"
+                v-for="star in 5"
+                :key="star"
+                size="size-20"
+              ></UiIcons>
+            </div>
+
+            <div class="details__info">
+              <p class="details__about">Об отеле</p>
+
+              <p class="details__description">
+                Приглашаем вас отправиться в увлекательное путешествие на
+                Кольсайские озера — настоящую жемчужину Алматинской области, где
+                природа поражает своей первозданной красотой и чистотой.
               </p>
 
-              <div class="details__location-info">
-                <div
-                  style="width: 100%; height: 400px"
-                  class="details__map"
-                  ref="yandexMapInfo"
-                ></div>
-                <div class="details__location-box">
+              <div class="details__category">
+                <p class="details__category-title">Категория</p>
+                <div class="details__category-stars">
+                  <UiIcons
+                    icon="star"
+                    color="yellow-500"
+                    v-for="star in 5"
+                    :key="star"
+                    size="size-20"
+                  ></UiIcons>
+                </div>
+                <p class="details__category-info">4 звездочный отель</p>
+              </div>
+
+              <div class="details__location">
+                <p class="details__bold">Расположение</p>
+                <p class="details__address">
+                  г. Алматы, Пересечение улиц Байтурсынова и Абая
+                </p>
+
+                <div class="details__location-info">
                   <div
-                    class="details__location-inner"
-                    v-for="item in 4"
-                    :key="item"
-                  >
-                    <UiIcons
-                      icon="location"
-                      size="size-24"
-                      color="blue-500"
-                    ></UiIcons>
-                    <p class="details__location-text">
-                      <span class="details__location-path">20 км</span> от
-                      аэропорта
-                    </p>
+                    style="width: 100%; height: 400px"
+                    class="details__map"
+                    ref="yandexMapInfo"
+                  ></div>
+                  <div class="details__location-box">
+                    <div
+                      class="details__location-inner"
+                      v-for="item in 4"
+                      :key="item"
+                    >
+                      <UiIcons
+                        icon="location"
+                        size="size-24"
+                        color="blue-500"
+                      ></UiIcons>
+                      <p class="details__location-text">
+                        <span class="details__location-path">20 км</span> от
+                        аэропорта
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          <div class="details__tourist">
-            <div class="details__tourist-box">
-              <p class="details__tourist-text">Политика отеля</p>
-              <ul class="details__tourist-list">
-                <li class="details__tourist-item">
-                  Время заезда и выезда — стандартное время заселения и выписки.
-                </li>
-                <li class="details__tourist-item">
-                  Условия отмены бронирования — возможность возврата средств.
-                </li>
-                <li class="details__tourist-item">
-                  Депозиты — нужны ли залоги за проживание или дополнительные
-                  услуги.
-                </li>
-                <li class="details__tourist-item">
-                  Размещение с детьми и животными — есть ли ограничения.
-                </li>
-              </ul>
-            </div>
+            <div class="details__tourist">
+              <div class="details__tourist-box">
+                <p class="details__tourist-text">Политика отеля</p>
+                <ul class="details__tourist-list">
+                  <li class="details__tourist-item">
+                    Время заезда и выезда — стандартное время заселения и
+                    выписки.
+                  </li>
+                  <li class="details__tourist-item">
+                    Условия отмены бронирования — возможность возврата средств.
+                  </li>
+                  <li class="details__tourist-item">
+                    Депозиты — нужны ли залоги за проживание или дополнительные
+                    услуги.
+                  </li>
+                  <li class="details__tourist-item">
+                    Размещение с детьми и животными — есть ли ограничения.
+                  </li>
+                </ul>
+              </div>
 
-            <div class="details__tourist-box">
-              <p class="details__tourist-text">Виды номеров</p>
-              <div class="details__rooms">
-                <TheHotelsRoom v-for="room in 3"></TheHotelsRoom>
+              <div class="details__tourist-box">
+                <p class="details__tourist-text">Виды номеров</p>
+                <div class="details__rooms">
+                  <TheHotelsRoom
+                    v-for="room in 3"
+                    @select="openPartialModalPayment"
+                  ></TheHotelsRoom>
+                </div>
+              </div>
+
+              <div class="details__tourist-box">
+                <p class="details__tourist-text">Питание</p>
+                <ul class="details__tourist-list details__tourist-list--icon">
+                  <li class="details__tourist-item details__tourist-item--icon">
+                    <UiIcons
+                      icon="check"
+                      color="blue-500"
+                      size="size-24"
+                    ></UiIcons>
+                    <p>Полный пансион</p>
+                  </li>
+                  <li class="details__tourist-item details__tourist-item--icon">
+                    <UiIcons
+                      icon="check"
+                      color="blue-500"
+                      size="size-24"
+                    ></UiIcons>
+                    <p>Ресторан</p>
+                  </li>
+                  <li class="details__tourist-item details__tourist-item--icon">
+                    <UiIcons
+                      icon="check"
+                      color="blue-500"
+                      size="size-24"
+                    ></UiIcons>
+                    <p>
+                      Возможность заказать специальное меню (вегетарианское,
+                      халяль и др.).
+                    </p>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="details__tourist-box">
+                <p class="details__tourist-text">Условия</p>
+                <ul class="details__tourist-list details__tourist-list--icon">
+                  <li class="details__tourist-item details__tourist-item--icon">
+                    <UiIcons
+                      icon="star-unfill"
+                      color="blue-500"
+                      size="size-24"
+                    ></UiIcons>
+                    <p>Проживание 1 ночь</p>
+                  </li>
+                  <li class="details__tourist-item details__tourist-item--icon">
+                    <UiIcons
+                      icon="home"
+                      color="blue-500"
+                      size="size-24"
+                    ></UiIcons>
+                    <p>Одноместный номер в Лоло</p>
+                  </li>
+                  <li class="details__tourist-item details__tourist-item--icon">
+                    <UiIcons
+                      icon="x-icon"
+                      color="orange-200"
+                      size="size-24"
+                    ></UiIcons>
+                    <p>Личные расходы</p>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="details__tourist-box">
+                <p class="details__tourist-text">Платные услуги</p>
+                <ul class="details__tourist-list details__tourist-list--icon">
+                  <li class="details__tourist-item details__tourist-item--icon">
+                    <UiIcons
+                      icon="check"
+                      color="blue-500"
+                      size="size-24"
+                    ></UiIcons>
+                    <p>Полный пансион</p>
+                  </li>
+                  <li class="details__tourist-item details__tourist-item--icon">
+                    <UiIcons
+                      icon="check"
+                      color="blue-500"
+                      size="size-24"
+                    ></UiIcons>
+                    <p>Ресторан</p>
+                  </li>
+                  <li class="details__tourist-item details__tourist-item--icon">
+                    <UiIcons
+                      icon="check"
+                      color="blue-500"
+                      size="size-24"
+                    ></UiIcons>
+                    <p>
+                      Возможность заказать специальное меню (вегетарианское,
+                      халяль и др.).
+                    </p>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="details__tourist-box">
+                <p class="details__tourist-text">Особенности для семей</p>
+                <ul class="details__tourist-list details__tourist-list--icon">
+                  <li class="details__tourist-item details__tourist-item--icon">
+                    <UiIcons
+                      icon="check"
+                      color="blue-500"
+                      size="size-24"
+                    ></UiIcons>
+                    <p>Детские кроватки, услуги няни, детская площадка</p>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="details__tourist-box">
+                <p class="details__tourist-text">Доступность</p>
+                <ul class="details__tourist-list details__tourist-list--icon">
+                  <li class="details__tourist-item details__tourist-item--icon">
+                    <UiIcons
+                      icon="check"
+                      color="blue-500"
+                      size="size-24"
+                    ></UiIcons>
+                    <p>
+                      Удобства для людей с ограниченными возможностями (лифты,
+                      пандусы)
+                    </p>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="details__tourist-box">
+                <p class="details__tourist-text">Развлечения и отдых</p>
+                <ul class="details__tourist-list details__tourist-list--icon">
+                  <li class="details__tourist-item details__tourist-item--icon">
+                    <UiIcons
+                      icon="check"
+                      color="blue-500"
+                      size="size-24"
+                    ></UiIcons>
+                    <p>Полный пансион</p>
+                  </li>
+                  <li class="details__tourist-item details__tourist-item--icon">
+                    <UiIcons
+                      icon="check"
+                      color="blue-500"
+                      size="size-24"
+                    ></UiIcons>
+                    <p>Ресторан</p>
+                  </li>
+                  <li class="details__tourist-item details__tourist-item--icon">
+                    <UiIcons
+                      icon="check"
+                      color="blue-500"
+                      size="size-24"
+                    ></UiIcons>
+                    <p>
+                      Возможность заказать специальное меню (вегетарианское,
+                      халяль и др.).
+                    </p>
+                  </li>
+                </ul>
               </div>
             </div>
 
-            <div class="details__tourist-box">
-              <p class="details__tourist-text">Питание</p>
-              <ul class="details__tourist-list details__tourist-list--icon">
-                <li class="details__tourist-item details__tourist-item--icon">
-                  <UiIcons
-                    icon="check"
-                    color="blue-500"
-                    size="size-24"
-                  ></UiIcons>
-                  <p>Полный пансион</p>
-                </li>
-                <li class="details__tourist-item details__tourist-item--icon">
-                  <UiIcons
-                    icon="check"
-                    color="blue-500"
-                    size="size-24"
-                  ></UiIcons>
-                  <p>Ресторан</p>
-                </li>
-                <li class="details__tourist-item details__tourist-item--icon">
-                  <UiIcons
-                    icon="check"
-                    color="blue-500"
-                    size="size-24"
-                  ></UiIcons>
-                  <p>
-                    Возможность заказать специальное меню (вегетарианское,
-                    халяль и др.).
-                  </p>
-                </li>
-              </ul>
-            </div>
+            <div class="details__contacts">
+              <div class="details__contacts-box">
+                <p class="details__contacts-text">Контакты</p>
 
-            <div class="details__tourist-box">
-              <p class="details__tourist-text">Условия</p>
-              <ul class="details__tourist-list details__tourist-list--icon">
-                <li class="details__tourist-item details__tourist-item--icon">
-                  <UiIcons
-                    icon="star-unfill"
-                    color="blue-500"
-                    size="size-24"
-                  ></UiIcons>
-                  <p>Проживание 1 ночь</p>
-                </li>
-                <li class="details__tourist-item details__tourist-item--icon">
-                  <UiIcons
-                    icon="home"
-                    color="blue-500"
-                    size="size-24"
-                  ></UiIcons>
-                  <p>Одноместный номер в Лоло</p>
-                </li>
-                <li class="details__tourist-item details__tourist-item--icon">
-                  <UiIcons
-                    icon="x-icon"
-                    color="orange-200"
-                    size="size-24"
-                  ></UiIcons>
-                  <p>Личные расходы</p>
-                </li>
-              </ul>
-            </div>
-
-            <div class="details__tourist-box">
-              <p class="details__tourist-text">Платные услуги</p>
-              <ul class="details__tourist-list details__tourist-list--icon">
-                <li class="details__tourist-item details__tourist-item--icon">
-                  <UiIcons
-                    icon="check"
-                    color="blue-500"
-                    size="size-24"
-                  ></UiIcons>
-                  <p>Полный пансион</p>
-                </li>
-                <li class="details__tourist-item details__tourist-item--icon">
-                  <UiIcons
-                    icon="check"
-                    color="blue-500"
-                    size="size-24"
-                  ></UiIcons>
-                  <p>Ресторан</p>
-                </li>
-                <li class="details__tourist-item details__tourist-item--icon">
-                  <UiIcons
-                    icon="check"
-                    color="blue-500"
-                    size="size-24"
-                  ></UiIcons>
-                  <p>
-                    Возможность заказать специальное меню (вегетарианское,
-                    халяль и др.).
-                  </p>
-                </li>
-              </ul>
-            </div>
-
-            <div class="details__tourist-box">
-              <p class="details__tourist-text">Особенности для семей</p>
-              <ul class="details__tourist-list details__tourist-list--icon">
-                <li class="details__tourist-item details__tourist-item--icon">
-                  <UiIcons
-                    icon="check"
-                    color="blue-500"
-                    size="size-24"
-                  ></UiIcons>
-                  <p>Детские кроватки, услуги няни, детская площадка</p>
-                </li>
-              </ul>
-            </div>
-
-            <div class="details__tourist-box">
-              <p class="details__tourist-text">Доступность</p>
-              <ul class="details__tourist-list details__tourist-list--icon">
-                <li class="details__tourist-item details__tourist-item--icon">
-                  <UiIcons
-                    icon="check"
-                    color="blue-500"
-                    size="size-24"
-                  ></UiIcons>
-                  <p>
-                    Удобства для людей с ограниченными возможностями (лифты,
-                    пандусы)
-                  </p>
-                </li>
-              </ul>
-            </div>
-
-            <div class="details__tourist-box">
-              <p class="details__tourist-text">Развлечения и отдых</p>
-              <ul class="details__tourist-list details__tourist-list--icon">
-                <li class="details__tourist-item details__tourist-item--icon">
-                  <UiIcons
-                    icon="check"
-                    color="blue-500"
-                    size="size-24"
-                  ></UiIcons>
-                  <p>Полный пансион</p>
-                </li>
-                <li class="details__tourist-item details__tourist-item--icon">
-                  <UiIcons
-                    icon="check"
-                    color="blue-500"
-                    size="size-24"
-                  ></UiIcons>
-                  <p>Ресторан</p>
-                </li>
-                <li class="details__tourist-item details__tourist-item--icon">
-                  <UiIcons
-                    icon="check"
-                    color="blue-500"
-                    size="size-24"
-                  ></UiIcons>
-                  <p>
-                    Возможность заказать специальное меню (вегетарианское,
-                    халяль и др.).
-                  </p>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="details__contacts">
-            <div class="details__contacts-box">
-              <p class="details__contacts-text">Контакты</p>
-
-              <div class="details__contacts-inner">
-                <div class="details__contacts-info">
-                  <UiIcons
-                    icon="globe"
-                    color="blue-500"
-                    size="size-24"
-                  ></UiIcons>
-                  <p class="details__contacts-desc">website</p>
-                </div>
-                <div class="details__contacts-info">
-                  <UiIcons
-                    icon="phone"
-                    color="blue-500"
-                    size="size-24"
-                  ></UiIcons>
-                  <p class="details__contacts-desc">phone number</p>
-                </div>
-                <div class="details__contacts-info">
-                  <UiIcons
-                    icon="location"
-                    color="blue-500"
-                    size="size-24"
-                  ></UiIcons>
-                  <p class="details__contacts-desc">address</p>
-                </div>
-                <div class="details__contacts-info">
-                  <UiIcons
-                    icon="instagram"
-                    color="blue-500"
-                    size="size-24"
-                  ></UiIcons>
-                  <p class="details__contacts-desc">instagram</p>
+                <div class="details__contacts-inner">
+                  <div class="details__contacts-info">
+                    <UiIcons
+                      icon="globe"
+                      color="blue-500"
+                      size="size-24"
+                    ></UiIcons>
+                    <p class="details__contacts-desc">website</p>
+                  </div>
+                  <div class="details__contacts-info">
+                    <UiIcons
+                      icon="phone"
+                      color="blue-500"
+                      size="size-24"
+                    ></UiIcons>
+                    <p class="details__contacts-desc">phone number</p>
+                  </div>
+                  <div class="details__contacts-info">
+                    <UiIcons
+                      icon="location"
+                      color="blue-500"
+                      size="size-24"
+                    ></UiIcons>
+                    <p class="details__contacts-desc">address</p>
+                  </div>
+                  <div class="details__contacts-info">
+                    <UiIcons
+                      icon="instagram"
+                      color="blue-500"
+                      size="size-24"
+                    ></UiIcons>
+                    <p class="details__contacts-desc">instagram</p>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </section>
+          </section>
 
-        <div class="details__totals">
-          <div class="details__totals-header">
-            <div class="details__totals-box">
-              <img
-                class="details__avatar"
-                src="@/assets/image/common/tour-avatar.png"
-                alt="Avatar"
-              />
-              <p class="details__name">Mili Tour</p>
+          <div class="details__totals">
+            <div class="details__totals-header">
+              <div class="details__totals-box">
+                <img
+                  class="details__avatar"
+                  src="@/assets/image/common/tour-avatar.png"
+                  alt="Avatar"
+                />
+                <p class="details__name">Mili Tour</p>
+              </div>
+              <p class="details__baige">-20%</p>
             </div>
-            <p class="details__baige">-20%</p>
+
+            <p class="details__bold">Выберите дату</p>
+
+            <Calendar class="details__calendar" v-model="date" inline />
+
+            <div class="details__select-date">
+              <p class="details__date">24.12.2024</p>
+              <UiIcons icon="arrow" size="size-14"></UiIcons>
+              <p class="details__date">26.12.2024</p>
+            </div>
+
+            <div class="details__message">
+              <UiIcons
+                icon="circle-check"
+                color="blue-500"
+                size="size-20"
+              ></UiIcons>
+              <p class="details__message-text">Вы выбрали премиум номер</p>
+            </div>
+
+            <ul class="details__totals-list">
+              <li class="details__totals-item">
+                <p class="details__totals-answer">Всего:</p>
+                <p class="details__totals-question">45 000 ₸</p>
+              </li>
+              <li class="details__totals-item">
+                <p class="details__totals-answer">Скидка:</p>
+                <p
+                  class="details__totals-question details__totals-question--discount"
+                >
+                  -20%
+                </p>
+              </li>
+              <li class="details__totals-item details__totals-item--result">
+                <p class="details__totals-answer">Итого:</p>
+                <p class="details__totals-question details__totals-question">
+                  36 000₸
+                </p>
+              </li>
+            </ul>
+
+            <UiButton
+              label="Забронировать"
+              class="details__totals-btn"
+              @click="openPaymentModal"
+            ></UiButton>
           </div>
-
-          <p class="details__bold">Выберите дату</p>
-
-          <Calendar class="details__calendar" v-model="date" inline />
-
-          <div class="details__select-date">
-            <p class="details__date">24.12.2024</p>
-            <UiIcons icon="arrow" size="size-14"></UiIcons>
-            <p class="details__date">26.12.2024</p>
-          </div>
-
-          <div class="details__message">
-            <UiIcons
-              icon="circle-check"
-              color="blue-500"
-              size="size-20"
-            ></UiIcons>
-            <p class="details__message-text">Вы выбрали премиум номер</p>
-          </div>
-
-          <ul class="details__totals-list">
-            <li class="details__totals-item">
-              <p class="details__totals-answer">Всего:</p>
-              <p class="details__totals-question">45 000 ₸</p>
-            </li>
-            <li class="details__totals-item">
-              <p class="details__totals-answer">Скидка:</p>
-              <p
-                class="details__totals-question details__totals-question--discount"
-              >
-                -20%
-              </p>
-            </li>
-            <li class="details__totals-item details__totals-item--result">
-              <p class="details__totals-answer">Итого:</p>
-              <p class="details__totals-question details__totals-question">
-                36 000₸
-              </p>
-            </li>
-          </ul>
-
-          <UiButton
-            label="Забронировать"
-            class="details__totals-btn"
-            @click="openPaymentModal"
-          ></UiButton>
         </div>
       </div>
-    </div>
-    <section class="details__reviews">
-      <div class="details__reviews-box">
-        <div>
-          <h3 class="details__reviews-title">Отзывы путешественников</h3>
-          <div class="details__reviews-inner">
-            <p class="details__reviews-count">20 отзывов</p>
-            <UiIcons icon="star" color="yellow-500" size="size-14"></UiIcons>
-            <p class="details__reviews-average">4,1</p>
+      <section class="details__reviews">
+        <div class="details__reviews-box">
+          <div>
+            <h3 class="details__reviews-title">Отзывы путешественников</h3>
+            <div class="details__reviews-inner">
+              <p class="details__reviews-count">20 отзывов</p>
+              <UiIcons icon="star" color="yellow-500" size="size-14"></UiIcons>
+              <p class="details__reviews-average">4,1</p>
+            </div>
           </div>
+          <nuxt-link class="details__reviews-link" to="/tours/1/reviews"
+            >Все отзывы</nuxt-link
+          >
         </div>
-        <nuxt-link class="details__reviews-link" to="/tours/1/reviews"
-          >Все отзывы</nuxt-link
+
+        <UiSwiper
+          :loop="false"
+          :breakpoints="{
+            1000: {
+              slidesPerView: 2.5,
+            },
+            375: {
+              slidesPerView: 1,
+            },
+            0: {
+              slidesPerView: 1,
+            },
+          }"
         >
-      </div>
-
-      <UiSwiper :per-slides="2.5" :loop="false">
-        <swiper-slide v-for="review in 5" :key="review">
-          <TheCommonReview />
-        </swiper-slide>
-      </UiSwiper>
+          <swiper-slide v-for="review in 5" :key="review">
+            <TheCommonReview />
+          </swiper-slide>
+        </UiSwiper>
+        <UiButton
+          class="details__reviews-btn"
+          label="Все отзывы"
+          after-icon="chevron"
+          icon-size="size-20"
+          icon-color="blue-500"
+        ></UiButton>
+      </section>
     </section>
-  </section>
+  </UiOverlay>
 
   <UiModal
     :is-show="isOpenPayment"
@@ -450,6 +517,216 @@
   >
     <ModalsBookHotelInfo @next-step="statusPayed"></ModalsBookHotelInfo>
   </UiModal>
+
+  <!-- Mobile -->
+  <!-- Step 1 -->
+  <UiPartialModal
+    :is-show="isOpenPartialModalPayment"
+    height="85%"
+    @close="closePartialModalPayment"
+  >
+    <template #body>
+      <div class="details__partial-payment-box">
+        <p class="details__bold details__bold--center">Эконом</p>
+
+        <div class="details__imgs">
+          <UiIcons
+            icon="chevron"
+            class="prev-img down"
+            size="size-30"
+            color="surface-900"
+          ></UiIcons>
+          <UiSwiper
+            :loop="false"
+            :pagination="{ clickable: true }"
+            next-btn-class=".next-img"
+            prev-btn-class=".prev-img"
+          >
+            <swiper-slide v-for="slide in 5" :key="slide">
+              <img
+                @click="openPreviewPicture"
+                class="details__swiper-img"
+                src="@/assets/image/content/main-image.png"
+                alt="Image"
+              />
+            </swiper-slide>
+          </UiSwiper>
+          <UiIcons
+            icon="chevron"
+            class="next-img"
+            size="size-30"
+            color="surface-900"
+          ></UiIcons>
+        </div>
+
+        <ul class="details__partial-payment-list">
+          <li class="details__partial-payment-item">
+            Элегантный номер с видами на море, город или горы.
+          </li>
+          <li class="details__partial-payment-item">
+            Элегантный номер с видами на море, город или горы.
+          </li>
+          <li class="details__partial-payment-item">
+            Элегантный номер с видами на море, город или горы.
+          </li>
+          <li class="details__partial-payment-item">
+            Элегантный номер с видами на море, город или горы.
+          </li>
+        </ul>
+
+        <div>
+          <p class="details__bold">Выберите дату</p>
+          <Calendar class="details__calendar" v-model="date" inline />
+        </div>
+
+        <div class="details__select-date">
+          <p class="details__date">24.12.2024</p>
+          <UiIcons icon="arrow" size="size-14"></UiIcons>
+          <p class="details__date">26.12.2024</p>
+        </div>
+
+        <ul class="details__totals-list">
+          <li class="details__totals-item">
+            <p class="details__totals-answer">Всего:</p>
+            <p class="details__totals-question">45 000 ₸</p>
+          </li>
+          <li class="details__totals-item">
+            <p class="details__totals-answer">Скидка:</p>
+            <p
+              class="details__totals-question details__totals-question--discount"
+            >
+              -20%
+            </p>
+          </li>
+          <li class="details__totals-item details__totals-item--result">
+            <p class="details__totals-answer">Итого:</p>
+            <p class="details__totals-question details__totals-question">
+              36 000₸
+            </p>
+          </li>
+        </ul>
+
+        <UiButton
+          class="details__partial-payment-btn"
+          label="Выбрать"
+          @click="openOverlayPayment"
+        ></UiButton>
+      </div>
+    </template>
+  </UiPartialModal>
+
+  <!-- Step 2 -->
+  <UiOverlay
+    :is-show="isOpenOverlayPayment"
+    title="Подтвердите бронь"
+    @close="closeOverlayPayment"
+    btn-label="Подтвердить"
+    :show-header-icons="false"
+    @action="openMobileStatusPayment"
+  >
+    <div class="overlay-payment">
+      <div class="overlay-payment__wrapper">
+        <div class="overlay-payment__preview">
+          <img
+            class="overlay-payment__img"
+            src="@/assets/image/content/tour-card.png"
+            alt="Preview"
+          />
+          <h2 class="overlay-payment__title title">Business po kazakhsky</h2>
+        </div>
+        <div class="details__message">
+          <UiIcons
+            icon="circle-check"
+            color="blue-500"
+            size="size-20"
+          ></UiIcons>
+          <p class="details__message-text">Вы выбрали премиум номер</p>
+        </div>
+        <table class="overlay-payment__table">
+          <tbody>
+            <tr class="overlay-payment__tr">
+              <td class="overlay-payment__td">Дата от</td>
+              <td class="overlay-payment__td">25 декабря 2024</td>
+            </tr>
+            <tr class="overlay-payment__tr">
+              <td class="overlay-payment__td">Дата до</td>
+              <td class="overlay-payment__td">25 декабря 2024</td>
+            </tr>
+            <tr class="overlay-payment__tr overlay-payment__tr--blue">
+              <td>Ваши сертификаты</td>
+            </tr>
+            <tr class="overlay-payment__tr">
+              <td class="overlay-payment__td">Взрослый 23+</td>
+              <td class="overlay-payment__td">1 билет х 15 000 ₸</td>
+            </tr>
+            <tr class="overlay-payment__tr">
+              <td class="overlay-payment__td">Детский от 7 до 13 лет</td>
+              <td class="overlay-payment__td">2 билета х 8 000 ₸</td>
+            </tr>
+
+            <tr class="overlay-payment__tr overlay-payment__tr--padding">
+              <td class="overlay-payment__td overlay-payment__td">Премиум</td>
+              <td class="overlay-payment__td">3 дня х 20 000 ₸</td>
+            </tr>
+            <tr class="overlay-payment__tr">
+              <td class="overlay-payment__td overlay-payment__td--bold">
+                Скидка
+              </td>
+              <td class="overlay-payment__td">-20%</td>
+            </tr>
+            <tr class="overlay-payment__tr overlay-payment__tr--padding">
+              <td class="overlay-payment__td overlay-payment__td--bold">
+                Итого
+              </td>
+              <td class="overlay-payment__td">24 800 ₸</td>
+            </tr>
+            <tr class="overlay-payment__tr overlay-payment__tr--blue">
+              <td>Способ оплаты</td>
+            </tr>
+            <tr class="overlay-payment__tr">
+              <td class="overlay-payment__td overlay-payment__td--box">
+                <UiCheckbox
+                  type="checkmark"
+                  label="Банковская карта"
+                ></UiCheckbox>
+              </td>
+              <td class="overlay-payment__td"></td>
+            </tr>
+            <tr class="overlay-payment__tr">
+              <td class="overlay-payment__td overlay-payment__td--box">
+                <UiCheckbox
+                  type="checkmark"
+                  label="Рассрочка на 3 месяца"
+                ></UiCheckbox>
+                <img
+                  class="overlay-payment__td-img"
+                  src="@/assets/icons/freedom-bank.svg"
+                  alt="Freedom Bank"
+                />
+              </td>
+              <td class="overlay-payment__td"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </UiOverlay>
+
+  <!-- Step 3 -->
+  <UiModal
+    :is-show="isOpenMobileStatusPayment"
+    max-width="600px"
+    @close="closeMobileStatusPayment"
+    :full-screen="true"
+  >
+    <ModalsStatus
+      title="Наш менеджер с вами свяжется"
+      status="success"
+      btn-label="Перейти в Мои отели"
+      go-to="/profile/my-hotels"
+      @action="closeMobileStatusPayment"
+    />
+  </UiModal>
 </template>
 
 <script setup>
@@ -457,6 +734,9 @@ const isOpenPayment = ref(false);
 const isOpenStatusPayment = ref(false);
 const isOpenPreviewPicture = ref(false);
 const isOpenBookingForm = ref(false);
+const isOpenPartialModalPayment = ref(false);
+const isOpenOverlayPayment = ref(false);
+const isOpenMobileStatusPayment = ref(null);
 
 const date = new Date();
 const yandexMapInfo = ref(null);
@@ -466,6 +746,35 @@ const isMapReady = ref(false);
 onMounted(() => {
   getInfoMap();
 });
+
+// Step 1
+const closePartialModalPayment = () => {
+  isOpenPartialModalPayment.value = false;
+};
+
+const openPartialModalPayment = () => {
+  isOpenPartialModalPayment.value = true;
+};
+
+// Step 2
+const closeOverlayPayment = () => {
+  isOpenOverlayPayment.value = false;
+};
+
+const openOverlayPayment = () => {
+  isOpenPartialModalPayment.value = false;
+  isOpenOverlayPayment.value = true;
+};
+
+// Step 3
+const openMobileStatusPayment = () => {
+  isOpenPartialModalPayment.value = false;
+  isOpenMobileStatusPayment.value = true;
+};
+
+const closeMobileStatusPayment = () => {
+  isOpenMobileStatusPayment.value = false;
+};
 
 const statusPayed = () => {
   isOpenBookingForm.value = false;
@@ -578,6 +887,70 @@ const getInfoMap = () => {
     gap: 12px;
     align-items: center;
   }
+  &__partial {
+    &-info {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    &-count {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+    &-payment {
+      &-box {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+      &-btn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: $blue-500;
+        color: $white;
+        padding: 10px;
+        margin-top: 12px;
+        font-weight: 700;
+      }
+      &-list {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+      &-item {
+        list-style: disc;
+        margin-left: 20px;
+        font-weight: 100;
+        font-size: 14px;
+      }
+    }
+    &-title {
+      font-size: 16px;
+    }
+    &-list {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    &-item {
+      list-style: disc;
+      margin-left: 15px;
+      font-size: 12px;
+    }
+    &-btn {
+      border: 1px solid $blue-500;
+      background-color: transparent;
+      color: $blue-500;
+      font-weight: 400;
+      width: 100%;
+      padding: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
   &__imgs {
     display: flex;
     justify-content: space-between;
@@ -590,6 +963,11 @@ const getInfoMap = () => {
   &__bold {
     font-weight: 400;
     position: relative;
+    &--center {
+      text-align: center;
+      font-weight: 700;
+      font-size: 20px;
+    }
   }
   &__about {
     font-weight: 400;
@@ -671,6 +1049,11 @@ const getInfoMap = () => {
     align-items: center;
     color: $surface-900;
     margin: 16px 0;
+    &-stars {
+      &--mobile {
+        display: none;
+      }
+    }
     &-title {
       font-weight: 400;
     }
@@ -702,6 +1085,9 @@ const getInfoMap = () => {
       gap: 6px;
       align-items: center;
       margin-top: 8px;
+    }
+    &-btn {
+      display: none;
     }
     &-count {
       font-size: 14px;
@@ -861,6 +1247,192 @@ const getInfoMap = () => {
       gap: 6px;
       align-items: center;
     }
+  }
+}
+
+.hide {
+  display: none;
+}
+.show {
+  display: block;
+}
+
+.details .details__imgs :deep(.custom-swiper::part(pagination)) {
+  position: absolute !important;
+}
+
+.details__partial-payment-box
+  .details__imgs
+  :deep(.custom-swiper::part(pagination)) {
+  position: absolute !important;
+}
+
+.overlay-payment {
+  &__wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  &__preview {
+    width: 100%;
+  }
+  &__img {
+    width: 100%;
+    height: 137px;
+    object-fit: cover;
+    border-radius: 16px;
+    margin: 0 auto;
+  }
+  &__table {
+    color: $surface-900;
+    font-size: 14px;
+  }
+  &__tr &__td:last-child {
+    text-align: right;
+    font-weight: 400;
+    white-space: nowrap;
+  }
+  &__td {
+    font-weight: 100;
+    padding-top: 4px;
+    font-size: 14px;
+
+    &--bold {
+      font-weight: 400;
+    }
+    &-img {
+      width: 80px;
+      margin-left: 28px;
+    }
+    &--box {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+  }
+  &__tr {
+    &--padding td {
+      padding-top: 24px;
+    }
+    &--blue {
+      color: $blue-500;
+      font-weight: 400;
+      & td {
+        padding-top: 16px;
+      }
+    }
+  }
+}
+
+@media (max-width: 375px) {
+  .details {
+    &__wrapper {
+      margin-top: 0;
+    }
+    &__content {
+      padding: 0;
+      background-color: transparent;
+      flex-direction: column;
+      gap: 16px;
+    }
+    &__totals {
+      &-header {
+        &--mobile {
+          justify-content: flex-start;
+          display: flex;
+          gap: 4px;
+        }
+      }
+    }
+    &__tourist {
+      &-box {
+        &--mobile {
+          display: block;
+          margin: 12px 0;
+        }
+      }
+    }
+    &__category {
+      display: none;
+      &-stars {
+        &--mobile {
+          display: flex;
+        }
+      }
+    }
+    &__reviews {
+      &-btn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 1px solid $blue-500;
+        padding: 10px 0;
+        color: $blue-500;
+      }
+      &-link {
+        display: none;
+      }
+      &-average,
+      &-count {
+        font-size: 10px;
+      }
+      &-inner {
+        display: none;
+        margin: 0;
+        &--mobile {
+          display: flex;
+          font-size: 10px;
+        }
+      }
+    }
+    &__about {
+      margin-bottom: 12px;
+    }
+    &__totals,
+    &__tabs,
+    .prev-img,
+    .next-img,
+    &__title,
+    &__icons,
+    &__imgs i,
+    &__go-back {
+      display: none;
+    }
+    &__title {
+      &--mobile {
+        display: block;
+        color: $surface-900;
+        line-height: 30px;
+      }
+    }
+    &__contacts {
+      &-inner {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    &__hot {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+    &__info {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    &__location {
+      &-info,
+      &-box {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+    }
+  }
+  .hide {
+    display: flex !important;
+    flex-direction: column;
+    gap: 12px;
   }
 }
 </style>

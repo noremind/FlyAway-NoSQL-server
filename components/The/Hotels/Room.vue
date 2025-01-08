@@ -20,25 +20,29 @@
           <div class="room__texts">
             <h2 class="room__title">Эконом</h2>
             <ul class="room__list">
-              <li v-for="item in 5" :key="item" class="room__list-item">
+              <li v-for="item in 1" :key="item" class="room__list-item">
                 Уютное пространство для комфортного отдыха.
               </li>
             </ul>
           </div>
 
           <div class="room__benefits">
-            <UiButton label="15 000 ₸" class="room__price"></UiButton>
+            <UiButton
+              label="15 000 ₸"
+              class="room__price room__price--mobile"
+            ></UiButton>
             <UiButton
               label="Выбрать"
               class="room__btn button-secondary"
+              @click="emit('select')"
             ></UiButton>
-            <UiButton
+            <!-- <UiButton
               before-icon="circle-check"
               icon-size="size-20"
               icon-color="white"
               label="Вы выбрали"
               class="room__btn room__btn--active"
-            ></UiButton>
+            ></UiButton> -->
           </div>
         </div>
       </div>
@@ -46,7 +50,9 @@
   </section>
 </template>
 
-<script setup></script>
+<script setup>
+const emit = defineEmits(["select"]);
+</script>
 
 <style lang="scss" scoped>
 .room {
@@ -149,5 +155,28 @@
 
 .room__swiper :deep(.custom-swiper::part(pagination)) {
   position: absolute !important;
+}
+
+@media (max-width: 375px) {
+  .room {
+    &__box {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    &__preview,
+    &__img {
+      max-width: 145px;
+      object-fit: cover;
+    }
+    &__price {
+      &--mobile {
+        background-color: transparent;
+        color: $blue-500;
+        justify-content: flex-start;
+        padding: 0;
+      }
+    }
+  }
 }
 </style>

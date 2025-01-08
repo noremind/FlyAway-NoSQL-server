@@ -58,7 +58,9 @@ onUnmounted(() => {
 watch(
   () => partialBlock.value,
   () => {
-    document.body.style.overflow = "hidden";
+    if (process.client) {
+      document.body.style.overflow = "hidden";
+    }
   },
   { immediate: true }
 );
