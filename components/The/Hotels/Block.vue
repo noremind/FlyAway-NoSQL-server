@@ -23,6 +23,9 @@
             </swiper-slide>
           </UiSwiper>
         </div>
+        <button class="block__price block__price--mobile">
+          66 750 ₸ <span class="block__old-price">89 000 ₸</span>
+        </button>
       </div>
 
       <div class="block__content">
@@ -40,12 +43,29 @@
           </div>
         </div>
 
+        <div class="block__tags" v-if="viewType === 'tablet'">
+          <p
+            class="block__discount"
+            :class="{ 'block__discount--order': viewType === 'tablet' }"
+          >
+            -25%
+          </p>
+
+          <div
+            class="block__location"
+            :class="{ 'block__location--order': viewType === 'tablet' }"
+          >
+            <UiIcons icon="location" size="size-20"></UiIcons>
+            <p class="block__region">Алматы</p>
+          </div>
+        </div>
+
         <div class="block__box">
           <div class="block__texts">
             <nuxt-link to="/hotels/1">
               <h2 class="block__title">Звездный Комфорт</h2>
             </nuxt-link>
-            <div class="block__ratings">
+            <div class="block__ratings" v-if="viewType === 'list'">
               <UiIcons
                 v-for="star in 5"
                 icon="star"
@@ -55,10 +75,20 @@
             </div>
             <p class="block__description">
               Погрузитесь в природу Казахстана посетив озеро Кольсай.
-              Погрузитесь в природу Казахстана посетив озеро Кольсай.
-              Погрузитесь в природу Казахстана посетив озеро Кольсай ...еще
+              <span v-if="viewType === 'list'">
+                Погрузитесь в природу Казахстана посетив озеро
+                Кольсай.Погрузитесь в природу Казахстана посетив озеро Кольсай.
+                <span class="block__more">еще...</span>
+              </span>
             </p>
-            <div class="block__tags">
+
+            <UiButton
+              v-if="viewType === 'list'"
+              class="block__btn block__btn--mobile button-secondary"
+              label="Забронировать"
+            ></UiButton>
+
+            <div class="block__tags" v-if="viewType === 'list'">
               <p class="block__discount">-25%</p>
 
               <div class="block__location">
@@ -91,7 +121,7 @@
             <div>
               <UiButton
                 label="Забронировать"
-                class="block__btn button-primary"
+                class="block__btn block__btn--mobile button-primary"
               ></UiButton>
             </div>
           </div>
@@ -101,7 +131,14 @@
   </section>
 </template>
 
-<script setup></script>
+<script setup>
+const props = defineProps({
+  viewType: {
+    type: String,
+    default: "list",
+  },
+});
+</script>
 
 <style lang="scss" scoped>
 .block {
@@ -139,6 +176,12 @@
   &__region {
     font-size: 12.5px;
     color: $surface-400;
+  }
+  &__more {
+    color: $blue-500;
+    font-weight: 400;
+    font-size: 14px;
+    cursor: pointer;
   }
   &__icon-hot {
     width: 28px;
@@ -251,15 +294,86 @@
     color: $white;
     font-size: 20px;
     font-weight: 600;
+    &--mobile {
+      display: none;
+    }
   }
   &__old-price {
     font-size: 14px;
     color: $surface-900;
     text-decoration: line-through;
   }
+  &__btn {
+    &--mobile {
+      display: none;
+    }
+  }
 }
 
 .block__swiper :deep(.custom-swiper::part(pagination)) {
   position: absolute !important;
+}
+
+@media (max-width: 375px) {
+  .block {
+    &__wrapper {
+      display: flex;
+      height: 100%;
+      flex-direction: column;
+      position: relative;
+    }
+    &__preview {
+      position: relative;
+      height: 140px;
+      max-width: 100%;
+    }
+    &__img {
+      max-width: 100%;
+      height: 140px;
+    }
+    &__benefits {
+      display: none;
+    }
+    &__texts {
+      gap: 12px;
+    }
+    &__content {
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    &__tags {
+      display: flex;
+      justify-content: space-between;
+    }
+    &__discount {
+      order: 2;
+      &--order {
+        order: 1;
+      }
+    }
+    &__location {
+      order: 1;
+      &--order {
+        order: 2;
+      }
+    }
+    &__btn {
+      display: none;
+      &--mobile {
+        display: flex;
+      }
+    }
+    &__price {
+      &--mobile {
+        position: absolute;
+        bottom: 8px;
+        z-index: 2;
+        display: flex;
+        gap: 4px;
+      }
+    }
+  }
 }
 </style>

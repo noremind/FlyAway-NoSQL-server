@@ -44,11 +44,32 @@ const closePartial = (event) => {
     emit("close");
   }
 };
+
+onMounted(() => {
+  if (partialBlock.value) {
+    document.body.style.overflow = "hidden";
+  }
+});
+
+onUnmounted(() => {
+  partialBlock.value = null;
+});
+
+watch(
+  () => partialBlock.value,
+  () => {
+    document.body.style.overflow = "hidden";
+  },
+  { immediate: true }
+);
 </script>
 
 <style lang="scss" scoped>
 .partial {
   display: none;
+}
+.partial:hover body {
+  overflow: hidden;
 }
 .partial-enter-active {
   animation: partial 0.2s;
@@ -76,6 +97,7 @@ const closePartial = (event) => {
     height: 100%;
     background: rgba(0, 0, 0, 0.6);
     display: block;
+    overflow: clip;
 
     &__wrapper {
       position: absolute;
