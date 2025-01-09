@@ -332,3 +332,13 @@ i.icon {
 		-webkit-mask-image: url("@/assets/icons/tablets.svg");
 		mask-image: url("@/assets/icons/tablets.svg");
 }
+.tablet-blog{
+								@extend i, .icon;
+		-webkit-mask-image: url("@/assets/icons/tablet-blog.svg");
+		mask-image: url("@/assets/icons/tablet-blog.svg");
+}
+.wallet{
+								@extend i, .icon;
+		-webkit-mask-image: url("@/assets/icons/wallet.svg");
+		mask-image: url("@/assets/icons/wallet.svg");
+}

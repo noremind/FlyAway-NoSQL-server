@@ -57,4 +57,13 @@ const selectedTab = ref(tabs[0]);
     margin: 0 auto;
   }
 }
+
+@media (max-width: 375px) {
+  .baqyt-zone {
+    &__wrapper {
+      background-color: transparent;
+      padding: 0;
+    }
+  }
+}
 </style>

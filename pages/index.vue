@@ -16,7 +16,9 @@
         <UiIcons icon="hot" size="size-32" color="orange-200"></UiIcons>
         <h2 class="main__title title">Горящие туры</h2>
       </div>
-      <nuxt-link class="main__tours-link">Все горящие туры</nuxt-link>
+      <nuxt-link class="main__tours-link" to="/tours"
+        >Все горящие туры</nuxt-link
+      >
     </div>
     <div class="main__tours-slider">
       <UiSwiper
@@ -54,6 +56,7 @@
       after-icon="chevron"
       icon-color="blue-500"
       icon-size="size-14"
+      @click="router.push('/tours')"
     ></UiButton>
   </section>
 
@@ -66,7 +69,7 @@
   <section class="main__hotels">
     <div class="main__hotels-box">
       <h2 class="main__title title">Отели</h2>
-      <nuxt-link class="main__hotels-link">Все отели</nuxt-link>
+      <nuxt-link class="main__hotels-link" to="/hotels">Все отели</nuxt-link>
     </div>
     <div class="main__hotels-cards">
       <TheMainHotelCard v-for="hotel in 4" :key="4"></TheMainHotelCard>
@@ -78,6 +81,7 @@
       after-icon="chevron"
       icon-color="blue-500"
       icon-size="size-14"
+      @click="router.push('/tours')"
     ></UiButton>
   </section>
 
@@ -86,7 +90,6 @@
 
     <div class="main__reviews-cards">
       <UiSwiper
-        :per-slides="2.5"
         :breakpoints="{
           1240: { slidesPerView: 2.5 },
           992: { slidesPerView: 2.5 },
@@ -105,6 +108,11 @@
   </section>
 </template>
 
-<script setup></script>
+<script setup>
+const router = useRouter();
+</script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.main__reviews {
+}
+</style>

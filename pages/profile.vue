@@ -4,7 +4,7 @@
       <h1 class="profile__title title">Личный кабинет</h1>
 
       <div class="profile__content">
-        <TheProfileNav></TheProfileNav>
+        <TheProfileNav class="profile__aside-nav"></TheProfileNav>
 
         <div class="profile__main">
           <NuxtPage />
@@ -34,6 +34,21 @@
     border-radius: 16px;
     flex-grow: 1;
     height: 100%;
+  }
+}
+
+@media (max-width: 375px) {
+  .profile {
+    &__wrapper {
+      margin: 12px 0;
+      gap: 12px;
+    }
+    &__main {
+      padding: 0;
+    }
+    &__aside-nav {
+      display: none;
+    }
   }
 }
 </style>

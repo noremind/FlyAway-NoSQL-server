@@ -1,5 +1,6 @@
 export const useAuthStore = defineStore('auth', () => {
 	const isRegistered = ref(false)
+	const isMobileModal = ref(false)
 
 	const openAuthModal = () => {
 		isRegistered.value = true
@@ -11,7 +12,8 @@ export const useAuthStore = defineStore('auth', () => {
 
 	return {
 		isRegistered,
+		isMobileModal,
 		openAuthModal,
-		closeAuthModal
+		closeAuthModal,
 	};
 });

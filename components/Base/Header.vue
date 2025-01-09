@@ -69,15 +69,26 @@
         icon="burger-menu"
         size="size-32"
         color="blue-500"
+        @click="openMobileNavMenu"
       ></UiIcons>
     </div>
   </header>
+
+  <UiModal
+    :is-show="isOpenMobileNavMenu"
+    max-width="786px"
+    :full-screen="true"
+    @close="closeMobileNavMenu"
+  >
+    <ModalsNavMenuMobile></ModalsNavMenuMobile>
+  </UiModal>
 </template>
 
 <script setup>
 const route = useRoute();
 const headerDropdown = ref(null);
 const isOpenDropdownMenu = ref(false);
+const isOpenMobileNavMenu = ref(false);
 const cities = reactive([
   {
     id: 1,
@@ -137,6 +148,21 @@ const openDropdownMenu = () => {
 const closeDropdownMenu = () => {
   isOpenDropdownMenu.value = false;
 };
+
+const openMobileNavMenu = () => {
+  isOpenMobileNavMenu.value = true;
+};
+
+const closeMobileNavMenu = () => {
+  isOpenMobileNavMenu.value = false;
+};
+
+watch(
+  () => route.fullPath,
+  () => {
+    closeMobileNavMenu();
+  }
+);
 </script>
 
 <style lang="scss" scoped>

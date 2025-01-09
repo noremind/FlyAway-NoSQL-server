@@ -3,8 +3,10 @@
     <div class="blocks__wrapper">
       <ul class="blocks__list">
         <li class="blocks__list-item" v-for="link in links" :key="link.id">
-          <img class="blocks__img" :src="link.img" :alt="link.name" />
-          <h2 class="blocks__title">{{ link.name }}</h2>
+          <nuxt-link :to="link.link" class="blocks__list-link">
+            <img class="blocks__img" :src="link.img" :alt="link.name" />
+            <h2 class="blocks__title">{{ link.name }}</h2>
+          </nuxt-link>
         </li>
       </ul>
     </div>
@@ -22,25 +24,25 @@ const links = reactive([
     id: 1,
     name: "Туры",
     img: map,
-    link: "",
+    link: "/tours",
   },
   {
     id: 2,
     name: "Отели",
     img: hotel,
-    link: "",
+    link: "/hotels",
   },
   {
     id: 3,
     name: "BaqytZone",
     img: tourist,
-    link: "",
+    link: "/baqyt-zone",
   },
   {
     id: 4,
     name: "Локаций",
     img: qazaqstanMap,
-    link: "",
+    link: "/locations",
   },
 ]);
 </script>
@@ -60,7 +62,7 @@ const links = reactive([
     gap: clamp(0.75rem, -1.691rem + 5.08vw, 2.25rem);
     flex-wrap: wrap;
   }
-  &__list-item {
+  &__list-link {
     box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.04);
     padding: 32px 22px;
     border-radius: 80px;

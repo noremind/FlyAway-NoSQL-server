@@ -9,6 +9,14 @@
         <div class="ticket__info-box">
           <p class="ticket__date">Однодневный тур в озеро Кольсай</p>
         </div>
+        <div class="ticket__info-box">
+          <p class="ticket__date ticket__date--mobile ticket__date--bold">
+            Сумма
+          </p>
+          <p class="ticket__price ticket__price--mobile ticket__price--mobile">
+            24 800 ₸
+          </p>
+        </div>
       </div>
       <div class="ticket__total">
         <p class="ticket__total-text">Итого</p>
@@ -53,6 +61,7 @@
     display: flex;
     color: $surface-900;
     justify-content: space-between;
+    margin-top: 8px;
   }
   &__total {
     display: flex;
@@ -64,10 +73,46 @@
       font-weight: 400;
     }
   }
+  &__date {
+    &--mobile {
+      display: none;
+    }
+    &--bold {
+      font-weight: 400;
+      font-size: 12px;
+    }
+  }
   &__price {
     color: $blue-500;
     font-size: 24px;
     font-weight: 700;
+    &--mobile {
+      display: none;
+      font-size: 14px;
+    }
+  }
+}
+
+@media (max-width: 375px) {
+  .ticket {
+    border-right: 20px solid $blue-500;
+    font-size: 12px;
+    &__total {
+      display: none;
+    }
+    &__title {
+      font-size: 14px;
+    }
+    &__price {
+      &--mobile {
+        display: block;
+      }
+    }
+    &__date {
+      &--mobile {
+        display: block;
+      }
+    }
   }
 }
 </style>

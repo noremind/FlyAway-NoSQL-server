@@ -45,7 +45,6 @@
     width: 100%;
     position: absolute;
     top: 0;
-    z-index: 2;
     border-radius: 16px;
     overflow: hidden;
     padding: 12px 0px;
@@ -59,7 +58,6 @@
   }
   &__content {
     position: relative;
-    z-index: 3;
     height: auto;
     display: flex;
     flex-direction: column;
@@ -96,6 +94,12 @@
     &__img {
       border-radius: 20px;
       height: clamp(20.438rem, -24.105rem + 92.8vw, 47.813rem);
+      &-wrapper {
+        z-index: 2;
+      }
+    }
+    &__content {
+      z-index: 3;
     }
     &__title {
       margin-top: 64px;

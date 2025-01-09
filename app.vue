@@ -12,6 +12,7 @@
     :is-show="userStore.isRegistered"
     max-width="600px"
     @close="userStore.closeAuthModal"
+    :full-screen="userStore.isMobileModal"
   >
     <ModalsAuthStep></ModalsAuthStep>
   </UiModal>

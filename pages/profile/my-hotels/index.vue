@@ -38,4 +38,13 @@
     margin: 0 auto;
   }
 }
+
+@media (max-width: 375px) {
+  .my-hotels {
+    &__wrapper {
+      background-color: transparent;
+      padding: 0;
+    }
+  }
+}
 </style>

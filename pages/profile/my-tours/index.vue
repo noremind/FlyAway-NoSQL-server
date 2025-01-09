@@ -56,4 +56,13 @@ const selectedTab = ref(tabs[0]);
     margin: 0 auto;
   }
 }
+
+@media (max-width: 375px) {
+  .my-tours {
+    &__wrapper {
+      background-color: transparent;
+      padding: 0;
+    }
+  }
+}
 </style>

@@ -86,7 +86,7 @@ const props = defineProps({
   &__header {
     position: relative;
     width: 100%;
-    height: 155px;
+    height: 135px;
     padding: 16px 0 16px 0;
     display: inline-flex;
     flex-direction: column;

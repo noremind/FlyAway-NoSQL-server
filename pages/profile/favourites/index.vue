@@ -8,8 +8,33 @@
         type="line"
       ></UiTabs>
 
-      <div class="favourites__cards">
-        <TheCommonTourCard v-for="card in 15"></TheCommonTourCard>
+      <div
+        class="favourites__cards"
+        :class="{
+          'favourites__cards--hotels': selectedTab.id === 2,
+          'favourites__cards--baqyt-zone': selectedTab.id === 3,
+        }"
+      >
+        <TheCommonTourCard
+          v-if="selectedTab.id === 1"
+          v-for="card in 15"
+          :key="card"
+          :view-type="screenWidth > 325 ? 'list' : 'tablet'"
+        ></TheCommonTourCard>
+
+        <TheHotelsBlock
+          v-if="selectedTab.id === 2"
+          v-for="hotel in 15"
+          :key="hotel"
+          :view-type="screenWidth > 325 ? 'list' : 'tablet'"
+        ></TheHotelsBlock>
+
+        <TheBaqytZoneBlock
+          v-if="selectedTab.id === 3"
+          v-for="zone in 15"
+          :key="zone"
+          :view-type="screenWidth > 325 ? 'list' : 'tablet'"
+        ></TheBaqytZoneBlock>
       </div>
     </div>
     <br />
@@ -33,6 +58,24 @@ const tabs = reactive([
   },
 ]);
 const selectedTab = ref(tabs[0]);
+
+const windowWidth = ref(process.client ? window.innerWidth : null);
+
+const updateWidth = () => {
+  windowWidth.value = window.innerWidth;
+};
+
+const screenWidth = computed(() => {
+  return windowWidth.value;
+});
+
+onMounted(() => {
+  window.addEventListener("resize", updateWidth);
+});
+
+onUnmounted(() => {
+  window.removeEventListener("resize", updateWidth);
+});
 </script>
 
 <style lang="scss" scoped>
@@ -52,11 +95,38 @@ const selectedTab = ref(tabs[0]);
     grid-template-columns: repeat(3, 1fr);
     margin: 26px 0;
     gap: 16px;
+    &--hotels {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    &--baqyt-zone {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+    }
   }
   &__pagination {
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+}
+
+@media (max-width: 375px) {
+  .favourites {
+    &__wrapper {
+      background-color: transparent;
+      padding: 0;
+    }
+    &__cards {
+      padding: 0;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 6px;
+      &--baqyt-zone {
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+      }
+    }
   }
 }
 </style>

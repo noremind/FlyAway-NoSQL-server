@@ -24,8 +24,13 @@
           </div>
         </div>
 
-        <UiInput label="Ваше имя" placeholder="Дана"></UiInput>
         <UiInput
+          class="profile-main__input"
+          label="Ваше имя"
+          placeholder="Дана"
+        ></UiInput>
+        <UiInput
+          class="profile-main__input"
           label="Номер телефона"
           placeholder="+7 (777) 777 77 77"
         ></UiInput>
@@ -36,6 +41,17 @@
         ></UiButton>
       </div>
       <div class="profile-main__side">
+        <UiInput
+          class="profile-main__input profile-main__input--mobile"
+          label="Ваше имя"
+          placeholder="Дана"
+        ></UiInput>
+        <UiInput
+          class="profile-main__input profile-main__input--mobile"
+          label="Номер телефона"
+          placeholder="+7 (777) 777 77 77"
+        ></UiInput>
+
         <UiInput label="Ваша почта" placeholder="dana1234@gmail.com"></UiInput>
 
         <UiCalendar label="Дата рождения" class="profile-main__calendar" />
@@ -46,6 +62,11 @@
           :options="cities"
           label="Пол"
         ></UiSelect>
+
+        <UiButton
+          class="profile-main__btn profile-main__btn--mobile button-primary"
+          label="Сохранить"
+        ></UiButton>
       </div>
     </div>
   </div>
@@ -140,6 +161,40 @@ const selectCity = ref(cities[0]);
     height: 66px;
     border-radius: 50%;
     object-fit: cover;
+  }
+}
+
+@media (max-width: 375px) {
+  .profile-main {
+    padding: 0;
+    &__wrapper {
+      display: flex;
+      flex-direction: column;
+      background-color: transparent;
+      padding: 0;
+      gap: 12px;
+    }
+    &__side:last-child,
+    &__box {
+      padding: 16px;
+      border-radius: 16px;
+      box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.1);
+      background-color: $white;
+    }
+    &__btn,
+    &__input {
+      display: none;
+    }
+    &__btn {
+      &--mobile {
+        display: flex;
+      }
+    }
+    &__input {
+      &--mobile {
+        display: block;
+      }
+    }
   }
 }
 </style>

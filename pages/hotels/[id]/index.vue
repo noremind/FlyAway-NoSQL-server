@@ -519,6 +519,7 @@
   </UiModal>
 
   <!-- Mobile -->
+
   <!-- Step 1 -->
   <UiPartialModal
     :is-show="isOpenPartialModalPayment"

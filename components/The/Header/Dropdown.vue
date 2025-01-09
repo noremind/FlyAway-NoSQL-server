@@ -23,11 +23,13 @@
           label="Войти"
           before-icon="login"
           icon-color="blue-500"
+          class="dropdown__auth-login"
           @click="userStore.openAuthModal"
         ></UiButton>
         <UiButton
           background-color="blue-500"
           label="Зарегестрироваться"
+          class="dropdown__auth-register button-primary"
           @click="userStore.openAuthModal"
         ></UiButton>
       </div>
@@ -115,6 +117,8 @@ const dropdownNav = [
     padding: 26px 22px;
     border-radius: 12px 16px;
     box-shadow: 0px 0px 20px 0px #0000000a;
+    position: relative;
+    z-index: 50;
   }
   &__box {
     display: flex;
@@ -139,7 +143,15 @@ const dropdownNav = [
   &__auth {
     display: flex;
     gap: 6px;
+    font-size: 14px;
     align-items: center;
+    &-login {
+      background-color: $surface-150;
+      font-weight: 100;
+    }
+    &-register {
+      padding: 6px 10px !important;
+    }
   }
   &__list {
     display: flex;

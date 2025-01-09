@@ -45,25 +45,25 @@ const closePartial = (event) => {
   }
 };
 
-onMounted(() => {
-  if (partialBlock.value) {
-    document.body.style.overflow = "hidden";
-  }
-});
+// onMounted(() => {
+//   if (partialBlock.value) {
+//     document.body.style.overflow = "hidden";
+//   }
+// });
 
-onUnmounted(() => {
-  partialBlock.value = null;
-});
+// onUnmounted(() => {
+//   partialBlock.value = null;
+// });
 
-watch(
-  () => partialBlock.value,
-  () => {
-    if (process.client) {
-      document.body.style.overflow = "hidden";
-    }
-  },
-  { immediate: true }
-);
+// watch(
+//   () => partialBlock.value,
+//   () => {
+//     if (process.client) {
+//       document.body.style.overflow = "hidden";
+//     }
+//   },
+//   { immediate: true }
+// );
 </script>
 
 <style lang="scss" scoped>
