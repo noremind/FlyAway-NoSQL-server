@@ -97,4 +97,20 @@
     gap: 4px;
   }
 }
+
+@media (max-width: 375px) {
+  .bonus {
+    &__logo {
+      display: none;
+    }
+    &__title {
+      text-align: left;
+      line-height: 30px;
+      font-size: 24px;
+    }
+    &__box {
+      flex-direction: column;
+    }
+  }
+}
 </style>

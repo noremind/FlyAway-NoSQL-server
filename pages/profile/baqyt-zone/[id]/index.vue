@@ -1,128 +1,156 @@
 <template>
-  <section class="ticket">
-    <div class="ticket__wrapper">
-      <div class="ticket__header">
-        <h2 class="ticket__title title">Билет №12345</h2>
-        <button type="button" class="ticket__refund" @click="openRefundModal()">
-          Оформить возврат
-        </button>
-      </div>
-
-      <div class="ticket__box">
-        <div class="ticket__box-inner">
-          <img
-            class="ticket__qr"
-            src="@/assets/image/content/qr-code.png"
-            alt="Qr Code"
-          />
-          <button type="button" class="ticket__btn">Завершен</button>
+  <UiOverlay
+    :is-show="true"
+    :have-footer="true"
+    title="Сертификат №12345"
+    @close="goTo('/profile/baqyt-zone')"
+    :show-header-icons="false"
+  >
+    <section class="ticket">
+      <div class="ticket__wrapper">
+        <div class="ticket__header">
+          <h2 class="ticket__title title">Билет №12345</h2>
+          <button
+            type="button"
+            class="ticket__refund"
+            @click="openRefundModal()"
+          >
+            Оформить возврат
+          </button>
         </div>
-        <div class="ticket__content">
-          <div class="ticket__content-box">
-            <div class="ticket__content-inner">
-              <img
-                class="ticket__avatar"
-                src="@/assets/image/common/tour-avatar.png"
-                alt="Avatar"
-              />
-              <p class="ticket__name">Mili Tour</p>
-            </div>
-            <div class="ticket__reviews">
-              <p class="ticket__count">20 отзывов</p>
-              <UiIcons
-                class="ticket__star"
-                size="size-14"
-                color="yellow-500"
-                icon="star"
-              ></UiIcons>
-              <p class="ticket__average">4,1</p>
-            </div>
-          </div>
 
-          <section class="ticket__content-info">
-            <h3 class="ticket__content-title">2 дня 1 ночь в горах</h3>
-            <p class="ticket__content-about">О сертификате</p>
-            <p class="ticket__content-description">
-              Приглашаем вас отправиться в увлекательное путешествие на
-              Кольсайские озера — настоящую жемчужину Алматинской области, где
-              природа поражает своей первозданной красотой и чистотой.
-            </p>
-            <div>
-              <p class="ticket__content-text">Что вас ждет:</p>
-              <ul class="ticket__content-list">
-                <li class="ticket__content-list-item">
-                  Три живописных озера на разных высотах, окруженные густыми
-                  хвойными лесами и величественными горами. Насладитесь
-                  кристально чистой водой и свежим воздухом, вдали от городской
-                  суеты.
-                </li>
-              </ul>
-            </div>
-
-            <table class="ticket__table">
-              <tbody>
-                <tr class="ticket__tr">
-                  <td class="ticket__td">Дата</td>
-                  <td class="ticket__td">25 декабря 2024</td>
-                </tr>
-                <tr class="ticket__tr ticket__tr--blue">
-                  <td>Ваши билеты</td>
-                </tr>
-                <tr class="ticket__tr">
-                  <td class="ticket__td">Однодневный тур в озеро Кольсай</td>
-                  <td class="ticket__td">1 билет х 15 000 ₸</td>
-                </tr>
-                <tr class="ticket__tr">
-                  <td class="ticket__td">
-                    Однодневный тур на Чарынский каньон
-                  </td>
-                  <td class="ticket__td">2 билета х 8 000 ₸</td>
-                </tr>
-                <tr class="ticket__tr ticket__tr--padding">
-                  <td class="ticket__td ticket__td--bold">Скидка</td>
-                  <td class="ticket__td">-20%</td>
-                </tr>
-                <tr class="ticket__tr">
-                  <td class="ticket__td ticket__td--bold">Промокод</td>
-                  <td class="ticket__td">0 ₸</td>
-                </tr>
-                <tr class="ticket__tr ticket__tr--padding">
-                  <td class="ticket__td ticket__td--bold">Итого</td>
-                  <td class="ticket__td">24 800 ₸</td>
-                </tr>
-                <tr class="ticket__tr ticket__tr--blue">
-                  <td>Способ оплаты</td>
-                </tr>
-                <tr class="ticket__tr">
-                  <td class="ticket__td ticket__td--box">
-                    <UiIcons
-                      icon="credit-card"
-                      color="blue-500"
-                      size="size-24"
-                    ></UiIcons>
-                    <span>Банковская карта</span>
-                  </td>
-                  <td class="ticket__td"></td>
-                </tr>
-                <tr class="ticket__tr">
-                  <td class="ticket__td ticket__td--box">
-                    <span>4400 ... 8909</span>
-                  </td>
-                  <td class="ticket__td"></td>
-                </tr>
-              </tbody>
-            </table>
+        <div class="ticket__box">
+          <div class="ticket__box-inner">
+            <img
+              class="ticket__qr"
+              src="@/assets/image/content/qr-code.png"
+              alt="Qr Code"
+            />
+            <button type="button" class="ticket__btn">Завершен</button>
             <UiButton
               before-icon="upload"
               icon-color="blue-500"
               label="Скачать билет"
-              class="ticket__download"
+              class="ticket__download ticket__download--mobile"
             ></UiButton>
-          </section>
+          </div>
+          <div class="ticket__content">
+            <div class="ticket__content-box">
+              <div class="ticket__content-inner">
+                <img
+                  class="ticket__avatar"
+                  src="@/assets/image/common/tour-avatar.png"
+                  alt="Avatar"
+                />
+                <p class="ticket__name">Mili Tour</p>
+              </div>
+              <div class="ticket__reviews">
+                <p class="ticket__count">20 отзывов</p>
+                <UiIcons
+                  class="ticket__star"
+                  size="size-14"
+                  color="yellow-500"
+                  icon="star"
+                ></UiIcons>
+                <p class="ticket__average">4,1</p>
+              </div>
+            </div>
+
+            <section class="ticket__content-info">
+              <h3 class="ticket__content-title">2 дня 1 ночь в горах</h3>
+              <p class="ticket__content-about">О сертификате</p>
+              <p class="ticket__content-description">
+                Приглашаем вас отправиться в увлекательное путешествие на
+                Кольсайские озера — настоящую жемчужину Алматинской области, где
+                природа поражает своей первозданной красотой и чистотой.
+              </p>
+              <div>
+                <p class="ticket__content-text">Что вас ждет:</p>
+                <ul class="ticket__content-list">
+                  <li class="ticket__content-list-item">
+                    Три живописных озера на разных высотах, окруженные густыми
+                    хвойными лесами и величественными горами. Насладитесь
+                    кристально чистой водой и свежим воздухом, вдали от
+                    городской суеты.
+                  </li>
+                </ul>
+              </div>
+
+              <table class="ticket__table">
+                <tbody>
+                  <tr class="ticket__tr">
+                    <td class="ticket__td">Дата</td>
+                    <td class="ticket__td">25 декабря 2024</td>
+                  </tr>
+                  <tr class="ticket__tr ticket__tr--blue">
+                    <td>Ваши билеты</td>
+                  </tr>
+                  <tr class="ticket__tr">
+                    <td class="ticket__td">Однодневный тур в озеро Кольсай</td>
+                    <td class="ticket__td">1 билет х 15 000 ₸</td>
+                  </tr>
+                  <tr class="ticket__tr">
+                    <td class="ticket__td">
+                      Однодневный тур на Чарынский каньон
+                    </td>
+                    <td class="ticket__td">2 билета х 8 000 ₸</td>
+                  </tr>
+                  <tr class="ticket__tr ticket__tr--padding">
+                    <td class="ticket__td ticket__td--bold">Скидка</td>
+                    <td class="ticket__td">-20%</td>
+                  </tr>
+                  <tr class="ticket__tr">
+                    <td class="ticket__td ticket__td--bold">Промокод</td>
+                    <td class="ticket__td">0 ₸</td>
+                  </tr>
+                  <tr class="ticket__tr ticket__tr--padding">
+                    <td class="ticket__td ticket__td--bold">Итого</td>
+                    <td class="ticket__td">24 800 ₸</td>
+                  </tr>
+                  <tr class="ticket__tr ticket__tr--blue">
+                    <td>Способ оплаты</td>
+                  </tr>
+                  <tr class="ticket__tr">
+                    <td class="ticket__td ticket__td--box">
+                      <UiIcons
+                        icon="credit-card"
+                        color="blue-500"
+                        size="size-24"
+                      ></UiIcons>
+                      <span>Банковская карта</span>
+                    </td>
+                    <td class="ticket__td"></td>
+                  </tr>
+                  <tr class="ticket__tr">
+                    <td class="ticket__td ticket__td--box">
+                      <span>4400 ... 8909</span>
+                    </td>
+                    <td class="ticket__td"></td>
+                  </tr>
+                </tbody>
+              </table>
+              <UiButton
+                before-icon="upload"
+                icon-color="blue-500"
+                label="Скачать билет"
+                class="ticket__download"
+              ></UiButton>
+
+              <UiSendReview></UiSendReview>
+
+              <button
+                type="button"
+                class="ticket__refund"
+                @click="openPartialRefundModal()"
+              >
+                Оформить возврат
+              </button>
+            </section>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </UiOverlay>
 
   <UiModal
     max-width="600px"
@@ -158,11 +186,55 @@
       btn-label="Контакты"
     ></ModalsInfo>
   </UiModal>
+
+  <!-- Mobile -->
+  <UiPartialModal :is-show="isOpenPartialRefundModal">
+    <template #body>
+      <ModalsRefund
+        @next-step="cancelledStatusPartialRefundModal"
+        @close-modal="closePartialRefundModal"
+      ></ModalsRefund>
+    </template>
+  </UiPartialModal>
+
+  <UiModal
+    max-width="600px"
+    :is-show="statusPartialRefundModal === 'success'"
+    @close="closeStatusPartialRefundModal"
+    :full-screen="true"
+  >
+    <ModalsStatus
+      title="Возврат оформлен"
+      btn-label="Перейти в Туры"
+      goTo="/tours"
+    ></ModalsStatus>
+  </UiModal>
+
+  <UiModal
+    max-width="600px"
+    :is-show="statusPartialRefundModal === 'cancelled'"
+    @close="closeStatusPartialRefundModal"
+  >
+    <ModalsInfo
+      title="Возврат невозможен"
+      description="Возврат не возможен так как, вы до события осталось 72 часа, для дальнейнего выяснение обстоястельсво свяжитесь с службой поддержкой"
+      btn-label="Контакты"
+    ></ModalsInfo>
+  </UiModal>
 </template>
 
 <script setup>
 const statusRefundModal = ref("");
+const statusPartialRefundModal = ref("");
 const isOpenRefundModal = ref(false);
+const isOpenPartialRefundModal = ref(false);
+
+const openPartialRefundModal = () => {
+  isOpenPartialRefundModal.value = true;
+};
+const closePartialRefundModal = () => {
+  isOpenPartialRefundModal.value = false;
+};
 
 const openRefundModal = () => {
   isOpenRefundModal.value = true;
@@ -177,6 +249,18 @@ const cancelledStatusRefundModal = () => {
 
 const successStatusRefundModal = () => {
   statusRefundModal.value = "success";
+};
+
+const closeStatusPartialRefundModal = () => {
+  statusPartialRefundModal.value = "";
+};
+
+const cancelledStatusPartialRefundModal = () => {
+  statusPartialRefundModal.value = "cancelled";
+};
+
+const successStatusPartialRefundModal = () => {
+  statusPartialRefundModal.value = "success";
 };
 
 const closeStatusRefundModal = () => {
@@ -199,6 +283,9 @@ const closeStatusRefundModal = () => {
   &__refund {
     color: $orange-200;
     font-size: 14px;
+    &--mobile {
+      display: none;
+    }
   }
   &__box {
     display: flex;
@@ -321,6 +408,41 @@ const closeStatusRefundModal = () => {
     justify-content: center;
     color: $blue-500;
     padding: 10px;
+    &--mobile {
+      display: none;
+    }
+  }
+}
+
+@media (max-width: 375px) {
+  .ticket {
+    &__wrapper {
+      margin: 26px 0;
+    }
+    &__header {
+      display: none;
+    }
+    &__box {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      &-inner {
+        gap: 16px;
+      }
+    }
+    &__refund {
+      &--mobile {
+        display: block;
+        text-align: left;
+      }
+    }
+    &__download {
+      display: none;
+      &--mobile {
+        display: flex;
+      }
+    }
   }
 }
 </style>

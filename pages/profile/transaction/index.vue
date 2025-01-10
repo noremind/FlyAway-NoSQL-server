@@ -19,6 +19,12 @@
             </p>
           </div>
           <p class="transaction__id">ID: 5028736416</p>
+          <p
+            class="transaction__question transaction__question--mobile"
+            @click="openOverlay"
+          >
+            Как получить бонусы?
+          </p>
         </div>
       </div>
 
@@ -66,6 +72,19 @@
           </tbody>
         </table>
       </div>
+
+      <div class="transaction__blocks">
+        <section class="transaction__block" v-for="block in 10" :key="block">
+          <div class="transaction__block-box">
+            <h3 class="transaction__block-title">Однодевный тур на Кольсай</h3>
+            <p class="transaction__block-baige">тур</p>
+          </div>
+          <div class="transaction__block-box">
+            <p class="transaction__block-price">- 13 800 ₸</p>
+            <p class="transaction__block-date">12.11.2024</p>
+          </div>
+        </section>
+      </div>
     </div>
   </section>
 
@@ -76,12 +95,29 @@
   >
     <ModalsHowGetBonus></ModalsHowGetBonus>
   </UiModal>
+
+  <UiOverlay
+    :is-show="isOpenOverlay"
+    :show-header-icons="false"
+    title="Как получить бонусы?"
+    @close="closeOverlay"
+    :have-footer="true"
+  >
+    <ModalsHowGetBonus></ModalsHowGetBonus>
+  </UiOverlay>
 </template>
 
 <script setup>
-import { ref } from "vue";
-
 const isOpenBonusModal = ref(false);
+const isOpenOverlay = ref(false);
+
+const openOverlay = () => {
+  isOpenOverlay.value = true;
+};
+
+const closeOverlay = () => {
+  isOpenOverlay.value = false;
+};
 
 const closeBonusModal = () => {
   isOpenBonusModal.value = false;
@@ -283,6 +319,87 @@ const formatAmount = (amount) => {
             }
           }
         }
+      }
+    }
+  }
+  &__blocks {
+    display: flex;
+    flex-direction: column;
+    color: $surface-900;
+    background-color: $white;
+    border-radius: 16px;
+    box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.1);
+  }
+  &__block {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid $surface-400;
+    padding: 4px 8px;
+
+    &:last-child {
+      border-bottom-right-radius: 16px;
+      border-bottom-left-radius: 16px;
+      border: none;
+    }
+    &:first-child {
+      border-top-right-radius: 16px;
+      border-top-left-radius: 16px;
+    }
+    &:nth-child(odd) {
+      background-color: $blue-200;
+    }
+    &-box:last-child {
+      text-align: right;
+    }
+    &-title {
+      font-size: 12px;
+      font-weight: 400;
+    }
+    &-baige {
+      font-size: 12px;
+      padding: 2px 6px;
+      border-radius: 36px;
+      background-color: $blue-300;
+      color: $blue-500;
+      display: inline-block;
+    }
+    &-price {
+      font-size: 14px;
+      font-weight: 700;
+      color: $green-400;
+    }
+    &-date {
+      font-size: 10px;
+    }
+  }
+}
+
+@media (max-width: 375px) {
+  .transaction {
+    &__wrapper {
+      padding: 0;
+      background-color: transparent;
+    }
+    &__inner-box,
+    &__question,
+    &__table {
+      display: none;
+    }
+    &__banner {
+      padding: 12px;
+    }
+    &__question {
+      &--mobile {
+        position: absolute;
+        z-index: 2;
+        display: block;
+        color: $white;
+        font-size: 12px;
+        bottom: 20px;
+        white-space: nowrap;
+        right: 16px;
+        text-decoration: underline;
+        cursor: pointer;
       }
     }
   }
