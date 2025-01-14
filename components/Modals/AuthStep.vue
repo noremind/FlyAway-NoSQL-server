@@ -1,9 +1,10 @@
 <template>
-  <TheAuthRegister v-if="currentStep === 1" @next-step="nextStep" />
+  <TheAuthRegister v-if="currentStep === 1" @next-step="nextStepSmsCode" />
   <TheAuthSmsCode
     v-if="currentStep === 2"
-    @next-step="nextStep"
+    @next-step="nextStepStatusAuth"
     @prev-step="prevStep"
+    :phone="phoneReg"
   />
   <ModalsStatus
     v-if="currentStep === 3"
@@ -18,8 +19,16 @@
 <script setup>
 const currentStep = ref(1);
 const userStore = useAuthStore();
+const phoneReg = ref("");
+const nameReg = ref("");
 
-const nextStep = () => {
+const nextStepSmsCode = (phone, name) => {
+  phoneReg.value = phone;
+  nameReg.value = name;
+  currentStep.value++;
+};
+
+const nextStepStatusAuth = () => {
   currentStep.value++;
 };
 

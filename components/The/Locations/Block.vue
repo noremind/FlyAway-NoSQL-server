@@ -1,14 +1,10 @@
 <template>
   <section class="block">
     <div class="block__wrapper">
-      <img
-        class="block__img"
-        src="@/assets/image/content/tour-card.png"
-        alt="Preview"
-      />
+      <img class="block__img" :src="location.image_url" :alt="location.name" />
       <div class="block__content">
-        <nuxt-link class="block__link" to="/locations/1">
-          <h2 class="block__title">Кольсай</h2>
+        <nuxt-link class="block__link" :to="`/locations/` + location.id">
+          <h2 class="block__title">{{ location.name }}</h2>
         </nuxt-link>
         <p class="block__description">
           {{ visibleText }}
@@ -26,8 +22,14 @@
 </template>
 
 <script setup>
-const description =
-  "Походы — это не просто активный отдых, это настоящее путешествие к себе и природе. В современном ритме жизни, полном экранов, дедлайнов и суеты, поход становится глотком свежего воздуха — буквально и в переносном смысле.";
+const props = defineProps({
+  location: {
+    type: Object,
+    default: () => {},
+  },
+});
+
+const description = props.location.preview_text || "";
 
 const expanded = ref(false);
 
@@ -74,6 +76,7 @@ const toggleExpand = () => {
     color: $surface-900;
   }
   &__content {
+    width: 100%;
     display: flex;
     flex-direction: column;
     gap: 8px;

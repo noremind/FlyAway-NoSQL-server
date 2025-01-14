@@ -22,11 +22,14 @@
       </div>
 
       <div class="baqyt-block__info">
-        <div class="baqyt-block__info-box" v-if="viewType === 'list'">
+        <div
+          class="baqyt-block__info-box"
+          :class="{ 'baqyt-block__info-box--laptop': viewType === 'tablet' }"
+        >
           <img
             class="baqyt-block__avatar"
             src="@/assets/image/common/tour-avatar.png"
-            alt=""
+            alt="Preview"
           />
           <p class="baqyt-block__author">Mili Tour</p>
         </div>
@@ -147,17 +150,24 @@ const props = defineProps({
     &--new {
       background-color: $green-400;
     }
+    &--mobile {
+      display: none;
+    }
   }
   &__info {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 12px;
+    margin-top: 8px;
     &-box {
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 8px;
+      &--laptop {
+        display: flex;
+      }
     }
   }
   &__author {
@@ -248,6 +258,11 @@ const props = defineProps({
     }
     &__info {
       margin-top: 12px;
+      &-box {
+        &--laptop {
+          display: none;
+        }
+      }
     }
     &__discount {
       display: none;

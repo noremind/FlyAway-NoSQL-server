@@ -11,7 +11,7 @@
 
       <div class="sms-code__box">
         <p class="sms-code__message">Введите СМС-код отправленный на номер</p>
-        <p class="sms-code__number">+7 (777) 777 77 77</p>
+        <p class="sms-code__number">{{ phone }}</p>
       </div>
 
       <client-only>
@@ -22,9 +22,9 @@
             :lower="false"
             :length="4"
             :disallow="/[^a-zA-Z0-9]/g"
-            :class="{ error: 'sms-code__fields-error' }"
+            :class="{ error: errorSms ? 'sms-code__fields-error' : '' }"
           />
-          <p class="sms-code__error">Неверный код</p>
+          <p class="sms-code__error" v-if="errorSms">Неверный код</p>
           <div class="sms-code__btns">
             <UiButton
               label="Назад"
@@ -34,7 +34,8 @@
             <UiButton
               label="Подтвердить"
               class="sms-code__btn sms-code__btn--confirm"
-              @click="emit('nextStep')"
+              @click="postLogin"
+              :disabled="disabledBtn"
             ></UiButton>
           </div>
         </form>
@@ -46,6 +47,50 @@
 <script setup>
 const sms = ref(null);
 const emit = defineEmits(["nextStep", "prevStep"]);
+const errorSms = ref(false);
+
+const props = defineProps({
+  phone: {
+    type: String,
+    default: "",
+  },
+});
+
+const disabledBtn = computed(() => {
+  return !(sms.value?.length === 4);
+});
+
+const getSmsCode = () => {
+  const number = "+" + props.phone;
+  useApi({
+    url: "/auth/get-code",
+    method: "get",
+    params: { phone: number },
+  }).then((res) => {
+    console.log(res);
+  });
+};
+getSmsCode();
+
+const postLogin = () => {
+  if (!disabledBtn.value) {
+    useApi({
+      url: "/auth/login",
+      method: "post",
+      data: {
+        phone: props.phone,
+        code: sms.value,
+      },
+    })
+      .then((res) => {
+        emit("nextStep");
+      })
+      .catch((error) => {
+        errorSms.value = true;
+        sms.value = null;
+      });
+  }
+};
 </script>
 
 <style lang="scss" scoped>

@@ -13,21 +13,19 @@
           go-back="/locations"
         />
 
-        <div class="details__content">
-          <h1 class="details__title title">Бурабай</h1>
+        <div class="details__content" v-if="detail">
+          <h1 class="details__title title">{{ detail.name }}</h1>
 
-          <img
-            class="details__img"
-            src="@/assets/image/content/main-image.png"
-            alt="Preview"
-          />
+          <img class="details__img" :src="detail.image" alt="Preview" />
 
           <div class="details__box">
             <h2 class="details__author">Аскар Таханов</h2>
             <p class="detials__date">10.11.2024</p>
           </div>
 
-          <h1 class="details__title details__title--mobile title">Бурабай</h1>
+          <h1 class="details__title details__title--mobile title">
+            {{ detail.name }}
+          </h1>
 
           <div class="details__block">
             <h2 class="details__bold">Поход: Перезагрузка для тела и души</h2>
@@ -65,6 +63,7 @@
         </div>
 
         <UiSwiper
+          v-if="locationTours"
           class="details__swiper"
           :pagination="{ clickable: true }"
           :autoplay="true"
@@ -86,27 +85,57 @@
             },
           }"
         >
-          <swiper-slide class="details__swiper" v-for="slide in 5" :key="slide">
-            <TheCommonTourCard></TheCommonTourCard>
+          <swiper-slide
+            class="details__swiper"
+            v-for="tour in locationTours"
+            :key="tour.id"
+          >
+            <TheCommonTourCard :tour="tour"></TheCommonTourCard>
           </swiper-slide>
         </UiSwiper>
 
-        <div class="details__tours">
-          <TheCommonTourCard v-for="tour in 4" :key="tour"></TheCommonTourCard>
-        </div>
-        <UiButton
-          class="details__btn button-secondary details__btn--mobile"
-          label="Все туры"
-          after-icon="chevron"
-          icon-color="blue-500"
-          icon-size="size-20"
-        ></UiButton>
+        <template v-if="locationTours?.length">
+          <div class="details__tours">
+            <TheCommonTourCard
+              v-for="tour in locationTours"
+              :key="tour.id"
+              :tour="tour"
+              :view-type="'tablet'"
+            ></TheCommonTourCard>
+          </div>
+          <UiButton
+            class="details__btn button-secondary details__btn--mobile"
+            label="Все туры"
+            after-icon="chevron"
+            icon-color="blue-500"
+            icon-size="size-20"
+          ></UiButton>
+        </template>
       </div>
     </section>
   </UiOverlay>
 </template>
 
-<script setup></script>
+<script setup>
+const detail = ref(null);
+const locationTours = ref(null);
+const route = useRoute();
+
+const getLocation = () => {
+  useApi({
+    url: `/locations/${route.params.id}`,
+    method: "get",
+  })
+    .then((res) => {
+      detail.value = res.data.detail;
+      locationTours.value = res.data.linked_list;
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};
+getLocation();
+</script>
 
 <style lang="scss" scoped>
 .details {

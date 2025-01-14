@@ -6,6 +6,7 @@
           class="locations__top-search"
           placeholder="Введите название"
           after-icon="lupa"
+          v-model="search"
         ></UiInput>
         <p class="locations__top-text" @click="openFilterMobile">Фильтр</p>
       </div>
@@ -31,6 +32,7 @@
                 after-icon="lupa"
                 icon-color="surface-900"
                 label="Поиск по названию"
+                v-model="search"
               ></UiInput>
 
               <UiHashTag :tags="tags"></UiHashTag>
@@ -42,18 +44,19 @@
           <section class="locations__sort">
             <h2 class="locations__sort-title">Сортировка</h2>
             <UiCheckbox
-              v-for="(item, index) in options"
-              :key="index"
-              :label="item.label"
+              :options="options"
+              v-model="selectedSortOption"
             ></UiCheckbox>
           </section>
 
-          <div class="locations__cards">
+          <div class="locations__cards" v-if="locations">
             <TheLocationsBlock
-              v-for="location in 6"
-              :key="location"
+              v-for="location in locations"
+              :key="location.id"
+              :location="location"
             ></TheLocationsBlock>
           </div>
+          <div v-else>Loading...</div>
 
           <UiPagination class="locations__pagination"></UiPagination>
         </div>
@@ -68,30 +71,26 @@
   >
     <div class="locations__overlay-checkboxs">
       <p class="locations__overlay-bold">Сортировка</p>
-      <UiCheckbox
-        v-for="(item, index) in options"
-        :key="index"
-        :label="item.label"
-      ></UiCheckbox>
+      <UiCheckbox :options="options" v-model="selectedSortOption"></UiCheckbox>
     </div>
     <UiHashTag :tags="tags"></UiHashTag>
   </UiOverlay>
 </template>
 
 <script setup>
+const locations = ref(null);
 const isOpenFilterMobile = ref(false);
-
-const openFilterMobile = () => {
-  isOpenFilterMobile.value = true;
-};
-
-const closeFilterMobile = () => {
-  isOpenFilterMobile.value = false;
-};
 const options = [
-  { label: "по цене", value: "price" },
-  { label: "по популярности", value: "popularity" },
+  { label: "по дате выхода", value: "created_at" },
+  { label: "по популярности", value: "rating" },
 ];
+const selectedSortOption = ref([]);
+const search = ref(null);
+const filterQueries = reactive({
+  q: null,
+  sort_by: null,
+  sort_order: null,
+});
 
 const tags = reactive([
   {
@@ -111,6 +110,50 @@ const tags = reactive([
     name: "активный",
   },
 ]);
+
+const getLocations = (query = {}) => {
+  useApi({
+    url: "/locations",
+    mehtod: "get",
+    params: { ...query },
+  }).then((res) => {
+    locations.value = res.data.data;
+  });
+};
+getLocations();
+
+const openFilterMobile = () => {
+  isOpenFilterMobile.value = true;
+};
+
+const closeFilterMobile = () => {
+  isOpenFilterMobile.value = false;
+};
+
+const setQuery = (key, value) => {
+  const query = {};
+  filterQueries[key] = value;
+  for (const key in filterQueries) {
+    if (filterQueries[key] !== null && filterQueries[key] !== "") {
+      query[key] = filterQueries[key];
+    }
+  }
+  getLocations(query);
+};
+
+watch(
+  () => selectedSortOption.value,
+  (newVal) => {
+    setQuery("sort_by", newVal.value);
+  }
+);
+
+watch(
+  () => search.value,
+  (newVal) => {
+    setQuery("q", newVal);
+  }
+);
 </script>
 
 <style lang="scss" scoped>

@@ -34,6 +34,7 @@
             class="block__avatar"
             src="@/assets/image/common/tour-avatar.png"
             alt="Avatar"
+            :class="{ 'block__avatar--laptop': viewType === 'tablet' }"
           />
 
           <div class="block__reviews">
@@ -43,7 +44,13 @@
           </div>
         </div>
 
-        <div class="block__tags" v-if="viewType === 'tablet'">
+        <div
+          class="block__tags"
+          :class="{
+            'block__tags--laptop': viewType === 'tablet',
+            'block__tags--hide': viewType === 'list',
+          }"
+        >
           <p
             class="block__discount"
             :class="{ 'block__discount--order': viewType === 'tablet' }"
@@ -65,7 +72,10 @@
             <nuxt-link to="/hotels/1">
               <h2 class="block__title">Звездный Комфорт</h2>
             </nuxt-link>
-            <div class="block__ratings" v-if="viewType === 'list'">
+            <div
+              class="block__ratings"
+              :class="{ 'block__ratings--laptop': viewType === 'tablet' }"
+            >
               <UiIcons
                 v-for="star in 5"
                 icon="star"
@@ -75,7 +85,7 @@
             </div>
             <p class="block__description">
               Погрузитесь в природу Казахстана посетив озеро Кольсай.
-              <span v-if="viewType === 'list'">
+              <span>
                 Погрузитесь в природу Казахстана посетив озеро
                 Кольсай.Погрузитесь в природу Казахстана посетив озеро Кольсай.
                 <span class="block__more">еще...</span>
@@ -88,7 +98,10 @@
               label="Забронировать"
             ></UiButton>
 
-            <div class="block__tags" v-if="viewType === 'list'">
+            <div
+              class="block__tags"
+              :class="{ 'block__tags--mobile': viewType === 'tablet' }"
+            >
               <p class="block__discount">-25%</p>
 
               <div class="block__location">
@@ -121,7 +134,7 @@
             <div>
               <UiButton
                 label="Забронировать"
-                class="block__btn block__btn--mobile button-primary"
+                class="block__btn button-primary"
               ></UiButton>
             </div>
           </div>
@@ -159,6 +172,7 @@ const props = defineProps({
     max-width: 320px;
     width: 100%;
   }
+
   &__swiper {
     position: absolute;
     top: 0;
@@ -202,6 +216,9 @@ const props = defineProps({
     width: 32px;
     height: 32px;
     border-radius: 50%;
+    &--laptop {
+      display: block;
+    }
   }
   &__content {
     padding: 16px;
@@ -210,6 +227,11 @@ const props = defineProps({
       display: flex;
       justify-content: space-between;
       gap: 12px;
+    }
+  }
+  &__ratings {
+    &--laptop {
+      display: flex;
     }
   }
   &__reviews {
@@ -252,6 +274,12 @@ const props = defineProps({
     gap: 12px;
     align-items: center;
     margin: auto 0 0 0;
+    &--laptop {
+      display: none;
+    }
+    &--hide {
+      display: none;
+    }
   }
   &__discount {
     padding: 4px 6px;
@@ -327,6 +355,11 @@ const props = defineProps({
       height: 140px;
       max-width: 100%;
     }
+    &__ratings {
+      &--laptop {
+        display: none;
+      }
+    }
     &__img {
       max-width: 100%;
       height: 140px;
@@ -337,6 +370,11 @@ const props = defineProps({
     &__texts {
       gap: 12px;
     }
+    &__avatar {
+      &--laptop {
+        display: none;
+      }
+    }
     &__content {
       padding: 8px;
       display: flex;
@@ -346,6 +384,15 @@ const props = defineProps({
     &__tags {
       display: flex;
       justify-content: space-between;
+      &--laptop {
+        display: flex;
+      }
+      &--mobile {
+        display: none;
+      }
+      &--hide {
+        display: none;
+      }
     }
     &__discount {
       order: 2;

@@ -34,7 +34,7 @@
         <div class="tour__reviews">
           <p class="tour__reviews-count">20 отзывов</p>
           <UiIcons icon="star" color="yellow-500" size="size-14"></UiIcons>
-          <p class="tour__reviews-average">4,1</p>
+          <p class="tour__reviews-average">{{ tour?.rating }}</p>
         </div>
       </div>
       <span
@@ -44,10 +44,12 @@
       >
       <div class="tour__content">
         <h3 class="tour__title">
-          <nuxt-link class="tour__link" to="/tours/1">Кольсай</nuxt-link>
+          <nuxt-link class="tour__link" to="/tours/1">{{
+            tour?.name
+          }}</nuxt-link>
         </h3>
         <p class="tour__description">
-          Погрузитесь в природу Казахстана посетив озеро Кольсай.
+          {{ tour?.preview_text }}
         </p>
         <div class="tour__box">
           <p class="tour__text">Осталось</p>
@@ -79,6 +81,10 @@
 <script setup>
 const isOpenDropdown = ref(false);
 const props = defineProps({
+  tour: {
+    type: Object,
+    default: () => {},
+  },
   viewType: {
     type: String,
     default: "list",
@@ -292,11 +298,15 @@ const toggleDropdown = () => {
   .tour {
     &__wrapper {
       padding: 0 6px 6px 6px;
-      max-width: 100%;
+      max-width: 180px;
+      height: 100%;
     }
     &__header {
       padding-top: 6px;
       padding-bottom: 6px;
+    }
+    &__title {
+      font-size: 16px;
     }
     &__date-item,
     &__date {

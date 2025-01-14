@@ -96,10 +96,11 @@
           <div
             class="tours__cards"
             :class="{ 'tours__cards--tablet': selectedTabMobile.id === 1 }"
+            v-if="tours?.length"
           >
             <TheCommonTourCard
-              v-for="card in 6"
-              :key="card"
+              v-for="card in tours"
+              :key="card.id"
               :view-type="selectedTabMobile.id === 1 ? 'tablet' : 'list'"
             ></TheCommonTourCard>
 
@@ -107,19 +108,21 @@
               class="tours__banner"
             ></TheCommonPopularBanner>
 
-            <TheCommonTourCard
-              v-for="card in 6"
-              :key="card"
-              :view-type="selectedTabMobile.id === 1 ? 'tablet' : 'list'"
-            ></TheCommonTourCard>
+            <template v-if="tours?.length">
+              <TheCommonTourCard
+                v-for="card in tours"
+                :key="card"
+                :view-type="selectedTabMobile.id === 1 ? 'tablet' : 'list'"
+              ></TheCommonTourCard>
+            </template>
           </div>
           <div v-show="selectedTab?.id === 2" class="tours__location">
             <div class="tours__map" ref="mapContainer"></div>
             <div class="tours__scroll-wrapper">
-              <div class="tours__scroll-cards">
+              <div class="tours__scroll-cards" v-if="tours?.length">
                 <TheCommonTourCard
-                  v-for="card in 4"
-                  :key="card"
+                  v-for="card in tours"
+                  :key="card.id"
                 ></TheCommonTourCard>
                 <div class="tours__scroll-pagination">
                   <UiPagination
@@ -210,6 +213,7 @@ const mapContainer = ref(null);
 const mapContainerMobile = ref(null);
 const isOpenFilterMobile = ref(false);
 const isOpenPartialLocationCards = ref(false);
+const tours = ref(null);
 const tabs = reactive([
   {
     id: 1,
@@ -264,6 +268,16 @@ const tags = reactive([
     name: "активный",
   },
 ]);
+
+const getTours = () => {
+  useApi({
+    url: "/tours",
+    method: "get",
+  }).then((res) => {
+    tours.value = res.data.data;
+  });
+};
+getTours();
 
 onMounted(() => {
   if (typeof ymaps !== "undefined") {
@@ -372,8 +386,8 @@ watch(
     margin: 36px 0;
   }
   &__filters {
-    max-width: 255px;
-    width: 100%;
+    width: 255px;
+    // width: 100%;
     border-radius: 16px;
     background-color: $white;
     box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.04);

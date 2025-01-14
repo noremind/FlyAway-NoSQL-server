@@ -1,5 +1,8 @@
 <template>
-  <div class="button" :class="{ backgroundColor: backgroundColor }">
+  <div
+    class="button"
+    :class="{ backgroundColor: backgroundColor, disabled: disabled }"
+  >
     <UiIcons
       v-if="beforeIcon"
       :icon="beforeIcon"
@@ -9,6 +12,7 @@
     <button
       :style="{ color: backgroundColor }"
       class="button__btn"
+      :disabled="disabled"
       type="button"
     >
       {{ label }}
@@ -30,6 +34,7 @@ const props = defineProps({
   afterIcon: String,
   iconSize: String,
   iconColor: String,
+  disabled: Boolean,
 });
 </script>
 
@@ -48,5 +53,11 @@ const props = defineProps({
     color: inherit;
     font-weight: inherit;
   }
+}
+
+.disabled {
+  pointer-events: none;
+  opacity: 0.7;
+  background-color: $surface-400;
 }
 </style>

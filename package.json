@@ -13,11 +13,13 @@
     "@nuxtjs/i18n": "^9.1.1",
     "@pinia/nuxt": "^0.9.0",
     "@venegrad/vue3-code-input": "^1.0.5",
+    "maska": "^2.1.11",
     "nuxt": "^3.14.1592",
     "nuxt-swiper": "^2.0.0",
     "pinia": "^2.3.0",
     "vue": "latest",
-    "vue-router": "latest"
+    "vue-router": "latest",
+    "vue3-tel-input": "^1.0.4"
   },
   "devDependencies": {
     "@primevue/nuxt-module": "^4.2.4",

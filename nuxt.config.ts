@@ -67,7 +67,7 @@ export default defineNuxtConfig({
     },
   },
 
-	plugins: ['~/plugins/sms-code.client.js'],
+	plugins: ['~/plugins/sms-code.client.js', '~/plugins/maska.ts'],
 
 	css: [
     "@/assets/scss/normalize.scss",

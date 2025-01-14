@@ -44,7 +44,7 @@ const props = defineProps({
   &__block {
     padding: 4px 8px;
     border-radius: 24px;
-    background-color: $white;
+    background-color: $surface-150;
     font-size: 14px;
     cursor: pointer;
     &--active {

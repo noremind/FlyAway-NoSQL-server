@@ -27,7 +27,23 @@
   </section>
 </template>
 
-<script setup></script>
+<script setup>
+const faqs = ref(null);
+const getFaqs = () => {
+  useApi({
+    url: "/faqs",
+    method: "get",
+  })
+    .then((res) => {
+      console.log(res.data);
+      faqs.value = res.data?.faqs;
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};
+getFaqs();
+</script>
 
 <style lang="scss" scoped>
 .faq {

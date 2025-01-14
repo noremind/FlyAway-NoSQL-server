@@ -72,6 +72,7 @@ const links = reactive([
     cursor: pointer;
     gap: 12px;
     transition: 0.5s;
+    border: 1px solid transparent;
     &:hover {
       border: 1px solid $blue-500;
     }

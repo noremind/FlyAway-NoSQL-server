@@ -4,8 +4,9 @@
     <Calendar
       class="calendar__field"
       v-model="model"
-      showIcon
+      :showIcon="haveIcon"
       dateFormat="dd.mm.yy"
+      :placeholder="placeholder"
     >
       <template #inputicon="{ clickCallback }">
         <UiIcons icon="lupa"></UiIcons>
@@ -26,6 +27,11 @@ const props = defineProps({
     type: String,
     default: "",
   },
+  haveIcon: {
+    type: Boolean,
+    default: true,
+  },
+  placeholder: String,
 });
 const model = ref(props.modelValue);
 </script>

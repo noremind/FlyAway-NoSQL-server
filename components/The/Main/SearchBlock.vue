@@ -14,18 +14,27 @@
         </div>
         <div class="search__box">
           <p class="search__text">Дата начала</p>
-          <UiCalendar
-            class="search__start-date"
-            placeholder="17.12.2024"
-          ></UiCalendar>
+
+          <div class="search__box-calendar">
+            <UiCalendar
+              class="search__start-date"
+              placeholder="17.12.2024"
+              :have-icon="false"
+            ></UiCalendar>
+            <UiIcons icon="arrow" color="blue-500" size="size-14"></UiIcons>
+            <UiCalendar
+              class="search__start-date"
+              placeholder="17.12.2024"
+            ></UiCalendar>
+          </div>
         </div>
-        <div class="search__box">
+        <!-- <div class="search__box">
           <p class="search__text">Дата конца</p>
           <UiCalendar
             class="search__end-date"
             placeholder="17.12.2024"
           ></UiCalendar>
-        </div>
+        </div> -->
         <UiButton
           class="search__btn button-secondary"
           label="Найти туры"
@@ -85,6 +94,15 @@ const selectedTab = ref(tabs[0]);
     gap: 44px;
     margin: 12px;
   }
+  &__box {
+    &-calendar {
+      display: flex;
+      border: 1px solid $surface-300;
+      padding: 3px;
+      align-items: center;
+      border-radius: 26px;
+    }
+  }
   &__btn {
     max-width: 215px;
     width: 100%;
@@ -107,10 +125,9 @@ const selectedTab = ref(tabs[0]);
   }
   &__start-date,
   &__end-date {
-    border: 1px solid $surface-300;
-    padding: 5px;
-    border-radius: 26px;
     display: flex;
+    margin-top: 0px;
+    padding: 3.2px;
   }
 }
 

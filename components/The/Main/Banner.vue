@@ -1,30 +1,34 @@
 <template>
-  <section class="banner">
-    <div class="banner__wrapper">
-      <div class="banner__img-wrapper">
-        <img
-          class="banner__img"
-          src="@/assets/image/content/main-image.png"
-          alt="Кольсай"
-        />
-      </div>
+  <UiSwiper :loop="true" :autoplay="true">
+    <swiper-slide v-for="banner in 5" :key="banner">
+      <section class="banner">
+        <div class="banner__wrapper">
+          <div class="banner__img-wrapper">
+            <img
+              class="banner__img"
+              src="@/assets/image/content/main-image.png"
+              alt="Кольсай"
+            />
+          </div>
 
-      <div class="banner__content">
-        <h1 class="banner__title">Кольсай</h1>
-        <p class="banner__description">
-          Погружение в Природную Красоту Казахстана
-        </p>
+          <div class="banner__content">
+            <h1 class="banner__title">Кольсай</h1>
+            <p class="banner__description">
+              Погружение в Природную Красоту Казахстана
+            </p>
 
-        <UiButton
-          class="banner__btn button-secondary"
-          afterIcon="arrow"
-          iconColor="blue-400"
-          label="подробнее"
-          iconSize="size-26"
-        ></UiButton>
-      </div>
-    </div>
-  </section>
+            <UiButton
+              class="banner__btn button-secondary"
+              afterIcon="arrow"
+              iconColor="blue-400"
+              label="подробнее"
+              iconSize="size-26"
+            ></UiButton>
+          </div>
+        </div>
+      </section>
+    </swiper-slide>
+  </UiSwiper>
 </template>
 
 <script setup></script>

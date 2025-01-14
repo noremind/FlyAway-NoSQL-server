@@ -1,24 +1,33 @@
 <template>
-  <div>
+  <div v-for="option in options" :key="option.value">
     <label
       class="checkbox-container"
       :class="{ 'checkbox-container--checkmark': type === 'checkmark' }"
     >
-      <input type="checkbox" :value="modelValue" v-model="model" />
+      <input
+        type="radio"
+        :value="option.value"
+        v-model="model"
+        @change="emit('update:modelValue', option)"
+      />
       <span class="custom-checkbox"></span>
-      {{ label }}
+      {{ option.label }}
     </label>
   </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
+const emit = defineEmits(["update:modelValue"]);
 
 const props = defineProps({
   label: String,
+  options: {
+    type: Array,
+    default: () => [],
+  },
   modelValue: {
-    type: [Number, String],
-    default: () => null,
+    type: Object,
+    default: () => {},
   },
   type: {
     type: String,
@@ -26,13 +35,6 @@ const props = defineProps({
   },
 });
 const model = ref(props.modelValue);
-
-// const options = [
-//   { label: "По цене", value: "price" },
-//   { label: "По популярности", value: "popularity" },
-// ];
-
-const selectedOptions = ref([]);
 </script>
 
 <style lang="scss" scoped>

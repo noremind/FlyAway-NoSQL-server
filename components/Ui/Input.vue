@@ -13,8 +13,10 @@
         :class="{ 'input__field--center': isCenter }"
         :type="type"
         name=""
+        v-maska
+        :data-maska="maska"
         :value="modelValue"
-        @input="$emit('update:modelValue', event.target.value)"
+        @input="$emit('update:modelValue', $event.target.value)"
         :placeholder="placeholder"
       />
       <UiIcons
@@ -36,6 +38,10 @@ const props = defineProps({
   modelValue: {
     type: String,
     defautl: "",
+  },
+  maska: {
+    type: String,
+    default: "",
   },
   label: String,
   placeholder: String,
@@ -67,6 +73,7 @@ const props = defineProps({
     font-size: 14px;
   }
   &__field {
+    width: 100%;
     &--center {
       text-align: center;
       font-size: 16px;

@@ -10,16 +10,23 @@
       <h4 class="register__title">Регистрация</h4>
 
       <form class="register__form">
-        <UiInput placeholder="Введите" label="Ваше имя"></UiInput>
         <UiInput
-          placeholder="+7 (7__) ___ __ __"
+          placeholder="Введите"
+          label="Ваше имя"
+          v-model="name"
+        ></UiInput>
+        <UiInput
+          placeholder="+7 (_ _ _) - _ _ _ - _ _ - _ _"
           label="Номер телефона"
+          v-model="phone"
+          maska="+7(###)-###-##-##"
         ></UiInput>
 
         <UiButton
           label="Зарегестрироваться"
-          @click="emit('nextStep')"
+          @click="postSignUp"
           class="register__btn button-primary"
+          :disabled="!disabledBtn"
         ></UiButton>
       </form>
     </div>
@@ -28,6 +35,28 @@
 
 <script setup>
 const emit = defineEmits(["nextStep"]);
+
+const name = ref("");
+const phone = ref("");
+
+const disabledBtn = computed(() => {
+  return name.value.length > 3 && phone.value.length === 17;
+});
+
+const postSignUp = () => {
+  if (disabledBtn.value) {
+    useApi({
+      url: "/auth/signup",
+      method: "post",
+      data: {
+        phone: phone.value,
+        name: name.value,
+      },
+    }).then((res) => {
+      emit("nextStep", phone.value, name.value);
+    });
+  }
+};
 </script>
 
 <style lang="scss" scoped>
