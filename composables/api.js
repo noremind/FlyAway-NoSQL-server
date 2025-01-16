@@ -1,6 +1,6 @@
 export async function useApi(options = {}) {
 	const config = useRuntimeConfig();
-	// const store = ref(useAuthStore());
+	const store = ref(useAuthStore());
 	// const commonStore = useCommonStore();
 	// const { $i18n } = useNuxtApp();
 	// const route = useRoute()
@@ -10,9 +10,7 @@ export async function useApi(options = {}) {
 
 
 	// commonStore.setLoader(true);
-	// const tokenCookie = useCookie("token", {
-	// 	maxAge: 604800,
-	// });
+	const tokenCookie = useCookie("token");
 
 	const headers = {
 		Accept: "application/json",
@@ -21,9 +19,9 @@ export async function useApi(options = {}) {
 		...options?.headers,
 	};
 
-	// if (store.value.getToken) {
-	// 	headers.Authorization = `Bearer ${tokenCookie.value}`;
-	// }
+	if (store.value.getToken) {
+		headers.Authorization = `Bearer ${tokenCookie.value}`;
+	}
 
 	try {
 		const response = await useFetch(options.url, {

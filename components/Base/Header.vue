@@ -44,7 +44,7 @@
           icon-color="blue-500"
         ></UiInput>
 
-        <nuxt-link to="/profile/favourites">
+        <nuxt-link to="/profile/favourites" v-if="userStore.isLoggedIn">
           <UiIcons icon="heart" size="size-24" color="blue-500"></UiIcons>
         </nuxt-link>
 
@@ -53,9 +53,18 @@
             class="header__profile-btn"
             type="button"
             @click="openDropdownMenu"
+            v-if="!userStore.isLoggedIn"
           >
             <UiIcons icon="profile-user" color="blue-500"></UiIcons>
           </button>
+
+          <img
+            v-else
+            class="header__avatar"
+            @click="openDropdownMenu"
+            :src="user.avatar"
+            alt="Avatar"
+          />
 
           <TheHeaderDropdown
             v-if="isOpenDropdownMenu"
@@ -89,6 +98,8 @@ const route = useRoute();
 const headerDropdown = ref(null);
 const isOpenDropdownMenu = ref(false);
 const isOpenMobileNavMenu = ref(false);
+const userStore = useAuthStore();
+const user = computed(() => userStore.getUser);
 const cities = reactive([
   {
     id: 1,
@@ -192,6 +203,12 @@ watch(
     font-size: 14px;
     border-radius: 16px;
     border: none;
+  }
+  &__avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    object-fit: cover;
   }
   &__inner {
     display: flex;

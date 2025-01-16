@@ -9,9 +9,9 @@
   </div>
 
   <UiModal
-    :is-show="userStore.isRegistered"
+    :is-show="userStore.isOpenRegisteredModal || userStore.isOpenLoginModal"
     max-width="600px"
-    @close="userStore.closeAuthModal"
+    @close="checkModal"
     :full-screen="userStore.isMobileModal"
   >
     <ModalsAuthStep></ModalsAuthStep>
@@ -20,4 +20,9 @@
 
 <script setup>
 const userStore = useAuthStore();
+const checkModal = computed(() =>
+  userStore.isOpenRegisteredModal
+    ? userStore.closeAuthModalRegister
+    : userStore.closeAuthModalLogin
+);
 </script>

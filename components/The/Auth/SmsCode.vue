@@ -48,6 +48,8 @@
 const sms = ref(null);
 const emit = defineEmits(["nextStep", "prevStep"]);
 const errorSms = ref(false);
+const tokenCookie = useCookie("token");
+const userCookie = useCookie("user");
 
 const props = defineProps({
   phone: {
@@ -66,9 +68,7 @@ const getSmsCode = () => {
     url: "/auth/get-code",
     method: "get",
     params: { phone: number },
-  }).then((res) => {
-    console.log(res);
-  });
+  }).then((res) => {});
 };
 getSmsCode();
 
@@ -83,6 +83,8 @@ const postLogin = () => {
       },
     })
       .then((res) => {
+        tokenCookie.value = res.data.token;
+        userCookie.value = res.data.user;
         emit("nextStep");
       })
       .catch((error) => {

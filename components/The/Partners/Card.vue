@@ -1,28 +1,24 @@
 <template>
   <section class="card">
     <div class="card__wrapper">
-      <img
-        class="card__avatar"
-        src="@/assets/image/common/tour-avatar.png"
-        alt="Partner"
-      />
+      <img class="card__avatar" :src="partner.logo" :alt="partner.name" />
       <div class="card__box">
         <nuxt-link to="/partners/1">
-          <h2 class="card__author">Mili Tour</h2>
+          <h2 class="card__author">{{ partner.name }}</h2>
         </nuxt-link>
         <div class="card__reviews card__reviews--laptop">
-          <p class="card__count">20 отзывов</p>
+          <p class="card__count">{{ partner.reviews_count }} отзывов</p>
           <UiIcons icon="star" color="yellow-500" size="size-14"></UiIcons>
-          <p class="card__average">4,1</p>
+          <p class="card__average">{{ partner.rating }}</p>
         </div>
         <ul class="card__list card__list--mobile">
           <li class="card__list-item">
             <p class="card__text">Количество туров</p>
-            <p class="card__number">3</p>
+            <p class="card__number">{{ partner.tours_count }}</p>
           </li>
           <li class="card__list-item">
             <p class="card__text">Количество отелей</p>
-            <p class="card__number">3</p>
+            <p class="card__number">{{ partner.hotels_count }}</p>
           </li>
           <li class="card__list-item">
             <p class="card__text">Количество активностей</p>
@@ -33,11 +29,11 @@
       <ul class="card__list card__list--laptop">
         <li class="card__list-item">
           <p class="card__text">Количество туров</p>
-          <p class="card__number">3</p>
+          <p class="card__number">{{ partner.tours_count }}</p>
         </li>
         <li class="card__list-item">
           <p class="card__text">Количество отелей</p>
-          <p class="card__number">3</p>
+          <p class="card__number">{{ partner.hotels_count }}</p>
         </li>
         <li class="card__list-item">
           <p class="card__text">Количество активностей</p>
@@ -46,15 +42,22 @@
       </ul>
 
       <div class="card__reviews card__reviews--mobile">
-        <p class="card__count">20 отзывов</p>
+        <p class="card__count">{{ partner.reviews_count }} отзывов</p>
         <UiIcons icon="star" color="yellow-500" size="size-14"></UiIcons>
-        <p class="card__average">4,1</p>
+        <p class="card__average">{{ partner.rating }}</p>
       </div>
     </div>
   </section>
 </template>
 
-<script setup></script>
+<script setup>
+const props = defineProps({
+  partner: {
+    type: Object,
+    defautl: () => {},
+  },
+});
+</script>
 
 <style lang="scss" scoped>
 .card {

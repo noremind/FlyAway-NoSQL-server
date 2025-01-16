@@ -1,19 +1,64 @@
 export const useAuthStore = defineStore('auth', () => {
-	const isRegistered = ref(false)
+	const tokenCookie = useCookie("token", {
+		maxAge: 604800,
+	});
+	const userCookie = useCookie("user", {
+		maxAge: 604800,
+	});
+
+	const user = ref(userCookie.value);
+	const token = ref(tokenCookie.value);
+
+	const isOpenRegisteredModal = ref(null)
+	const isOpenLoginModal = ref(null)
 	const isMobileModal = ref(false)
 
-	const openAuthModal = () => {
-		isRegistered.value = true
+	const isLoggedIn = computed(() => !!token.value);
+	const getToken = computed(() => token.value);
+	const getUser = computed(() => user.value);
+
+	const openAuthModalRegister = () => {
+		isOpenRegisteredModal.value = true
+	}
+	const closeAuthModalRegister = () => {
+		isOpenRegisteredModal.value = false
 	}
 
-	const closeAuthModal = () => {
-		isRegistered.value = false
+	const openAuthModalLogin = () => {
+		isOpenLoginModal.value = true
 	}
+	const closeAuthModalLogin = () => {
+		isOpenLoginModal.value = false
+	}
+
+	watch(
+		() => userCookie.value,
+		(newVal) => {
+			user.value = newVal;
+		},
+		{ immediate: true }
+	);
+
+	watch(
+		() => tokenCookie.value,
+		(newVal) => {
+			token.value = newVal;
+		},
+		{ immediate: true }
+	);
 
 	return {
-		isRegistered,
+		user,
+		token,
+		isOpenRegisteredModal,
+		isOpenLoginModal,
 		isMobileModal,
-		openAuthModal,
-		closeAuthModal,
+		openAuthModalRegister,
+		closeAuthModalRegister,
+		openAuthModalLogin,
+		closeAuthModalLogin,
+		isLoggedIn,
+		getToken,
+		getUser
 	};
 });

@@ -48,8 +48,12 @@
             ></UiCheckbox>
           </section>
 
-          <div class="partners__cards">
-            <ThePartnersCard v-for="card in 12" :key="card"></ThePartnersCard>
+          <div class="partners__cards" v-if="partners?.length">
+            <ThePartnersCard
+              v-for="partner in partners"
+              :key="partner.id"
+              :partner="partner"
+            ></ThePartnersCard>
           </div>
 
           <UiPagination class="partners__pagination"></UiPagination>
@@ -76,6 +80,7 @@
 </template>
 
 <script setup>
+const partners = ref(null);
 const isOpenFilterMobile = ref(false);
 
 const openFilterMobile = () => {
@@ -109,6 +114,16 @@ const tags = reactive([
     name: "активный",
   },
 ]);
+
+const getPartners = () => {
+  useApi({
+    url: "/partners",
+    method: "get",
+  }).then((res) => {
+    partners.value = res.data.data;
+  });
+};
+getPartners();
 </script>
 
 <style lang="scss" scoped>
@@ -130,8 +145,7 @@ const tags = reactive([
     margin: 36px 0;
   }
   &__filters {
-    max-width: 255px;
-    width: 100%;
+    width: 255px;
     border-radius: 16px;
     background-color: $white;
     box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.04);

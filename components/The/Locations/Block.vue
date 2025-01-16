@@ -13,8 +13,10 @@
           </span>
         </p>
         <div class="block__box">
-          <p class="block__author">Аскар Таханов</p>
-          <p class="block__date">10.11.2024</p>
+          <p class="block__author"></p>
+          <p class="block__date">
+            {{ formatDate(location.created_at) }}
+          </p>
         </div>
       </div>
     </div>

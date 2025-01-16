@@ -14,10 +14,10 @@
 </template>
 
 <script setup>
-import map from "@/assets/image/content/map.png";
-import hotel from "@/assets/image/content/hotel.png";
-import tourist from "@/assets/image/content/tourist.png";
-import qazaqstanMap from "@/assets/image/content/qazaqstan-map.png";
+import map from "@/assets/image/content/map.svg";
+import hotel from "@/assets/image/content/hotels-main.svg";
+import tourist from "@/assets/image/content/baqyt-zone-main.svg";
+import qazaqstanMap from "@/assets/image/content/country.svg";
 
 const links = reactive([
   {

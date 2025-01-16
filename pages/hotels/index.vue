@@ -369,8 +369,7 @@ watch(
     margin: 36px 0;
   }
   &__filters {
-    max-width: 255px;
-    width: 100%;
+    width: 255px;
     border-radius: 16px;
     background-color: $white;
     box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.04);

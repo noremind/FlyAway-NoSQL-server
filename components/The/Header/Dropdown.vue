@@ -3,12 +3,13 @@
     <div class="dropdown__wrapper">
       <div class="dropdown__box">
         <img
+          v-if="userStore.isLoggedIn"
           class="dropdown__avatar"
-          src="@/assets/image/common/avatar-user.jpeg"
+          :src="user.avatar"
           alt="Avatar"
         />
 
-        <button class="dropdown__avatar" type="button">
+        <button class="dropdown__avatar" type="button" v-else>
           <UiIcons
             size="size-32"
             icon="profile-user"
@@ -18,23 +19,23 @@
         </button>
       </div>
 
-      <div class="dropdown__auth">
+      <div class="dropdown__auth" v-if="!userStore.isLoggedIn">
         <UiButton
           label="Войти"
           before-icon="login"
           icon-color="blue-500"
           class="dropdown__auth-login"
-          @click="userStore.openAuthModal"
+          @click="userStore.openAuthModalLogin"
         ></UiButton>
         <UiButton
           background-color="blue-500"
           label="Зарегестрироваться"
           class="dropdown__auth-register button-primary"
-          @click="userStore.openAuthModal"
+          @click="userStore.openAuthModalRegister"
         ></UiButton>
       </div>
 
-      <p class="dropdown__user-name">Дана</p>
+      <p class="dropdown__user-name">{{ user?.name }}</p>
 
       <ul class="dropdown__list">
         <li
@@ -43,7 +44,9 @@
           :key="item.id"
         >
           <UiIcons :icon="item.icon" color="blue-500" size="size-24"></UiIcons>
-          <nuxt-link class="dropdown__link">{{ item.name }}</nuxt-link>
+          <nuxt-link class="dropdown__link" :to="item.link">{{
+            item.name
+          }}</nuxt-link>
         </li>
       </ul>
 
@@ -52,6 +55,7 @@
         label="Выйти"
         before-icon="login"
         icon-color="orange-200"
+        @click="leaveUser"
       ></UiButton>
     </div>
   </div>
@@ -59,60 +63,67 @@
 
 <script setup>
 const userStore = useAuthStore();
+const user = computed(() => userStore.getUser);
 const emit = defineEmits(["closeDropdown"]);
+const tokenCookie = useCookie("token");
+const userCookie = useCookie("user");
 const dropdownNav = [
   {
     id: 1,
     name: "Личный кабинет",
-    link: "",
+    link: "/profile",
     icon: "profile-user",
   },
   {
     id: 2,
     name: "Избранные",
-    link: "",
+    link: "/profile/favourites",
     icon: "heart",
   },
   {
     id: 3,
     name: "Мои туры",
-    link: "",
+    link: "/profile/my-tours",
     icon: "map",
   },
   {
     id: 4,
     name: "Мои отели",
-    link: "",
+    link: "/profile/my-hotels",
     icon: "home",
   },
   {
     id: 5,
     name: "BaqytZone",
-    link: "",
+    link: "/profile/baqyt-zone",
     icon: "smile",
   },
   {
     id: 5,
     name: "Кошелек и бонусы",
-    link: "",
+    link: "/profile/transactions",
     icon: "credit-card",
   },
 ];
+
+const leaveUser = () => {
+  tokenCookie.value = null;
+  userCookie.value = null;
+};
 </script>
 
 <style lang="scss" scoped>
 .dropdown {
   position: absolute;
-  top: 55px;
-  left: 13px;
+  top: 35px;
+  left: 45px;
   transform: translateX(-90%);
   z-index: 50;
   &__wrapper {
     display: flex;
     flex-direction: column;
     gap: 16px;
-    max-width: 340px;
-    width: 100%;
+    width: 290px;
     background-color: $white;
     padding: 26px 22px;
     border-radius: 12px 16px;
@@ -172,6 +183,9 @@ const dropdownNav = [
     font-weight: 100;
     background-color: transparent;
     border: 1px solid $orange-200;
+  }
+  &__link {
+    color: $surface-900;
   }
 }
 </style>

@@ -58,7 +58,15 @@
           </div>
           <div v-else>Loading...</div>
 
-          <UiPagination class="locations__pagination"></UiPagination>
+          <UiPagination
+            v-if="pagination?.last_page && pagination?.last_page !== 1"
+            :total-items="pagination?.total_items"
+            :current-page="currentPage"
+            @change-page="paginationPage"
+            :last-page="pagination?.last_page"
+            :per-page="pagination?.per_page"
+            class="locations__pagination"
+          ></UiPagination>
         </div>
       </div>
     </div>
@@ -79,6 +87,8 @@
 
 <script setup>
 const locations = ref(null);
+const pagination = reactive({});
+const currentPage = ref(1);
 const isOpenFilterMobile = ref(false);
 const options = [
   { label: "по дате выхода", value: "created_at" },
@@ -115,12 +125,20 @@ const getLocations = (query = {}) => {
   useApi({
     url: "/locations",
     mehtod: "get",
-    params: { ...query },
+    params: { ...query, page: currentPage.value },
   }).then((res) => {
     locations.value = res.data.data;
+    pagination.last_page = res.data.last_page;
+    pagination.total_items = res.data.total;
+    pagination.per_page = res.data.per_page;
   });
 };
 getLocations();
+
+const paginationPage = (page) => {
+  currentPage.value = page;
+  getLocations();
+};
 
 const openFilterMobile = () => {
   isOpenFilterMobile.value = true;
@@ -175,8 +193,7 @@ watch(
     margin: 36px 0;
   }
   &__filters {
-    max-width: 255px;
-    width: 100%;
+    width: 255px;
     border-radius: 16px;
     background-color: $white;
     box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.04);

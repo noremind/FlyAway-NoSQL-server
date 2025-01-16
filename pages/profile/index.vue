@@ -112,12 +112,16 @@ const selectCity = ref(cities[0]);
     }
   }
   &__select {
+    display: none;
     border-radius: 26px;
     background-color: transparent;
     border: 1px solid $surface-300;
   }
   &__btn {
     margin-top: 16px;
+    &--mobile {
+      display: none;
+    }
   }
   &__calendar {
     border-radius: 26px;
@@ -125,6 +129,7 @@ const selectCity = ref(cities[0]);
     border: 1px solid $surface-300;
     width: 100%;
     padding: 4px;
+    display: none;
     &-text {
       color: $surface-900;
       font-size: 14px;
@@ -184,6 +189,10 @@ const selectCity = ref(cities[0]);
     &__btn,
     &__input {
       display: none;
+    }
+    &__select,
+    &__calendar {
+      display: block;
     }
     &__btn {
       &--mobile {
