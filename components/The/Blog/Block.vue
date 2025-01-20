@@ -8,7 +8,7 @@
       />
       <div class="block__content">
         <nuxt-link class="block__link" to="/blog/1">
-          <h2 class="block__title">Почему стоит отправиться в поход?</h2>
+          <h2 class="block__title">{{ blog.name }}</h2>
         </nuxt-link>
         <p class="block__description">
           {{ visibleText }}
@@ -18,7 +18,7 @@
         </p>
         <div class="block__box">
           <p class="block__author">Аскар Таханов</p>
-          <p class="block__date">10.11.2024</p>
+          <p class="block__date">{{ formatDate(blog.created_at) }}</p>
         </div>
       </div>
     </div>
@@ -26,27 +26,26 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
-
-// Текст описания
-const description =
-  "Походы — это не просто активный отдых, это настоящее путешествие к себе и природе. В современном ритме жизни, полном экранов, дедлайнов и суеты, поход становится глотком свежего воздуха — буквально и в переносном смысле.";
-
-// Состояние развёрнутого текста
-const expanded = ref(false);
-
-// Проверка, нужно ли усекать текст
-const isTruncated = computed(() => description.split(" ").length > 30);
-
-// Логика отображения текста
-const visibleText = computed(() => {
-  if (expanded.value || !isTruncated.value) {
-    return description;
-  }
-  return description.split(" ").slice(0, 30).join(" ") + "...";
+const props = defineProps({
+  blog: {
+    type: Object,
+    default: () => {},
+  },
 });
 
-// Переключение состояния
+const description = ref(props.blog.description || " ");
+
+const expanded = ref(false);
+
+const isTruncated = computed(() => description.value.split(" ").length > 30);
+
+const visibleText = computed(() => {
+  if (expanded.value || !isTruncated.value) {
+    return description.value;
+  }
+  return description.value.split(" ").slice(0, 30).join(" ") + "...";
+});
+
 const toggleExpand = () => {
   expanded.value = !expanded.value;
 };
@@ -85,6 +84,7 @@ const toggleExpand = () => {
     flex-direction: column;
     gap: 8px;
     justify-content: space-between;
+    width: 100%;
   }
   &__description {
     font-size: 14px;

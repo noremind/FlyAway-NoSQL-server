@@ -1,39 +1,33 @@
 <template>
   <section class="agreement">
-    <div class="agreement__wrapper">
+    <div class="agreement__wrapper" v-if="agreement">
       <h1 class="agreement__title title">Политика конфиденциальности</h1>
 
       <p class="agreement__info">
         Дата вступления в силу:
-        <span class="agreement__date">20 июля 2024 года</span>
+        <span class="agreement__date">
+          {{ formatDate(agreement.updated_at) }}</span
+        >
       </p>
 
-      <div class="agreement__block" v-for="block in 6" :key="block">
-        <p class="agreement__bold">{{ block }}. Общие положения</p>
-        <p class="agreement__text">
-          Настоящая Политика конфиденциальности (далее – "Политика") определяет
-          порядок обработки и защиты персональных данных пользователей (далее –
-          "Пользователи") онлайн-сервиса [название сервиса], предоставляемого
-          [название компании] (далее – "Компания"). Мы стремимся обеспечить
-          конфиденциальность ваших данных в соответствии с применимым
-          законодательством о защите персональной информации.
-        </p>
-        <div class="agreement__box">
-          <p class="agreement__text">
-            Собранные данные используются для следующих целей:
-          </p>
-          <ul class="agreement__list">
-            <li class="agreement__list-item">
-              Обеспечение работы сервиса и предоставления запрашиваемых услуг.
-            </li>
-          </ul>
-        </div>
-      </div>
+      <div class="agreement__block" v-html="agreement.content"></div>
     </div>
   </section>
 </template>
 
-<script setup></script>
+<script setup>
+const agreement = ref(null);
+
+const getAgreement = () => {
+  useApi({
+    url: "/pages/terms",
+    mehtod: "get",
+  }).then((res) => {
+    agreement.value = res.data;
+  });
+};
+getAgreement();
+</script>
 
 <style lang="scss" scoped>
 .agreement {

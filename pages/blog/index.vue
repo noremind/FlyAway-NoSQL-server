@@ -6,6 +6,7 @@
           class="blog__top-search"
           placeholder="Введите название"
           after-icon="lupa"
+          v-model="filterQueries.q"
         ></UiInput>
         <p class="blog__top-text" @click="openFilterMobile">Фильтр</p>
       </div>
@@ -31,6 +32,7 @@
                 after-icon="lupa"
                 icon-color="surface-900"
                 label="Поиск по названию"
+                v-model="filterQueries.q"
               ></UiInput>
 
               <UiHashTag :tags="tags"></UiHashTag>
@@ -42,17 +44,28 @@
           <section class="blog__sort">
             <h2 class="blog__sort-title">Сортировка</h2>
             <UiCheckbox
-              v-for="(item, index) in options"
-              :key="index"
-              :label="item.label"
+              :options="options"
+              v-model="filterQueries.sort_by"
             ></UiCheckbox>
           </section>
 
-          <div class="blog__cards">
-            <TheBlogBlock v-for="blog in 6" :key="blog"></TheBlogBlock>
+          <div class="blog__cards" v-if="blogs">
+            <TheBlogBlock
+              v-for="blog in blogs"
+              :key="blog"
+              :blog="blog"
+            ></TheBlogBlock>
           </div>
 
-          <UiPagination class="blog__pagination"></UiPagination>
+          <UiPagination
+            v-if="pagination?.last_page && pagination?.last_page !== 1"
+            :total-items="pagination?.total_items"
+            :current-page="currentPage"
+            @change-page="paginationPage"
+            :last-page="pagination?.last_page"
+            :per-page="pagination?.per_page"
+            class="blog__pagination"
+          ></UiPagination>
         </div>
       </div>
     </div>
@@ -75,15 +88,16 @@
 </template>
 
 <script setup>
+const blogs = ref(null);
+const pagination = reactive({});
+const currentPage = ref(1);
 const isOpenFilterMobile = ref(false);
+const filterQueries = reactive({
+  q: null,
+  sort_by: null,
+  sort_order: null,
+});
 
-const openFilterMobile = () => {
-  isOpenFilterMobile.value = true;
-};
-
-const closeFilterMobile = () => {
-  isOpenFilterMobile.value = false;
-};
 const options = [
   { label: "по цене", value: "price" },
   { label: "по популярности", value: "popularity" },
@@ -107,6 +121,58 @@ const tags = reactive([
     name: "активный",
   },
 ]);
+const openFilterMobile = () => {
+  isOpenFilterMobile.value = true;
+};
+
+const closeFilterMobile = () => {
+  isOpenFilterMobile.value = false;
+};
+
+const getBlogs = (query = {}) => {
+  useApi({
+    url: "/news",
+    method: "get",
+    params: { ...query, page: currentPage.value },
+  }).then((res) => {
+    blogs.value = res.data.data;
+    pagination.last_page = res.data.last_page;
+    pagination.total_items = res.data.total;
+    pagination.per_page = res.data.per_page;
+  });
+};
+getBlogs();
+
+const setQuery = (key, value) => {
+  const query = {};
+  filterQueries[key] = value;
+  for (const key in filterQueries) {
+    if (filterQueries[key] !== null && filterQueries[key] !== "") {
+      query[key] = filterQueries[key];
+    }
+  }
+  getBlogs(query);
+};
+
+const paginationPage = (page) => {
+  currentPage.value = page;
+  getBlogs();
+};
+
+watch(
+  () => filterQueries.q,
+  (newVal) => {
+    newVal.length > 2 ? setQuery("q", newVal) : null;
+    newVal.length === 0 ? getBlogs() : null;
+  }
+);
+
+watch(
+  () => filterQueries.sort_by,
+  (newVal) => {
+    setQuery("sort_by", newVal);
+  }
+);
 </script>
 
 <style lang="scss" scoped>

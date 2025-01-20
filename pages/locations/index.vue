@@ -169,7 +169,8 @@ watch(
 watch(
   () => search.value,
   (newVal) => {
-    setQuery("q", newVal);
+    newVal.length > 2 ? setQuery("q", newVal) : null;
+    newVal.length === 0 ? getLocations() : null;
   }
 );
 </script>
