@@ -9,15 +9,20 @@
       <h1 class="faq__title title">Часто задаваемые вопросы (FAQ)</h1>
 
       <div class="faq__content">
-        <TheFaqAside></TheFaqAside>
+        <TheFaqAside
+          :faqs="faqs"
+          :selected-faq="selectedFaq"
+          @change-faq="changeFaq"
+        ></TheFaqAside>
 
         <div class="faq__accordions">
           <section class="faq__accordion">
             <h2 class="faq__accordion-title">О покупке туров</h2>
-            <div class="faq__accordion-block">
+            <div class="faq__accordion-block" v-if="selectedFaq">
               <TheFaqAccordion
-                v-for="accordion in 6"
-                :key="accordion"
+                v-for="faq in selectedFaq.faqs"
+                :key="faq.id"
+                :faq="faq"
               ></TheFaqAccordion>
             </div>
           </section>
@@ -29,19 +34,25 @@
 
 <script setup>
 const faqs = ref(null);
+const selectedFaq = ref(null);
 const getFaqs = () => {
   useApi({
     url: "/faqs",
     method: "get",
   })
     .then((res) => {
-      faqs.value = res.data?.faqs;
+      faqs.value = res.data;
+      selectedFaq.value = faqs.value[0];
     })
     .catch((error) => {
       console.log(error);
     });
 };
 getFaqs();
+
+const changeFaq = (faq) => {
+  selectedFaq.value = faq;
+};
 </script>
 
 <style lang="scss" scoped>

@@ -15,20 +15,16 @@
         </div>
         <div>
           <div class="tour__price-box">
-            <p class="tour__new-price">66 750 ₸</p>
+            <p class="tour__new-price">{{ tour.min_price }} ₸</p>
             <p class="tour__old-price"><s>89 000 ₸</s></p>
           </div>
         </div>
       </div>
 
       <div class="tour__info">
-        <div class="tour__info-box" v-if="viewType === 'list'">
-          <img
-            class="tour__avatar"
-            src="@/assets/image/common/tour-avatar.png"
-            alt=""
-          />
-          <p class="tour__author">Mili Tour</p>
+        <div class="tour__info-box" v-if="viewType === 'tablet'">
+          <img class="tour__avatar" :src="tour.partner?.logo" alt="" />
+          <p class="tour__author">{{ tour.partner?.name }}</p>
         </div>
 
         <div class="tour__reviews">
@@ -49,11 +45,11 @@
           }}</nuxt-link>
         </h3>
         <p class="tour__description">
-          {{ tour?.preview_text }}
+          {{ tour?.description_mini }}
         </p>
         <div class="tour__box">
           <p class="tour__text">Осталось</p>
-          <span class="tour__count">3 места</span>
+          <span class="tour__count">{{ tour.ticket_count }} места</span>
         </div>
         <div class="tour__inner">
           <div class="tour__inner-box">
@@ -199,6 +195,8 @@ const toggleDropdown = () => {
     flex-direction: column;
     gap: 12px;
     position: relative;
+    height: 200px;
+    justify-content: space-between;
   }
   &__title {
     font-size: 24px;

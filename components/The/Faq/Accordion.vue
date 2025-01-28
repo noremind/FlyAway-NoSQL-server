@@ -2,7 +2,7 @@
   <section class="accordion">
     <div class="accordion__wrapper">
       <div class="accordion__header" @click="toggleAccordion">
-        <h3 class="accordion__title">Как выбрать подходящий тур?</h3>
+        <h3 class="accordion__title">{{ faq.question }}</h3>
         <UiIcons
           icon="chevron"
           :class="isOpenAccordion ? 'left' : 'right'"
@@ -12,9 +12,7 @@
       </div>
       <div class="accordion__content" v-if="isOpenAccordion">
         <p class="accordion__description">
-          Вы можете использовать фильтры на нашем сайте, чтобы указать желаемую
-          страну, продолжительность поездки, тип отдыха (пляжный, экскурсионный,
-          активный) и бюджет.
+          {{ faq.answer }}
         </p>
       </div>
     </div>
@@ -24,6 +22,12 @@
 <script setup>
 const isOpenAccordion = ref(false);
 
+const props = defineProps({
+  faq: {
+    type: Object,
+    default: () => {},
+  },
+});
 const toggleAccordion = () => {
   isOpenAccordion.value = !isOpenAccordion.value;
 };

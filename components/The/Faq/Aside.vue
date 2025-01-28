@@ -4,10 +4,10 @@
       <ul class="aside__list">
         <li
           class="aside__list-item"
-          :class="{ 'aside__list-item--active': selectedList.id === list.id }"
-          v-for="list in lists"
+          :class="{ 'aside__list-item--active': selectedFaq.id === list.id }"
+          v-for="list in faqs"
           :key="list.id"
-          @click="changeSelected(list)"
+          @click="emit('changeFaq', list)"
         >
           {{ list.name }}
         </li>
@@ -17,37 +17,17 @@
 </template>
 
 <script setup>
-const lists = [
-  {
-    id: 0,
-    name: "Все вопросы",
+const emit = defineEmits(["changeFaq"]);
+const props = defineProps({
+  faqs: {
+    type: Array,
+    default: () => [],
   },
-  {
-    id: 1,
-    name: "О покупке туров",
+  selectedFaq: {
+    type: Object,
+    default: () => {},
   },
-  {
-    id: 2,
-    name: "О бронировании отелей",
-  },
-  {
-    id: 3,
-    name: "О подарочных сертификатах",
-  },
-  {
-    id: 4,
-    name: "Об оплате и возврате средств",
-  },
-  {
-    id: 5,
-    name: "Общий функционал сайта",
-  },
-];
-const selectedList = ref(lists[0]);
-
-const changeSelected = (list) => {
-  selectedList.value = list;
-};
+});
 </script>
 
 <style lang="scss" scoped>
