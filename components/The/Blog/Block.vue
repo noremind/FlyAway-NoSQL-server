@@ -1,11 +1,7 @@
 <template>
   <section class="block">
     <div class="block__wrapper">
-      <img
-        class="block__img"
-        src="@/assets/image/content/tour-card.png"
-        alt="Preview"
-      />
+      <img class="block__img" :src="blog?.image_url" :alt="blog?.name" />
       <div class="block__content">
         <nuxt-link class="block__link" to="/blog/1">
           <h2 class="block__title">{{ blog?.name }}</h2>

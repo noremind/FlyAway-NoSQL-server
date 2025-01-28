@@ -7,7 +7,7 @@
         <TheProfileNav class="profile__aside-nav"></TheProfileNav>
 
         <div class="profile__main">
-          <RouterView />
+          <NuxtPage />
         </div>
       </div>
     </div>

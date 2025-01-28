@@ -15,7 +15,9 @@
         </div>
         <div>
           <div class="tour__price-box">
-            <p class="tour__new-price">{{ tour.min_price }} ₸</p>
+            <p class="tour__new-price" v-if="tour?.min_price">
+              {{ tour?.min_price }} ₸
+            </p>
             <p class="tour__old-price"><s>89 000 ₸</s></p>
           </div>
         </div>
@@ -49,7 +51,7 @@
         </p>
         <div class="tour__box">
           <p class="tour__text">Осталось</p>
-          <span class="tour__count">{{ tour.ticket_count }} места</span>
+          <span class="tour__count">{{ tour?.ticket_count }} места</span>
         </div>
         <div class="tour__inner">
           <div class="tour__inner-box">
