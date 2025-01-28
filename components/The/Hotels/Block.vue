@@ -14,12 +14,8 @@
 
         <div class="block__swiper">
           <UiSwiper :pagination="{ clickable: true }">
-            <swiper-slide v-for="slider in 5">
-              <img
-                class="block__img"
-                src="@/assets/image/content/main-image.png"
-                alt="Кольсай"
-              />
+            <swiper-slide v-for="slider in hotel.images">
+              <img class="block__img" :src="slider" alt="Кольсай" />
             </swiper-slide>
           </UiSwiper>
         </div>
@@ -32,15 +28,15 @@
         <div class="block__content-top">
           <img
             class="block__avatar"
-            src="@/assets/image/common/tour-avatar.png"
+            :src="hotel.partner?.logo"
             alt="Avatar"
             :class="{ 'block__avatar--laptop': viewType === 'tablet' }"
           />
 
           <div class="block__reviews">
-            <p class="block__count">20 отзывов</p>
+            <p class="block__count">{{ hotel.reviews }} отзывов</p>
             <UiIcons icon="star" color="yellow-500" size="size-14"></UiIcons>
-            <p class="block__average">4,1</p>
+            <p class="block__average">{{ hotel.rating }}</p>
           </div>
         </div>
 
@@ -63,14 +59,14 @@
             :class="{ 'block__location--order': viewType === 'tablet' }"
           >
             <UiIcons icon="location" size="size-20"></UiIcons>
-            <p class="block__region">Алматы</p>
+            <p class="block__region">{{ hotel.city }}</p>
           </div>
         </div>
 
         <div class="block__box">
           <div class="block__texts">
-            <nuxt-link to="/hotels/1">
-              <h2 class="block__title">Звездный Комфорт</h2>
+            <nuxt-link :to="`/hotels/${hotel.id}`">
+              <h2 class="block__title">{{ hotel.name }}</h2>
             </nuxt-link>
             <div
               class="block__ratings"
@@ -84,12 +80,8 @@
               ></UiIcons>
             </div>
             <p class="block__description">
-              Погрузитесь в природу Казахстана посетив озеро Кольсай.
-              <span>
-                Погрузитесь в природу Казахстана посетив озеро
-                Кольсай.Погрузитесь в природу Казахстана посетив озеро Кольсай.
-                <span class="block__more">еще...</span>
-              </span>
+              {{ hotel.description }}
+              <span class="block__more">еще...</span>
             </p>
 
             <UiButton
@@ -106,7 +98,7 @@
 
               <div class="block__location">
                 <UiIcons icon="location" size="size-20"></UiIcons>
-                <p class="block__region">Алматы</p>
+                <p class="block__region">{{ hotel.city }}</p>
               </div>
             </div>
           </div>
@@ -149,6 +141,10 @@ const props = defineProps({
   viewType: {
     type: String,
     default: "list",
+  },
+  hotel: {
+    type: Object,
+    default: () => {},
   },
 });
 </script>

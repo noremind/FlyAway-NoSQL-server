@@ -18,6 +18,8 @@
 <script setup>
 import Calendar from "primevue/calendar";
 
+const emit = defineEmits(["update:modelValue"]);
+
 const props = defineProps({
   modelValue: {
     type: [Date, String],
@@ -34,6 +36,13 @@ const props = defineProps({
   placeholder: String,
 });
 const model = ref(props.modelValue);
+
+watch(
+  () => model.value,
+  (newVal) => {
+    emit("update:modelValue", newVal);
+  }
+);
 </script>
 
 <style scoped lang="scss">

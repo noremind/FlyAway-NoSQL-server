@@ -9,13 +9,13 @@
     @action="openPartialModalPayment"
   >
     <section class="details">
-      <div class="details__wrapper">
+      <div class="details__wrapper" v-if="hotel">
         <UiGoBack class="details__go-back" label="Отели" go-back="/hotels" />
 
         <div class="details__box">
           <section class="details__content">
             <div class="details__header">
-              <h1 class="details__title title">Business po kazakhsky</h1>
+              <h1 class="details__title title">{{ hotel.name }}</h1>
               <div class="details__icons">
                 <UiIcons icon="heart" size="size-24" color="blue-500"></UiIcons>
               </div>
@@ -34,11 +34,11 @@
                 next-btn-class=".next-img"
                 prev-btn-class=".prev-img"
               >
-                <swiper-slide v-for="slide in 5" :key="slide">
+                <swiper-slide v-for="slide in hotel.images" :key="slide">
                   <img
                     @click="openPreviewPicture"
                     class="details__swiper-img"
-                    src="@/assets/image/content/main-image.png"
+                    :src="slide"
                     alt="Image"
                   />
                 </swiper-slide>
@@ -56,19 +56,19 @@
                 20 отзывов
               </p>
               <UiIcons icon="star" color="yellow-500" size="size-14"></UiIcons>
-              <p class="details__reviews-average">4,1</p>
+              <p class="details__reviews-average">{{ hotel.rating }}</p>
             </div>
 
             <div class="details__totals-header details__totals-header--mobile">
               <div class="details__totals-box">
                 <img
                   class="details__avatar"
-                  src="@/assets/image/common/tour-avatar.png"
+                  :src="hotel.partner?.logo"
                   alt="Avatar"
                 />
               </div>
               <h1 class="details__title details__title--mobile title">
-                Звездный Комфорт
+                {{ hotel.name }}
               </h1>
             </div>
 
@@ -87,11 +87,7 @@
             <div class="details__info">
               <p class="details__about">Об отеле</p>
 
-              <p class="details__description">
-                Приглашаем вас отправиться в увлекательное путешествие на
-                Кольсайские озера — настоящую жемчужину Алматинской области, где
-                природа поражает своей первозданной красотой и чистотой.
-              </p>
+              <p class="details__description" v-html="hotel.content"></p>
 
               <div class="details__category">
                 <p class="details__category-title">Категория</p>
@@ -99,12 +95,14 @@
                   <UiIcons
                     icon="star"
                     color="yellow-500"
-                    v-for="star in 5"
+                    v-for="star in Math.floor(hotel.rating)"
                     :key="star"
                     size="size-20"
                   ></UiIcons>
                 </div>
-                <p class="details__category-info">4 звездочный отель</p>
+                <p class="details__category-info">
+                  {{ hotel.rating }} звездочный отель
+                </p>
               </div>
 
               <div class="details__location">
@@ -165,7 +163,9 @@
                 <p class="details__tourist-text">Виды номеров</p>
                 <div class="details__rooms">
                   <TheHotelsRoom
-                    v-for="room in 3"
+                    v-for="room in hotel.room_types"
+                    :key="room.id"
+                    :room="room"
                     @select="openPartialModalPayment"
                   ></TheHotelsRoom>
                 </div>
@@ -379,10 +379,10 @@
               <div class="details__totals-box">
                 <img
                   class="details__avatar"
-                  src="@/assets/image/common/tour-avatar.png"
+                  :src="hotel.partner?.logo"
                   alt="Avatar"
                 />
-                <p class="details__name">Mili Tour</p>
+                <p class="details__name">{{ hotel.partner?.name }}</p>
               </div>
               <p class="details__baige">-20%</p>
             </div>
@@ -744,6 +744,19 @@ const yandexMapInfo = ref(null);
 
 const isMapReady = ref(false);
 
+const hotel = ref(null);
+const route = useRoute();
+const getHotel = () => {
+  useApi({
+    url: `/hotels/${route.params.id}`,
+    method: "get",
+  }).then((res) => {
+    hotel.value = res.data;
+  });
+};
+
+getHotel();
+
 onMounted(() => {
   getInfoMap();
 });
@@ -882,6 +895,9 @@ const getInfoMap = () => {
   }
   &__title {
     color: $blue-500;
+    &--mobile {
+      display: none;
+    }
   }
   &__icons {
     display: flex;
@@ -1086,6 +1102,10 @@ const getInfoMap = () => {
       gap: 6px;
       align-items: center;
       margin-top: 8px;
+
+      &--mobile {
+        display: none;
+      }
     }
     &-btn {
       display: none;
@@ -1141,6 +1161,9 @@ const getInfoMap = () => {
       justify-content: space-between;
       gap: 12px;
       align-items: center;
+      &--mobile {
+        display: none;
+      }
     }
     &-box {
       display: flex;

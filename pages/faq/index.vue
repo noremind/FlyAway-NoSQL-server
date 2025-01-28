@@ -35,7 +35,6 @@ const getFaqs = () => {
     method: "get",
   })
     .then((res) => {
-      console.log(res.data);
       faqs.value = res.data?.faqs;
     })
     .catch((error) => {

@@ -104,24 +104,20 @@
             ></div>
 
             <div
+              v-if="hotels"
               class="hotels__cards-inner"
               :class="{
                 'hotels__cards-inner--tablet': selectedTabMobile.id === 1,
               }"
             >
               <TheHotelsBlock
-                v-for="block in 4"
-                :key="block"
+                v-for="hotel in hotels"
+                :key="hotel.id"
+                :hotel="hotel"
                 :view-type="selectedTabMobile.id === 1 ? 'tablet' : 'list'"
               ></TheHotelsBlock>
 
               <TheCommonPopularBanner></TheCommonPopularBanner>
-
-              <TheHotelsBlock
-                v-for="block in 2"
-                :key="block"
-                :view-type="selectedTabMobile.id === 1 ? 'tablet' : 'list'"
-              ></TheHotelsBlock>
             </div>
           </div>
           <UiPagination class="hotels__pagination"></UiPagination>
@@ -259,6 +255,17 @@ const tags = reactive([
     name: "активный",
   },
 ]);
+const hotels = ref(null);
+
+const getHotels = () => {
+  useApi({
+    url: "/hotels",
+    method: "get",
+  }).then((res) => {
+    hotels.value = res.data;
+  });
+};
+getHotels();
 
 const openFilterMobile = () => {
   isOpenFilterMobile.value = true;

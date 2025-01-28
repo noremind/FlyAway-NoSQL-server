@@ -59,7 +59,7 @@ const props = defineProps({
 .input {
   &__wrapper {
     border-radius: 26px;
-    padding: 10px 18px;
+    padding: 10px;
     max-width: 100%;
     border: 1px solid $surface-300;
     display: flex;

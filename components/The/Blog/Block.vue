@@ -8,7 +8,7 @@
       />
       <div class="block__content">
         <nuxt-link class="block__link" to="/blog/1">
-          <h2 class="block__title">{{ blog.name }}</h2>
+          <h2 class="block__title">{{ blog?.name }}</h2>
         </nuxt-link>
         <p class="block__description">
           {{ visibleText }}
@@ -18,7 +18,7 @@
         </p>
         <div class="block__box">
           <p class="block__author">Аскар Таханов</p>
-          <p class="block__date">{{ formatDate(blog.created_at) }}</p>
+          <p class="block__date">{{ formatDate(blog?.created_at) }}</p>
         </div>
       </div>
     </div>
@@ -33,7 +33,7 @@ const props = defineProps({
   },
 });
 
-const description = ref(props.blog.description || " ");
+const description = ref(props.blog?.description || " ");
 
 const expanded = ref(false);
 

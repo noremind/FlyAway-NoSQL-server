@@ -6,7 +6,7 @@
     @close="goTo('/blog')"
   >
     <section class="details">
-      <div class="details__wrapper">
+      <div class="details__wrapper" v-if="blog">
         <UiGoBack
           class="details__go-back"
           label="Блог и Статьи"
@@ -15,35 +15,23 @@
 
         <div class="details__content">
           <h1 class="details__title title">
-            Почему стоит отправиться в поход?
+            {{ blog.title }}
           </h1>
 
-          <img
-            class="details__img"
-            src="@/assets/image/content/main-image.png"
-            alt="Preview"
-          />
+          <img class="details__img" :src="blog.image" alt="Preview" />
 
           <div class="details__box">
             <h2 class="details__author">Аскар Таханов</h2>
-            <p class="detials__date">10.11.2024</p>
+            <p class="detials__date">{{ formatDate(blog.created_at) }}</p>
           </div>
 
           <h1 class="details__title details__title--mobile title">
-            Почему стоит отправиться в поход?
+            {{ blog.title }}
           </h1>
 
-          <div class="details__block">
-            <h2 class="details__bold">Поход: Перезагрузка для тела и души</h2>
-            <p class="details__text">
-              Походы — это не просто активный отдых, это настоящее путешествие к
-              себе и природе. В современном ритме жизни, полном экранов,
-              дедлайнов и суеты, поход становится глотком свежего воздуха —
-              буквально и в переносном смысле.
-            </p>
-          </div>
+          <div class="details__block" v-html="blog.content"></div>
 
-          <div class="details__block">
+          <!-- <div class="details__block">
             <h2 class="details__bold">Почему стоит отправиться в поход?</h2>
             <ul>
               <li>
@@ -56,7 +44,7 @@
                 >
               </li>
             </ul>
-          </div>
+          </div> -->
         </div>
 
         <div class="details__footer">
@@ -67,7 +55,11 @@
         </div>
 
         <div class="details__cards">
-          <TheBlogBlock v-for="blog in 4" :key="blog"></TheBlogBlock>
+          <TheBlogBlock
+            v-for="blog in anotherBlogs"
+            :key="blog"
+            :blog="blog"
+          ></TheBlogBlock>
         </div>
         <UiButton
           class="details__btn button-secondary details__btn--mobile"
@@ -81,7 +73,22 @@
   </UiOverlay>
 </template>
 
-<script setup></script>
+<script setup>
+const blog = ref(null);
+const route = useRoute();
+const anotherBlogs = ref(null);
+
+const getBlog = () => {
+  useApi({
+    url: `/news/${route.params.id}`,
+    method: "get",
+  }).then((res) => {
+    blog.value = res.data.detail;
+    anotherBlogs.value = res.data.linked_list;
+  });
+};
+getBlog();
+</script>
 
 <style lang="scss" scoped>
 .details {

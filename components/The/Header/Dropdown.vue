@@ -5,7 +5,7 @@
         <img
           v-if="userStore.isLoggedIn"
           class="dropdown__avatar"
-          :src="user.avatar"
+          :src="user?.avatar"
           alt="Avatar"
         />
 

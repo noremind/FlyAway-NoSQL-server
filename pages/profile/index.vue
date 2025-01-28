@@ -10,12 +10,13 @@
           />
           <div class="profile-main__inner">
             <div class="profile-main__inner-box">
+              <input type="image" />
               <UiIcons color="blue-500" icon="upload"></UiIcons>
               <p class="profile-main__box-text profile-main__box-text--upload">
                 Загрузить другое фото
               </p>
             </div>
-            <div class="profile-main__inner-box">
+            <div class="profile-main__inner-box" @click="deleteAvatar()">
               <UiIcons color="orange-200" icon="trash" size="size-14"></UiIcons>
               <p class="profile-main__box-text profile-main__box-text--delete">
                 Удалить аватарку
@@ -28,44 +29,60 @@
           class="profile-main__input"
           label="Ваше имя"
           placeholder="Дана"
+          v-model="name"
         ></UiInput>
         <UiInput
           class="profile-main__input"
           label="Номер телефона"
-          placeholder="+7 (777) 777 77 77"
+          :placeholder="user.phone"
+          maska="+7(###)-###-##-##"
+          v-model="phone"
         ></UiInput>
 
         <UiButton
           class="profile-main__btn button-primary"
           label="Сохранить"
+          @click="postProfile"
         ></UiButton>
       </div>
       <div class="profile-main__side">
         <UiInput
           class="profile-main__input profile-main__input--mobile"
           label="Ваше имя"
-          placeholder="Дана"
+          v-model="name"
         ></UiInput>
+
         <UiInput
           class="profile-main__input profile-main__input--mobile"
           label="Номер телефона"
-          placeholder="+7 (777) 777 77 77"
+          placeholder="+7 (---) --- -- --"
+          v-model="phone"
         ></UiInput>
 
-        <UiInput label="Ваша почта" placeholder="dana1234@gmail.com"></UiInput>
+        <UiInput
+          class="profile-main__input profile-main__input--mobile"
+          label="Ваша почта"
+          :placeholder="email"
+          v-model="email"
+        ></UiInput>
 
-        <UiCalendar label="Дата рождения" class="profile-main__calendar" />
+        <UiCalendar
+          label="Дата рождения"
+          class="profile-main__calendar"
+          v-model="birthDate"
+        />
 
         <UiSelect
           class="profile-main__select"
-          v-model="selectCity"
-          :options="cities"
+          v-model="selectedGender"
+          :options="genders"
           label="Пол"
         ></UiSelect>
 
         <UiButton
           class="profile-main__btn profile-main__btn--mobile button-primary"
           label="Сохранить"
+          @click="postProfile"
         ></UiButton>
       </div>
     </div>
@@ -73,21 +90,46 @@
 </template>
 
 <script setup>
-const cities = reactive([
+const userCookie = useCookie("user");
+const userStore = useAuthStore();
+const user = ref(userStore.getUser);
+const name = ref(user.value?.name || null);
+const email = ref(user.value?.email || null);
+const phone = ref(user.value?.phone || null);
+const birthDate = ref(user.value?.birthday || null);
+const avatar = ref(user.value?.avatar || null);
+
+const genders = reactive([
   {
     id: 1,
-    name: "Алматы",
+    name: "Мужской",
   },
   {
     id: 2,
-    name: "Астана",
-  },
-  {
-    id: 3,
-    name: "Қызылорда",
+    name: "Женский",
   },
 ]);
-const selectCity = ref(cities[0]);
+const selectedGender = ref(genders[0]);
+
+const postProfile = () => {
+  useApi({
+    url: "/personal-cabinet/profile",
+    method: "post",
+    data: {
+      name: name.value,
+      email: email.value,
+      phone: phone.value,
+      avatar: null,
+      birthday: birthDate.value,
+    },
+  }).then((res) => {
+    userCookie.value = res.data;
+  });
+};
+
+const deleteAvatar = () => {
+  user.value.avatar = null;
+};
 </script>
 
 <style lang="scss" scoped>
@@ -111,8 +153,13 @@ const selectCity = ref(cities[0]);
       margin-top: 14px;
     }
   }
+  &__input {
+    display: block;
+    &--mobile {
+      display: none;
+    }
+  }
   &__select {
-    display: none;
     border-radius: 26px;
     background-color: transparent;
     border: 1px solid $surface-300;
@@ -129,7 +176,6 @@ const selectCity = ref(cities[0]);
     border: 1px solid $surface-300;
     width: 100%;
     padding: 4px;
-    display: none;
     &-text {
       color: $surface-900;
       font-size: 14px;
@@ -153,7 +199,7 @@ const selectCity = ref(cities[0]);
   }
   &__inner {
     display: flex;
-    gap: 4px;
+    gap: 8px;
     flex-direction: column;
     &-box {
       display: flex;

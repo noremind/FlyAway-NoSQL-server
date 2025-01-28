@@ -110,6 +110,17 @@
 <script setup>
 const isOpenBonusModal = ref(false);
 const isOpenOverlay = ref(false);
+const wallet = ref(null);
+
+const getWallet = () => {
+  useApi({
+    url: "/personal-cabinet/wallet",
+    method: "get",
+  }).then((res) => {
+    wallet.value = res.data;
+  });
+};
+getWallet();
 
 const openOverlay = () => {
   isOpenOverlay.value = true;

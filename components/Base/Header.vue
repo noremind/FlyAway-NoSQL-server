@@ -62,7 +62,7 @@
             v-else
             class="header__avatar"
             @click="openDropdownMenu"
-            :src="user.avatar"
+            :src="user?.avatar"
             alt="Avatar"
           />
 
@@ -172,6 +172,7 @@ watch(
   () => route.fullPath,
   () => {
     closeMobileNavMenu();
+    closeDropdownMenu();
   }
 );
 </script>
@@ -209,6 +210,7 @@ watch(
     height: 44px;
     border-radius: 50%;
     object-fit: cover;
+    cursor: pointer;
   }
   &__inner {
     display: flex;

@@ -56,7 +56,15 @@
             ></ThePartnersCard>
           </div>
 
-          <UiPagination class="partners__pagination"></UiPagination>
+          <UiPagination
+            v-if="pagination?.last_page && pagination?.last_page !== 1"
+            :total-items="pagination?.total_items"
+            :current-page="currentPage"
+            @change-page="paginationPage"
+            :last-page="pagination?.last_page"
+            :per-page="pagination?.per_page"
+            class="partners__pagination"
+          ></UiPagination>
         </div>
       </div>
     </div>
@@ -81,6 +89,8 @@
 
 <script setup>
 const partners = ref(null);
+const pagination = reactive({});
+const currentPage = ref(1);
 const isOpenFilterMobile = ref(false);
 
 const openFilterMobile = () => {
@@ -121,9 +131,17 @@ const getPartners = () => {
     method: "get",
   }).then((res) => {
     partners.value = res.data.data;
+    pagination.last_page = res.data.last_page;
+    pagination.total_items = res.data.total;
+    pagination.per_page = res.data.per_page;
   });
 };
 getPartners();
+
+const paginationPage = (page) => {
+  currentPage.value = page;
+  getBlogs();
+};
 </script>
 
 <style lang="scss" scoped>

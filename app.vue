@@ -2,7 +2,7 @@
   <div class="main">
     <BaseHeader></BaseHeader>
     <main class="main__wrapper">
-      <NuxtPage></NuxtPage>
+      <RouterView />
     </main>
 
     <BaseFooter></BaseFooter>

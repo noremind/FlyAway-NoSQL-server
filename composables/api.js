@@ -39,7 +39,7 @@ export async function useApi(options = {}) {
 
 
 		// commonStore.setLoader(false);
-		console.log(data)
+		// console.log(data)
 		return data;
 
 	} catch (error) {

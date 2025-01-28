@@ -4,12 +4,8 @@
       <div class="room__preview">
         <div class="room__swiper">
           <UiSwiper :pagination="{ clickable: true }">
-            <swiper-slide v-for="slider in 5">
-              <img
-                class="room__img"
-                src="@/assets/image/content/main-image.png"
-                alt="Кольсай"
-              />
+            <swiper-slide v-for="slider in room.images">
+              <img class="room__img" :src="slider" :alt="room.name" />
             </swiper-slide>
           </UiSwiper>
         </div>
@@ -18,17 +14,17 @@
       <div class="room__content">
         <div class="room__box">
           <div class="room__texts">
-            <h2 class="room__title">Эконом</h2>
+            <h2 class="room__title">{{ room.name }}</h2>
             <ul class="room__list">
               <li v-for="item in 1" :key="item" class="room__list-item">
-                Уютное пространство для комфортного отдыха.
+                {{ room.description }}
               </li>
             </ul>
           </div>
 
           <div class="room__benefits">
             <UiButton
-              label="15 000 ₸"
+              :label="`${Math.round(room.price)}₸`"
               class="room__price room__price--mobile"
             ></UiButton>
             <UiButton
@@ -52,6 +48,13 @@
 
 <script setup>
 const emit = defineEmits(["select"]);
+
+const props = defineProps({
+  room: {
+    type: Object,
+    default: () => {},
+  },
+});
 </script>
 
 <style lang="scss" scoped>
