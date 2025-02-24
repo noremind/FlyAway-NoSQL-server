@@ -1,6 +1,8 @@
 const mongoose = require("mongoose")
 require("dotenv").config()
 
+console.log('First Commit');
+
 
 const uri = `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@cluster0.rexkz.mongodb.net/saparTime?retryWrites=true&w=majority&appName=Cluster0`
 
