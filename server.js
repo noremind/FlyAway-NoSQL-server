@@ -1,22 +1,19 @@
-const express = require("express")
-const cors = require("cors")
-const Hotel = require("./models/hotels")
+import express from "express"
+import cors from "cors"
+import { connectDB } from "./config/db.js"
+import { hotelRoutes } from "./routes/hotels.js"
 
 const app = express()
 const PORT = 5000
 
-// Используем CORS
+connectDB()
+
+app.use(express.json())
 app.use(cors())
 
-app.get("/hotels", async (req, res) => {
-	try {
-		const hotels = await Hotel.find()
-		res.json(hotels)
-	} catch (err) {
-		res.status(500).json({ error: "Ошибка сервера" })
-	}
-})
+//ROUTES
+app.use("/api/hotels", hotelRoutes)
 
 app.listen(PORT, () =>
-	console.log(`🚀 Сервер запущен на http://localhost:${PORT}`)
+	console.log(`Сервер запущен на http://localhost:${PORT}`)
 )
