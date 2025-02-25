@@ -82,7 +82,7 @@ export default defineNuxtConfig({
 
 	runtimeConfig: {
     public: {
-      baseURL: process.env.VUE_APP_SERVER_URL,
+      baseURL: process.env.SERVER_URL,
     },
   },
 

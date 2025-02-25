@@ -4,7 +4,7 @@
       <img
         class="sms-code__logo"
         src="@/assets/image/logo/Sapar-time-logo-full.svg"
-        alt="Sapartime"
+        alt="TravelTime"
       />
 
       <h4 class="sms-code__title">СМС-код</h4>

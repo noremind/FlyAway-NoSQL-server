@@ -4,7 +4,7 @@
       <img
         class="status__logo"
         src="@/assets/image/logo/Sapar-time-logo-full.svg"
-        alt="Sapartime"
+        alt="TravelTime"
       />
       <UiIcons
         icon="circle-check"

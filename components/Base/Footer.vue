@@ -5,7 +5,7 @@
         <img
           class="footer__logo"
           src="@/assets/image/logo/Sapar-time-logo-full.svg"
-          alt="Sapartime"
+          alt="TravelTime"
         />
       </nuxt-link>
 
@@ -91,17 +91,17 @@ const footerList = reactive([
     id: 2,
     list: [
       {
-        name: "@sapartime.kz",
+        name: "@TravelTime.kz",
         icon: "instagram",
         link: "",
       },
       {
-        name: "sapartime@gmail.com",
+        name: "TravelTime@gmail.com",
         icon: "email",
         link: "",
       },
       {
-        name: "@sapartime.kz",
+        name: "@TravelTime.kz",
         icon: "tiktok",
         link: "",
       },

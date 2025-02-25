@@ -1,25 +1,25 @@
 <template>
   <section class="about">
     <div class="about__wrapper">
-      <h1 class="about__title title">О Sapartime</h1>
+      <h1 class="about__title title">О TravelTime</h1>
 
       <div class="about__content">
         <div class="about__imgs">
           <img
             class="about__img"
             src="@/assets/image/content/about-img1.png"
-            alt="SaparTime"
+            alt="TravelTime"
           />
           <img
             class="about__img"
             src="@/assets/image/content/about-img2.png"
-            alt="SaparTime"
+            alt="TravelTime"
           />
         </div>
 
         <div class="about__texts">
           <p class="about__text">
-            Sapartime — это больше, чем просто туристический маркетплейс. Это
+            TravelTime — это больше, чем просто туристический маркетплейс. Это
             портал, который открывает дверь в сердце Казахстана — страны с
             богатой историей, уникальной культурой и потрясающей природой. Мы
             вдохновляем исследовать, удивляться и влюбляться в её необъятные
@@ -35,7 +35,7 @@
           <img
             class="about__img about__img--mobile"
             src="@/assets/image/content/about-img2.png"
-            alt="SaparTime"
+            alt="TravelTime"
           />
 
           <div class="about__box about__box--hide">
@@ -56,13 +56,13 @@
             </ul>
           </div>
           <p class="about__text about__text--hide">
-            Sapartime — это не просто путешествие. Это опыт, который останется с
+            TravelTime — это не просто путешествие. Это опыт, который останется с
             вами навсегда. Добро пожаловать в мир, где каждая поездка становится
             приключением, а каждый день — открытием.
           </p>
 
           <p class="about__text about__text--hide">
-            Sapartime — это не просто путешествие. Это опыт, который останется с
+            TravelTime — это не просто путешествие. Это опыт, который останется с
             вами навсегда. Добро пожаловать в мир, где каждая поездка становится
             приключением, а каждый день — открытием.
           </p>
@@ -109,12 +109,12 @@
               </ul>
             </div>
             <p class="about__text">
-              Sapartime — это не просто путешествие. Это опыт, который останется
+              TravelTime — это не просто путешествие. Это опыт, который останется
               с вами навсегда. Добро пожаловать в мир, где каждая поездка
               становится приключением, а каждый день — открытием.
             </p>
             <p class="about__text">
-              Sapartime — это не просто путешествие. Это опыт, который останется
+              TravelTime — это не просто путешествие. Это опыт, который останется
               с вами навсегда. Добро пожаловать в мир, где каждая поездка
               становится приключением, а каждый день — открытием.
             </p>

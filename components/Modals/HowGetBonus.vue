@@ -4,7 +4,7 @@
       <img
         class="bonus__logo"
         src="@/assets/image/logo/Sapar-time-logo-full.svg"
-        alt="Sapartime"
+        alt="TravelTime"
       />
 
       <h3 class="bonus__title title">Приглашайте друзей, получайте бонусы</h3>

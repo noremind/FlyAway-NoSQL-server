@@ -6,12 +6,12 @@
           <img
             class="header__logo"
             src="@/assets/image/logo/Sapar-time-logo.svg"
-            alt="SaparTime Logo"
+            alt="TravelTime Logo"
           />
           <img
             class="header__logo header__logo--mobile"
             src="@/assets/image/logo/Sapar-time-logo-full.svg"
-            alt="SaparTime Logo"
+            alt="TravelTime Logo"
           />
         </nuxt-link>
 

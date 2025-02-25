@@ -4,7 +4,7 @@
       <img
         class="info__logo"
         src="@/assets/image/logo/Sapar-time-logo-full.svg"
-        alt="Sapartime"
+        alt="TravelTime"
       />
 
       <h4 class="info__title">Заполните поля</h4>

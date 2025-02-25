@@ -4,7 +4,7 @@
       <img
         class="register__logo"
         src="@/assets/image/logo/Sapar-time-logo-full.svg"
-        alt="Sapartime"
+        alt="TravelTime"
       />
 
       <h4 class="register__title">Регистрация</h4>
