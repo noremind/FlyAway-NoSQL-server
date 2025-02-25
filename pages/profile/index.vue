@@ -10,7 +10,6 @@
           />
           <div class="profile-main__inner">
             <div class="profile-main__inner-box">
-              <input type="image" />
               <UiIcons color="blue-500" icon="upload"></UiIcons>
               <p class="profile-main__box-text profile-main__box-text--upload">
                 Загрузить другое фото
