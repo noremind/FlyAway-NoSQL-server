@@ -40,7 +40,7 @@ export const sendVerificationCode = async (req, res) => {
 			return res.status(400).json({ message: "Этот номер уже зарегистрирован" })
 		}
 
-		res.json({ message: "Код отправлен", phone })
+		res.json({ message: "Код отправлен", phone, code: `${user.verificationCode}` })
 	} catch (error) {
 		res.status(500).json({ message: "Ошибка при отправке кода" })
 	}
