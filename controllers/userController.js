@@ -29,7 +29,7 @@ export const sendVerificationCode = async (req, res) => {
 			console.log(`🔹 Код подтверждения для ${phone}: ${verificationCode}`)
 
 			user = new UserModel({ fullName, phone, verificationCode })
-			await user.save()
+			// await user.save()
 		} else if (!user.isVerified) {
 			user.verificationCode = generateVerificationCode()
 			console.log(
