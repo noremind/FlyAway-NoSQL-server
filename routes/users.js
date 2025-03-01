@@ -12,13 +12,13 @@ export const userRoutes = express.Router()
 userRoutes.get("/", getUsers)
 
 // 1. Отправка кода
-userRoutes.post("/register/send-code", sendVerificationCode)
+userRoutes.post("/auth/register/send-code", sendVerificationCode)
 
 // 2. Проверка кода
-userRoutes.post("/register/verify-code", verifyCode)
+userRoutes.post("/auth/register/verify-code", verifyCode)
 
 // 3. Установка пароля
-userRoutes.post("/register/set-password", setPassword)
+userRoutes.post("/auth/register/set-password", setPassword)
 
 
 
