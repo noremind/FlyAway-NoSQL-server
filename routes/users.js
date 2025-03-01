@@ -21,6 +21,6 @@ userRoutes.post("/auth/register/verify-code", verifyCode)
 userRoutes.post("/auth/register/set-password", setPassword)
 
 
-console.log('ss');
+console.log('sss');
 
 userRoutes.put("/:userId/update", updateUser)
