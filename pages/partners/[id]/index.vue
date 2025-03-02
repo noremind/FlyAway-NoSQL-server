@@ -102,18 +102,6 @@
 
             <section class="partner__block">
               <div class="partner__block-header">
-                <h2 class="title">BaqytZone</h2>
-              </div>
-              <div class="partner__baqyt-zone">
-                <TheBaqytZoneBlock
-                  v-for="zone in 4"
-                  :key="zone"
-                ></TheBaqytZoneBlock>
-              </div>
-            </section>
-
-            <section class="partner__block">
-              <div class="partner__block-header">
                 <h2 class="title">Наша команда</h2>
               </div>
               <div class="partner__teams">
@@ -373,7 +361,6 @@ const contacts = [
       font-weight: 600;
     }
   }
-  &__baqyt-zone,
   &__tours {
     display: grid;
     grid-template-columns: repeat(3, 1fr);

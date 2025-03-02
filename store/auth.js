@@ -1,7 +1,9 @@
 export const useAuthStore = defineStore('auth', () => {
+
 	const tokenCookie = useCookie("token", {
 		maxAge: 604800,
 	});
+
 	const userCookie = useCookie("user", {
 		maxAge: 604800,
 	});

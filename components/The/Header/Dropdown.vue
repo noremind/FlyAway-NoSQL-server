@@ -94,12 +94,6 @@ const dropdownNav = [
   },
   {
     id: 5,
-    name: "BaqytZone",
-    link: "/profile/baqyt-zone",
-    icon: "smile",
-  },
-  {
-    id: 5,
     name: "Кошелек и бонусы",
     link: "/profile/transactions",
     icon: "credit-card",

@@ -12,7 +12,6 @@
         class="favourites__cards"
         :class="{
           'favourites__cards--hotels': selectedTab.id === 2,
-          'favourites__cards--baqyt-zone': selectedTab.id === 3,
         }"
       >
         <TheCommonTourCard
@@ -100,10 +99,6 @@ onUnmounted(() => {
       flex-direction: column;
       gap: 16px;
     }
-    &--baqyt-zone {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-    }
   }
   &__pagination {
     display: flex;
@@ -122,10 +117,6 @@ onUnmounted(() => {
       padding: 0;
       grid-template-columns: repeat(2, 1fr);
       gap: 6px;
-      &--baqyt-zone {
-        display: grid;
-        grid-template-columns: repeat(1, 1fr);
-      }
     }
   }
 }

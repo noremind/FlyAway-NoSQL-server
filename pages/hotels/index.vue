@@ -188,7 +188,7 @@
     @close="closePartialLocationCards"
   >
     <template #body>
-      <div class="baqyt-zone__cards">
+      <div class="hotels__cards">
         <TheHotelsBlock v-for="block in 4" :key="block"></TheHotelsBlock>
       </div>
     </template>
@@ -347,7 +347,7 @@ watch(
   &__map {
     width: 100%;
     height: 100vh;
-    position: fixed;
+    // position: fixed;
     z-index: 1;
     top: 0;
     left: -0px;

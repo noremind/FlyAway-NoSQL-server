@@ -98,19 +98,9 @@ const lists = [
     link: "/profile/my-hotels",
   },
   {
-    icon: "smile",
-    name: "BaqytZone",
-    link: "/profile/baqyt-zone",
-  },
-  {
-    icon: "tablet-blog",
-    name: "Блог и статьи",
-    link: "/blog",
-  },
-  {
     icon: "tablet-blog",
     name: "Мои покупки и брони",
-    link: "/blog",
+    link: "/",
   },
   {
     icon: "wallet",

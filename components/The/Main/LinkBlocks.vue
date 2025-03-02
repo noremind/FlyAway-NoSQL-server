@@ -16,7 +16,6 @@
 <script setup>
 import map from "@/assets/image/content/map.svg";
 import hotel from "@/assets/image/content/hotels-main.svg";
-import tourist from "@/assets/image/content/baqyt-zone-main.svg";
 import qazaqstanMap from "@/assets/image/content/country.svg";
 
 const links = reactive([
@@ -31,18 +30,6 @@ const links = reactive([
     name: "Отели",
     img: hotel,
     link: "/hotels",
-  },
-  {
-    id: 3,
-    name: "BaqytZone",
-    img: tourist,
-    link: "/baqyt-zone",
-  },
-  {
-    id: 4,
-    name: "Локаций",
-    img: qazaqstanMap,
-    link: "/locations",
   },
 ]);
 </script>

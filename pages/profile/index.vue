@@ -33,7 +33,7 @@
         <UiInput
           class="profile-main__input"
           label="Номер телефона"
-          :placeholder="user.phone"
+          :placeholder="'777'"
           maska="+7(###)-###-##-##"
           v-model="phone"
         ></UiInput>

@@ -46,11 +46,11 @@ const disabledBtn = computed(() => {
 const postSignUp = () => {
   if (disabledBtn.value) {
     useApi({
-      url: "/auth/signup",
+      url: "/users/auth/register/send-code",
       method: "post",
       data: {
         phone: phone.value,
-        name: name.value,
+        fullName: name.value,
       },
     }).then((res) => {
       emit("nextStep", phone.value, name.value);

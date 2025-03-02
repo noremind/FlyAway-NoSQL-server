@@ -126,16 +126,6 @@ const navList = ref([
     name: "Отели",
     link: "/hotels",
   },
-  {
-    id: 3,
-    name: "BaqytZone",
-    link: "/baqyt-zone",
-  },
-  {
-    id: 4,
-    name: "Блог и Статьи",
-    link: "/blog",
-  },
 ]);
 
 const clickOutsideDropdown = (event) => {

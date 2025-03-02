@@ -58,13 +58,6 @@ const navList = reactive([
     link: "/profile/my-hotels",
   },
   {
-    id: 5,
-    icon: "smile",
-    value: "",
-    name: "BaqytZone",
-    link: "/profile/baqyt-zone",
-  },
-  {
     id: 6,
     icon: "credit-card",
     value: "",

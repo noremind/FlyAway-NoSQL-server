@@ -28,11 +28,6 @@ const blocks = [
     name: "Мои отели",
     link: "/profile/my-hotels",
   },
-  {
-    icon: "smile",
-    name: "BaqytZone",
-    link: "/profile/baqyt-zone",
-  },
 ];
 </script>
 
