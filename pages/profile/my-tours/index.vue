@@ -32,6 +32,13 @@ const tabs = reactive([
   },
 ]);
 const selectedTab = ref(tabs[0]);
+
+useSeoMeta({
+  title: "FlyAway - Мой туры",
+  ogTitle: "FlyAway - Мой туры",
+  description: "FlyAway - сайт для бронирования туров и отелей",
+  ogDescription: "FlyAway - сайт для бронирования туров и отелей",
+});
 </script>
 
 <style lang="scss" scoped>

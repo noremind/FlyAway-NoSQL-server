@@ -14,7 +14,14 @@
   </section>
 </template>
 
-<script setup></script>
+<script setup>
+useSeoMeta({
+  title: "FlyAway - Личный кабинет",
+  ogTitle: "FlyAway - Личный кабинет",
+  description: "FlyAway - сайт для бронирования туров и отелей",
+  ogDescription: "FlyAway - сайт для бронирования туров и отелей",
+});
+</script>
 
 <style lang="scss" scoped>
 .profile {

@@ -257,6 +257,13 @@ const tags = reactive([
 ]);
 const hotels = ref(null);
 
+useSeoMeta({
+  title: "FlyAway - Отели",
+  ogTitle: "FlyAway - Отели",
+  description: "FlyAway - сайт для бронирования туров и отелей",
+  ogDescription: "FlyAway - сайт для бронирования туров и отелей",
+});
+
 const getHotels = () => {
   useApi({
     url: "/hotels",

@@ -5,12 +5,12 @@
         <nuxt-link to="/" class="header__link">
           <img
             class="header__logo"
-            src="@/assets/image/logo/Sapar-time-logo.svg"
+            src="@/assets/image/logo/FlyAway-logo.png"
             alt="TravelTime Logo"
           />
           <img
             class="header__logo header__logo--mobile"
-            src="@/assets/image/logo/Sapar-time-logo-full.svg"
+            src="@/assets/image/logo/FlyAway-logo.png"
             alt="TravelTime Logo"
           />
         </nuxt-link>
@@ -183,6 +183,7 @@ watch(
     padding: 0 24px;
   }
   &__logo {
+    width: 64px;
     margin: 0 12px 0 0;
     cursor: pointer;
     &--mobile {

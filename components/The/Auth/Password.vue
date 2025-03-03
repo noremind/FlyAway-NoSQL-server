@@ -1,21 +1,15 @@
 <template>
-  <section class="login">
-    <div class="login__wrapper">
+  <section class="password">
+    <div class="password__wrapper">
       <img
-        class="login__logo"
+        class="password__logo"
         src="@/assets/image/logo/FlyAway-logo.png"
         alt="TravelTime"
       />
 
-      <h4 class="login__title">Войти</h4>
+      <h4 class="password__title">Задайте пароль</h4>
 
-      <form class="login__form">
-        <UiInput
-          placeholder="+7 (_ _ _) - _ _ _ - _ _ - _ _"
-          label="Номер телефона"
-          v-model="phone"
-          maska="+7(###)-###-##-##"
-        ></UiInput>
+      <form class="password__form">
         <UiInput
           placeholder="Пароль"
           label="Введите пароль"
@@ -26,7 +20,7 @@
         <UiButton
           label="Войти"
           @click="postLogin"
-          class="login__btn button-primary"
+          class="password__btn button-primary"
           :disabled="!disabledBtn"
         ></UiButton>
       </form>
@@ -41,10 +35,9 @@ const tokenCookie = useCookie("token");
 const userCookie = useCookie("user");
 
 const password = ref("");
-const phone = ref("");
 
 const disabledBtn = computed(() => {
-  return password.value.length > 3 && phone.value.length === 17;
+  return password.value.length > 3;
 });
 
 const postLogin = () => {
@@ -53,13 +46,12 @@ const postLogin = () => {
       url: "/auth/login",
       method: "post",
       data: {
-        phone: phone.value,
         password: password.value,
       },
     }).then((res) => {
       tokenCookie.value = res.data.token;
       userCookie.value = res.data.user;
-      emit("nextStep", phone.value, password.value);
+      emit("nextStep", password.value);
     });
   }
 };
@@ -77,7 +69,7 @@ watch(
 </script>
 
 <style lang="scss" scoped>
-.login {
+.password {
   &__wrapper {
     display: flex;
     flex-direction: column;

@@ -125,6 +125,13 @@ const tags = reactive([
   },
 ]);
 
+useSeoMeta({
+  title: "FlyAway - Наши партнеры",
+  ogTitle: "FlyAway - Наши партнеры",
+  description: "FlyAway - сайт для бронирования туров и отелей",
+  ogDescription: "FlyAway - сайт для бронирования туров и отелей",
+});
+
 const getPartners = () => {
   useApi({
     url: "/partners",

@@ -3,7 +3,7 @@
     <div class="status__wrapper">
       <img
         class="status__logo"
-        src="@/assets/image/logo/Sapar-time-logo-full.svg"
+        src="@/assets/image/logo/FlyAway-logo.png"
         alt="TravelTime"
       />
       <UiIcons

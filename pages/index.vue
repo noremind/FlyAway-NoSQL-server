@@ -110,6 +110,13 @@
 
 <script setup>
 const router = useRouter();
+
+useSeoMeta({
+  title: "FlyAway - Главная страница",
+  ogTitle: "FlyAway - Главная страница",
+  description: "FlyAway - сайт для бронирования туров и отелей",
+  ogDescription: "FlyAway - сайт для бронирования туров и отелей",
+});
 </script>
 
 <style lang="scss" scoped>

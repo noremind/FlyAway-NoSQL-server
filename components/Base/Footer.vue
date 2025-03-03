@@ -4,7 +4,7 @@
       <nuxt-link to="/">
         <img
           class="footer__logo"
-          src="@/assets/image/logo/Sapar-time-logo-full.svg"
+          src="@/assets/image/logo/FlyAway-logo.png"
           alt="TravelTime"
         />
       </nuxt-link>

@@ -58,6 +58,13 @@ const tabs = reactive([
 ]);
 const selectedTab = ref(tabs[0]);
 
+useSeoMeta({
+  title: "FlyAway - Избранное",
+  ogTitle: "FlyAway - Избранное",
+  description: "FlyAway - сайт для бронирования туров и отелей",
+  ogDescription: "FlyAway - сайт для бронирования туров и отелей",
+});
+
 const windowWidth = ref(process.client ? window.innerWidth : null);
 
 const updateWidth = () => {

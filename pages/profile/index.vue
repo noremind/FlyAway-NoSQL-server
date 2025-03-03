@@ -102,10 +102,12 @@ const genders = reactive([
   {
     id: 1,
     name: "Мужской",
+    value: "men",
   },
   {
     id: 2,
     name: "Женский",
+    value: "woman",
   },
 ]);
 const selectedGender = ref(genders[0]);
@@ -113,7 +115,7 @@ const selectedGender = ref(genders[0]);
 const postProfile = () => {
   useApi({
     url: "/personal-cabinet/profile",
-    method: "post",
+    method: "put",
     data: {
       name: name.value,
       email: email.value,

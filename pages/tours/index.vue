@@ -280,6 +280,13 @@ const tags = reactive([
   },
 ]);
 
+useSeoMeta({
+  title: "FlyAway - Туры",
+  ogTitle: "FlyAway - Туры",
+  description: "FlyAway - сайт для бронирования туров и отелей",
+  ogDescription: "FlyAway - сайт для бронирования туров и отелей",
+});
+
 const getTours = () => {
   useApi({
     url: "/tours",

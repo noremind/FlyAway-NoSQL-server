@@ -112,6 +112,13 @@ const isOpenBonusModal = ref(false);
 const isOpenOverlay = ref(false);
 const wallet = ref(null);
 
+useSeoMeta({
+  title: "FlyAway - Мой транзакции",
+  ogTitle: "FlyAway - Мой транзакции",
+  description: "FlyAway - сайт для бронирования туров и отелей",
+  ogDescription: "FlyAway - сайт для бронирования туров и отелей",
+});
+
 const getWallet = () => {
   useApi({
     url: "/personal-cabinet/wallet",

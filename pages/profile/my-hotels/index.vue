@@ -14,7 +14,14 @@
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+useSeoMeta({
+  title: "FlyAway - Мой отели",
+  ogTitle: "FlyAway - Мой отели",
+  description: "FlyAway - сайт для бронирования туров и отелей",
+  ogDescription: "FlyAway - сайт для бронирования туров и отелей",
+});
+</script>
 
 <style lang="scss" scoped>
 .my-hotels {

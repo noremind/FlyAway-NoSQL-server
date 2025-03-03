@@ -3,7 +3,7 @@
     <div class="sms-code__wrapper">
       <img
         class="sms-code__logo"
-        src="@/assets/image/logo/Sapar-time-logo-full.svg"
+        src="@/assets/image/logo/FlyAway-logo.png"
         alt="TravelTime"
       />
 
