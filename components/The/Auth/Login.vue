@@ -1,15 +1,15 @@
 <template>
-  <section class="login">
-    <div class="login__wrapper">
+  <section class="login-user">
+    <div class="login-user__wrapper">
       <img
-        class="login__logo"
+        class="login-user__logo"
         src="@/assets/image/logo/FlyAway-logo.png"
         alt="TravelTime"
       />
 
-      <h4 class="login__title">Войти</h4>
+      <h4 class="login-user__title">Войти</h4>
 
-      <form class="login__form">
+      <form class="login-user__form">
         <UiInput
           placeholder="+7 (_ _ _) - _ _ _ - _ _ - _ _"
           label="Номер телефона"
@@ -26,7 +26,7 @@
         <UiButton
           label="Войти"
           @click="postLogin"
-          class="login__btn button-primary"
+          class="login-user__btn button-primary"
           :disabled="!disabledBtn"
         ></UiButton>
       </form>
@@ -77,7 +77,7 @@ watch(
 </script>
 
 <style lang="scss" scoped>
-.login {
+.login-user {
   &__wrapper {
     display: flex;
     flex-direction: column;
