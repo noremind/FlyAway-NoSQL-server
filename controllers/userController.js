@@ -1,10 +1,17 @@
 import UserModel from "../models/User.js"
 import bcrypt from "bcrypt"
+import jwt from "jsonwebtoken"
+import dotenv from "dotenv"
+dotenv.config()
+
+const SECRET_KEY = process.env.JWT_SECRET
 
 export const getUsers = async (req, res) => {
 	try {
 		const users = await UserModel.find()
-		res.json(users)
+		res.json({
+			data: users,
+		})
 	} catch (error) {
 		console.log(error)
 		res.status(500).json({
@@ -13,14 +20,12 @@ export const getUsers = async (req, res) => {
 	}
 }
 
-// Генерация случайного 4-значного кода
 const generateVerificationCode = () =>
 	Math.floor(1000 + Math.random() * 9000).toString()
 
-// Регистрируем пользователя и отправляем код
 export const sendVerificationCode = async (req, res) => {
 	try {
-		const { fullName, phone } = req.body
+		const { name, phone } = req.body
 
 		let user = await UserModel.findOne({ phone })
 
@@ -28,8 +33,8 @@ export const sendVerificationCode = async (req, res) => {
 			const verificationCode = generateVerificationCode()
 			console.log(`🔹 Код подтверждения для ${phone}: ${verificationCode}`)
 
-			user = new UserModel({ fullName, phone, verificationCode })
-			// await user.save()
+			user = new UserModel({ name, phone, verificationCode })
+			await user.save()
 		} else if (!user.isVerified) {
 			user.verificationCode = generateVerificationCode()
 			console.log(
@@ -40,7 +45,11 @@ export const sendVerificationCode = async (req, res) => {
 			return res.status(400).json({ message: "Этот номер уже зарегистрирован" })
 		}
 
-		res.json({ message: "Код отправлен", phone, code: `${user.verificationCode}` })
+		res.json({
+			message: "Код отправлен",
+			phone,
+			code: `${user.verificationCode}`,
+		})
 	} catch (error) {
 		res.status(500).json({ message: "Ошибка при отправке кода" })
 	}
@@ -53,7 +62,9 @@ export const verifyCode = async (req, res) => {
 		const user = await UserModel.findOne({ phone })
 
 		if (!user || user.verificationCode !== code) {
-			return res.status(400).json({ message: "Неверный код" })
+			return res
+				.status(400)
+				.json({ message: "Неверный код или неверный номер" })
 		}
 
 		user.isVerified = true
@@ -81,7 +92,16 @@ export const setPassword = async (req, res) => {
 		user.password = await bcrypt.hash(password, 10)
 		await user.save()
 
-		res.json({ message: "Пароль установлен. Теперь можно войти." })
+		const token = jwt.sign(
+			{ userId: user._id, phone: user.phone, name: user.name }, // Полезная информация в токене
+			SECRET_KEY,
+			{ expiresIn: "7d" }
+		)
+
+		res.json({
+			token,
+			message: "Пароль установлен. Теперь можно войти.",
+		})
 	} catch (error) {
 		res.status(500).json({ message: "Ошибка при установке пароля" })
 	}

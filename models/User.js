@@ -2,19 +2,19 @@ import mongoose from "mongoose"
 
 const UserSchema = new mongoose.Schema(
 	{
-		fullName: { type: String, required: true },
+		name: { type: String, required: true },
 		phone: { type: String, required: true, unique: true },
 		password: { type: String, required: false }, // Необязательное поле на этапе регистрации
 		email: { type: String, default: "" },
 		birthDate: { type: String, default: null },
 		gender: {
 			type: String,
-			enum: ["Мужчина", "Женщина", "Другое", ""],
+			// enum: ["Мужчина", "Женщина", "Другое", ""],
 			default: "",
 		},
 		verificationCode: { type: String, required: false }, // 4-значный код для верификации
 		isVerified: { type: Boolean, default: false }, // Флаг подтверждения телефона
-		avatarUrl: String,
+		avatarUrl: { type: String, default: "/uploads/avatar.avif" },
 	},
 	{ timestamps: true }
 )

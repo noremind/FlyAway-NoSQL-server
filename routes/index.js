@@ -7,5 +7,4 @@ const router = express.Router()
 
 router.use("/users", userRoutes)
 router.use("/hotels", hotelRoutes)
-console.log("beka")
 export default router

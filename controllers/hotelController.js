@@ -3,7 +3,7 @@ import HotelModel from "../models/Hotel.js"
 export const getHotels = async (req, res) => {
 	try {
 		const hotel = await HotelModel.find()
-		res.json(hotel)
+		res.json({ data: hotel })
 	} catch (error) {
 		console.error("❌ Ошибка получения отелей:", error)
 		res.status(500).json({
@@ -25,11 +25,11 @@ export const createHotel = async (req, res) => {
 		})
 
 		const hotel = await doc.save()
-		res.json(hotel)
+		res.json({ data: hotel })
 	} catch (error) {
 		console.log(error)
 		res.status(500).json({
-			message: "Create article is failed",
+			message: "Create hotel is failed",
 		})
 	}
 }

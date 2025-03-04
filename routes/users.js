@@ -20,7 +20,4 @@ userRoutes.post("/auth/register/verify-code", verifyCode)
 // 3. Установка пароля
 userRoutes.post("/auth/register/set-password", setPassword)
 
-
-console.log('s3s');
-
 userRoutes.put("/:userId/update", updateUser)
