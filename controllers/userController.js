@@ -100,10 +100,14 @@ export const setPassword = async (req, res) => {
 		console.log("User3", user)
 
 		const token = jwt.sign(
-			{ userId: user._id, phone: user.phone, name: user.name }, // Полезная информация в токене
+			{ userId: userId }, // Полезная информация в токене
 			SECRET_KEY,
 			{ expiresIn: "7d" }
 		)
+
+		console.log('User4', user);
+		console.log('User5', userId);
+
 
 		res.json({
 			token,
