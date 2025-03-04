@@ -82,8 +82,11 @@ export const setPassword = async (req, res) => {
 		const { userId, password } = req.body
 
 		const user = await UserModel.findById(userId)
+		console.log("User1", user)
 
 		if (!user || !user.isVerified) {
+			console.log("User2", user)
+
 			return res
 				.status(400)
 				.json({ message: "Пользователь не найден или не подтверждён" })
@@ -93,6 +96,8 @@ export const setPassword = async (req, res) => {
 		user.verificationCode = null // Код больше не нужен
 		user.password = await bcrypt.hash(password, 10)
 		await user.save()
+
+		console.log("User3", user)
 
 		const token = jwt.sign(
 			{ userId: user._id, phone: user.phone, name: user.name }, // Полезная информация в токене
