@@ -84,7 +84,7 @@ export const setPassword = async (req, res) => {
 		const user = await UserModel.findById(userId)
 		console.log("User1", user)
 
-		if (!user || !user.isVerified) {
+		if (!user) {
 			console.log("User2", user)
 
 			return res
