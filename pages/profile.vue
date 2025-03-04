@@ -21,6 +21,10 @@ useSeoMeta({
   description: "FlyAway - сайт для бронирования туров и отелей",
   ogDescription: "FlyAway - сайт для бронирования туров и отелей",
 });
+
+definePageMeta({
+  middleware: "check-auth",
+});
 </script>
 
 <style lang="scss" scoped>
