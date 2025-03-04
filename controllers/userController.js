@@ -65,10 +65,10 @@ export const verifyCode = async (req, res) => {
 			return res
 				.status(400)
 				.json({ message: "Неверный код или неверный номер" })
+		} else if (!user.password) {
+			user.isVerified = false
 		}
 
-		user.isVerified = true
-		user.verificationCode = null // Код больше не нужен
 		await user.save()
 
 		res.json({ message: "Телефон подтверждён", userId: user._id })
@@ -89,6 +89,8 @@ export const setPassword = async (req, res) => {
 				.json({ message: "Пользователь не найден или не подтверждён" })
 		}
 
+		user.isVerified = true
+		user.verificationCode = null // Код больше не нужен
 		user.password = await bcrypt.hash(password, 10)
 		await user.save()
 
