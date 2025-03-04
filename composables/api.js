@@ -33,13 +33,10 @@ export async function useApi(options = {}) {
 		});
 
 		const data = response?.data.value
-		const error = response?.error.value
+		const error = response?.error.value?.data
 
 		if (error) throw error
 
-
-		// commonStore.setLoader(false);
-		// console.log(data)
 		return data;
 
 	} catch (error) {

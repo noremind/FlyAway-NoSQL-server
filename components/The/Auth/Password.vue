@@ -12,8 +12,8 @@
       <form class="password__form">
         <UiInput
           placeholder="Пароль"
-          label="Введите пароль"
-          v-model="password"
+          label="Введите пароль*"
+          v-model.trim="password"
           :type="'password'"
         ></UiInput>
 
@@ -22,6 +22,7 @@
           @click="postLogin"
           class="password__btn button-primary"
           :disabled="!disabledBtn"
+          :is-loading="isLoading"
         ></UiButton>
       </form>
     </div>
@@ -31,41 +32,41 @@
 <script setup>
 const emit = defineEmits(["nextStep"]);
 
+const props = defineProps({
+  userId: {
+    type: String,
+    default: "",
+  },
+});
+
 const tokenCookie = useCookie("token");
-const userCookie = useCookie("user");
+
+const errorMessage = ref("");
+const isLoading = ref(false);
 
 const password = ref("");
 
 const disabledBtn = computed(() => {
-  return password.value.length > 3;
+  return password.value.length > 4 && password.value.length < 35;
 });
 
 const postLogin = () => {
   if (disabledBtn.value) {
+    isLoading.value = true;
     useApi({
-      url: "/auth/login",
+      url: "/users/auth/register/set-password",
       method: "post",
       data: {
+        userId: props.userId,
         password: password.value,
       },
     }).then((res) => {
-      tokenCookie.value = res.data.token;
-      userCookie.value = res.data.user;
-      emit("nextStep", password.value);
+      tokenCookie.value = res.token;
+      isLoading.value = false;
+      emit("nextStep");
     });
   }
 };
-
-watch(
-  () => password.value,
-  () => {
-    nextTick(() => {
-      if (password.value.length > 3) {
-        password.value = password.value.slice(0, 4);
-      }
-    });
-  }
-);
 </script>
 
 <style lang="scss" scoped>

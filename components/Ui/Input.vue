@@ -1,7 +1,10 @@
 <template>
   <div class="input">
     <label class="input__label" for="" v-if="label">{{ label }}</label>
-    <div class="input__wrapper" :class="customClass">
+    <div
+      class="input__wrapper"
+      :class="(customClass, { 'input__field--error': isError })"
+    >
       <UiIcons
         v-if="beforeIcon"
         :icon="beforeIcon"
@@ -10,7 +13,9 @@
       ></UiIcons>
       <input
         class="input__field"
-        :class="{ 'input__field--center': isCenter }"
+        :class="{
+          'input__field--center': isCenter,
+        }"
         :type="type"
         name=""
         v-maska
@@ -52,6 +57,7 @@ const props = defineProps({
   iconColor: String,
   customClass: String,
   isCenter: Boolean,
+  isError: Boolean,
 });
 </script>
 
@@ -78,6 +84,9 @@ const props = defineProps({
       text-align: center;
       font-size: 16px;
       font-weight: 400;
+    }
+    &--error {
+      border: 1px solid $orange-200;
     }
     &[placeholder] {
       color: $surface-900;

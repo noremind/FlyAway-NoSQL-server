@@ -7,19 +7,28 @@
     v-if="userStore.isOpenLoginModal && currentStep === 2"
     @next-step="nextStepStatusAuth"
   />
+
   <TheAuthSmsCode
     v-if="currentStep === 3"
     @next-step="nextStepStatusAuth"
     @prev-step="prevStep"
     :phone="phoneReg"
   />
-  <ModalsStatus
+
+  <TheAuthPassword
     v-if="currentStep === 4"
+    :userId="userId"
+    @next-step="nextStepSuccessAuth"
+    @prev-step="prevStep"
+  />
+
+  <ModalsStatus
+    v-if="currentStep === 5"
     title="Вы зарегестрированы"
     status="success"
     btn-label="Перейти в личный кабинет"
     go-to="/profile"
-    @action="userStore.closeAuthModal()"
+    @action="userStore.closeAuthModalRegister()"
   />
 </template>
 
@@ -28,19 +37,27 @@ const userStore = useAuthStore();
 const currentStep = ref(userStore.isOpenRegisteredModal ? 1 : 2);
 const phoneReg = ref("");
 const nameReg = ref("");
+const userId = ref("");
 
 const nextStepSmsCode = (phone, name) => {
   phoneReg.value = phone;
   nameReg.value = name;
   currentStep.value = 3;
+  console.log(currentStep.value);
 };
 
-const nextStepStatusAuth = () => {
+const nextStepStatusAuth = (id) => {
+  userId.value = id;
   currentStep.value = 4;
 };
 
+const nextStepSuccessAuth = () => {
+  currentStep.value = 5;
+};
+
 const prevStep = () => {
-  currentStep.value--;
+  if (currentStep.value === 3) return (currentStep.value = 1);
+  --currentStep.value;
 };
 </script>
 

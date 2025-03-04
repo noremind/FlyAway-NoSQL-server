@@ -24,7 +24,9 @@
             :disallow="/[^a-zA-Z0-9]/g"
             :class="{ error: errorSms ? 'sms-code__fields-error' : '' }"
           />
-          <p class="sms-code__error" v-if="errorSms">Неверный код</p>
+          <p class="sms-code__error" v-if="errorSms">
+            {{ errorSms }}
+          </p>
           <div class="sms-code__btns">
             <UiButton
               label="Назад"
@@ -36,6 +38,7 @@
               class="sms-code__btn sms-code__btn--confirm"
               @click="postLogin"
               :disabled="disabledBtn"
+              :is-loading="isLoading"
             ></UiButton>
           </div>
         </form>
@@ -45,11 +48,7 @@
 </template>
 
 <script setup>
-const sms = ref(null);
 const emit = defineEmits(["nextStep", "prevStep"]);
-const errorSms = ref(false);
-const tokenCookie = useCookie("token");
-const userCookie = useCookie("user");
 
 const props = defineProps({
   phone: {
@@ -58,24 +57,19 @@ const props = defineProps({
   },
 });
 
+const sms = ref(null);
+const errorSms = ref("");
+const isLoading = ref(false);
+
 const disabledBtn = computed(() => {
   return !(sms.value?.length === 4);
 });
 
-const getSmsCode = () => {
-  const number = "+" + props.phone;
-  useApi({
-    url: "/auth/get-code",
-    method: "get",
-    params: { phone: number },
-  }).then((res) => {});
-};
-getSmsCode();
-
 const postLogin = () => {
   if (!disabledBtn.value) {
+    isLoading.value = true;
     useApi({
-      url: "/auth/login",
+      url: "/users/auth/register/verify-code",
       method: "post",
       data: {
         phone: props.phone,
@@ -83,16 +77,23 @@ const postLogin = () => {
       },
     })
       .then((res) => {
-        tokenCookie.value = res.data.token;
-        userCookie.value = res.data.user;
-        emit("nextStep");
+        emit("nextStep", res.userId);
+        isLoading.value = false;
       })
       .catch((error) => {
-        errorSms.value = true;
+        errorSms.value = error.message;
         sms.value = null;
+        isLoading.value = false;
       });
   }
 };
+
+watch(
+  () => sms.value,
+  (newVal) => {
+    if (newVal?.length >= 1 && errorSms.value) errorSms.value = "";
+  }
+);
 </script>
 
 <style lang="scss" scoped>
