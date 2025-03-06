@@ -193,7 +193,11 @@ export const getUserInfo = async (req, res) => {
 			})
 		}
 
-		res.json(user)
+		const {password, createdAt, updatedAt, verificationCode, __v, isVerified, ...userData} = user._doc
+
+		res.json({
+			...userData
+		})
 	} catch (error) {
 		console.error(error)
 		res.status(500).json({
