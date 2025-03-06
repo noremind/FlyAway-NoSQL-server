@@ -6,7 +6,7 @@ import {
 	getUsers,
 	updateUser,
 	login,
-	getProfile,
+	getUserInfo,
 } from "../controllers/userController.js"
 import { checkAuth } from "../utils/checkAuth.middleware.js"
 
