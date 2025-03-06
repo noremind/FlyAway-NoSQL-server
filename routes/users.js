@@ -5,7 +5,10 @@ import {
 	setPassword,
 	getUsers,
 	updateUser,
+	login,
+	getProfile,
 } from "../controllers/userController.js"
+import { checkAuth } from "../utils/checkAuth.middleware.js"
 
 export const userRoutes = express.Router()
 
@@ -21,3 +24,7 @@ userRoutes.post("/auth/register/verify-code", verifyCode)
 userRoutes.post("/auth/register/set-password", setPassword)
 
 userRoutes.put("/:userId/update", updateUser)
+
+userRoutes.post("/auth/login", login)
+
+userRoutes.get("/profile", checkAuth, getProfile)

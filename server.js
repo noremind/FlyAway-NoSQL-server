@@ -17,6 +17,41 @@ app.use(cors())
 app.use("/api", routes)
 // app.use("/uploads", express.static(path.resolve("uploads")))
 
+app.use(express.static("public"))
+
+app.get("/", (req, res) => {
+	res.send(`
+    <html>
+      <head>
+				<link rel="icon" type="image/x-icon" href="/images/FlyAway-logo-small.png">
+        <title>FlyAway Серверная Часть</title>
+        <style>
+          body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
+          .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 18px;
+            color: white;
+            background-color: #007bff;
+            text-decoration: none;
+            border-radius: 5px;
+          }
+          .btn:hover {
+            background-color: #0056b3;
+          }
+        </style>
+      </head>
+      <body>
+				<img src="/images/logo-flyaway.jpg" alt="Logo" width="300px">
+        <h1>Добро пожаловать на сервер!</h1>
+        <a href="https://no-sql-project-client.vercel.app/ru" class="btn">Перейти на клиентскую часть</a>
+      </body>
+    </html>
+  `)
+})
+
 app.listen(PORT, () =>
 	console.log(`Сервер запущен на http://localhost:${PORT}`)
 )
+
+

@@ -36,11 +36,13 @@ export const sendVerificationCode = async (req, res) => {
 			user = new UserModel({ name, phone, verificationCode })
 			await user.save()
 		} else if (!user.isVerified) {
-			user.verificationCode = generateVerificationCode()
-			console.log(
-				`🔹 Новый код подтверждения для ${phone}: ${user.verificationCode}`
+			const verificationCode = generateVerificationCode()
+
+			user = await UserModel.findByIdAndUpdate(
+				user._id,
+				{ $set: { ...req.body, verificationCode } },
+				{ new: true }
 			)
-			await user.save()
 		} else {
 			return res.status(400).json({ message: "Этот номер уже зарегистрирован" })
 		}
@@ -65,9 +67,10 @@ export const verifyCode = async (req, res) => {
 			return res
 				.status(400)
 				.json({ message: "Неверный код или неверный номер" })
-		} else if (!user.password) {
-			user.isVerified = false
 		}
+		// else if (!user.password) {
+		// 	user.isVerified = false
+		// }
 
 		await user.save()
 
@@ -82,11 +85,8 @@ export const setPassword = async (req, res) => {
 		const { userId, password } = req.body
 
 		const user = await UserModel.findById(userId)
-		console.log("User1", user)
 
 		if (!user) {
-			console.log("User2", user)
-
 			return res
 				.status(400)
 				.json({ message: "Пользователь не найден или не подтверждён" })
@@ -97,17 +97,11 @@ export const setPassword = async (req, res) => {
 		user.password = await bcrypt.hash(password, 10)
 		await user.save()
 
-		console.log("User3", user)
-
 		const token = jwt.sign(
 			{ userId: userId }, // Полезная информация в токене
 			SECRET_KEY,
 			{ expiresIn: "7d" }
 		)
-
-		console.log('User4', user);
-		console.log('User5', userId);
-
 
 		res.json({
 			token,
@@ -135,8 +129,6 @@ export const updateUser = async (req, res) => {
 			})
 		}
 
-		// console.log("User updated:", updatedUser)
-
 		res.json({
 			message: "Данные успешно обновлены",
 			user: updatedUser,
@@ -151,11 +143,64 @@ export const updateUser = async (req, res) => {
 
 export const login = async (req, res) => {
 	try {
-		const user = await UserModel.findOne()
+		const { phone, password } = req.body
+
+		const user = await UserModel.findOne({ phone })
+
+		if (!user) {
+			return res.status(400).json({
+				message: "User not founnd",
+			})
+		}
+
+		const isValidPassword = await bcrypt.compare(password, user.password)
+
+		if (!isValidPassword) {
+			return res.status(400).json({
+				message: "Incorrect password",
+			})
+		}
+
+		const token = jwt.sign(
+			{
+				userId: user._id,
+			},
+			SECRET_KEY,
+			{
+				expiresIn: "7d",
+			}
+		)
+
+		res.json({
+			message: "Login is success",
+			token: token,
+			phone,
+		})
 	} catch (error) {
 		console.log(error)
 		res.status(500).json({
 			message: "Login is failed",
+		})
+	}
+}
+
+export const getProfile = async (req, res) => {
+	try {
+		const user = await UserModel.findById(req.userId)
+
+		// console.log("user", user)
+
+		if (!user) {
+			return res.status(404).json({
+				message: "User not found",
+			})
+		}
+
+		res.json(user)
+	} catch (error) {
+		console.error(error)
+		res.status(500).json({
+			message: "Ошибка при получении пользователя",
 		})
 	}
 }
