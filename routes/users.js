@@ -23,7 +23,7 @@ userRoutes.post("/auth/register/verify-code", verifyCode)
 // 3. Установка пароля
 userRoutes.post("/auth/register/set-password", setPassword)
 
-userRoutes.put("/:userId/update", updateUser)
+userRoutes.put("/update", checkAuth, updateUser)
 
 userRoutes.post("/auth/login", login)
 
