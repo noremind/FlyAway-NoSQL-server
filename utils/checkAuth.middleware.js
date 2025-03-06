@@ -1,4 +1,5 @@
 import dotenv from "dotenv"
+import jwt from "jsonwebtoken"
 dotenv.config()
 const SECRET_KEY = process.env.JWT_SECRET
 
@@ -11,7 +12,7 @@ export const checkAuth = (req, res, next) => {
 
 	try {
 		const decoded = jwt.verify(token, SECRET_KEY)
-		req.user = decoded
+		req.userId = decoded.userId
 		next()
 	} catch (error) {
 		return res.status(403).json({ message: "Неверный или истёкший токен" })
