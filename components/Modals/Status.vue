@@ -4,7 +4,7 @@
       <img
         class="status__logo"
         src="@/assets/image/logo/FlyAway-logo.png"
-        alt="TravelTime"
+        alt="FlyAway"
       />
       <UiIcons
         icon="circle-check"
@@ -66,6 +66,9 @@ const checkStatus = computed(() => {
   }
   &__link {
     width: 100%;
+  }
+  &__logo {
+    width: 64px;
   }
 }
 </style>

@@ -37,7 +37,7 @@
 
       <p class="dropdown__user-name">{{ user?.name }}</p>
 
-      <ul class="dropdown__list">
+      <ul class="dropdown__list" v-if="userStore.isLoggedIn">
         <li
           class="dropdown__list-item"
           v-for="item in dropdownNav"
@@ -51,6 +51,7 @@
       </ul>
 
       <UiButton
+        v-if="userStore.isLoggedIn"
         class="dropdown__leave-btn"
         label="Выйти"
         before-icon="login"

@@ -19,6 +19,11 @@ export const useAuthStore = defineStore('auth', () => {
 	const getToken = computed(() => token.value);
 	const getUser = computed(() => user.value);
 
+	const setToken = (tokenInfo) => {
+		token.value = tokenInfo
+		tokenCookie.value = tokenInfo
+	}
+
 	const openAuthModalRegister = () => {
 		isOpenRegisteredModal.value = true
 	}
@@ -31,6 +36,15 @@ export const useAuthStore = defineStore('auth', () => {
 	}
 	const closeAuthModalLogin = () => {
 		isOpenLoginModal.value = false
+	}
+
+	const setUser = () => {
+		useApi({
+			url: '/users/current-info',
+			method: 'get'
+		}).then(res => {
+			userCookie.value = res
+		})
 	}
 
 	watch(
@@ -61,6 +75,8 @@ export const useAuthStore = defineStore('auth', () => {
 		closeAuthModalLogin,
 		isLoggedIn,
 		getToken,
-		getUser
+		getUser,
+		setUser,
+		setToken
 	};
 });

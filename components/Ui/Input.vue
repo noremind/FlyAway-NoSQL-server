@@ -17,7 +17,7 @@
           'input__field--center': isCenter,
         }"
         :type="type"
-        name=""
+        :name="name"
         v-maska
         :data-maska="maska"
         :value="modelValue"
@@ -58,6 +58,7 @@ const props = defineProps({
   customClass: String,
   isCenter: Boolean,
   isError: Boolean,
+  name: String,
 });
 </script>
 

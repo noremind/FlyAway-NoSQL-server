@@ -4,7 +4,7 @@
       <img
         class="bonus__logo"
         src="@/assets/image/logo/FlyAway-logo.png"
-        alt="TravelTime"
+        alt="FlyAway"
       />
 
       <h3 class="bonus__title title">Приглашайте друзей, получайте бонусы</h3>
@@ -48,6 +48,7 @@
     padding: 30px 10px;
   }
   &__logo {
+    width: 64px;
     margin-bottom: 40px;
     max-width: 180px;
     width: 100%;

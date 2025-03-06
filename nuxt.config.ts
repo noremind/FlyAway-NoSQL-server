@@ -9,6 +9,9 @@ export default defineNuxtConfig({
 
 	app: {
     head: {
+			meta: [
+        { name: 'robots', content: 'noindex, nofollow' }
+      ],
       script: [
         {
           src: "https://api-maps.yandex.ru/2.1/?apikey=YOUR_API_KEY&lang=ru_RU",
@@ -46,6 +49,16 @@ export default defineNuxtConfig({
 
 	pinia: {
     storesDirs: ["./store/**"],
+  },
+
+	nitro: {
+    devProxy: {
+      "/api": {
+        target: "https://no-sql-project-server.vercel.app",
+        changeOrigin: true,
+        prependPath: true
+      },
+    },
   },
 
 	// vue: {

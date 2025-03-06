@@ -1,25 +1,25 @@
 <template>
   <section class="about">
     <div class="about__wrapper">
-      <h1 class="about__title title">О TravelTime</h1>
+      <h1 class="about__title title">О FlyAway</h1>
 
       <div class="about__content">
         <div class="about__imgs">
           <img
             class="about__img"
             src="@/assets/image/content/about-img1.png"
-            alt="TravelTime"
+            alt="FlyAway"
           />
           <img
             class="about__img"
             src="@/assets/image/content/about-img2.png"
-            alt="TravelTime"
+            alt="FlyAway"
           />
         </div>
 
         <div class="about__texts">
           <p class="about__text">
-            TravelTime — это больше, чем просто туристический маркетплейс. Это
+            FlyAway — это больше, чем просто туристический маркетплейс. Это
             портал, который открывает дверь в сердце Казахстана — страны с
             богатой историей, уникальной культурой и потрясающей природой. Мы
             вдохновляем исследовать, удивляться и влюбляться в её необъятные
@@ -35,7 +35,7 @@
           <img
             class="about__img about__img--mobile"
             src="@/assets/image/content/about-img2.png"
-            alt="TravelTime"
+            alt="FlyAway"
           />
 
           <div class="about__box about__box--hide">
@@ -56,13 +56,13 @@
             </ul>
           </div>
           <p class="about__text about__text--hide">
-            TravelTime — это не просто путешествие. Это опыт, который останется с
+            FlyAway — это не просто путешествие. Это опыт, который останется с
             вами навсегда. Добро пожаловать в мир, где каждая поездка становится
             приключением, а каждый день — открытием.
           </p>
 
           <p class="about__text about__text--hide">
-            TravelTime — это не просто путешествие. Это опыт, который останется с
+            FlyAway — это не просто путешествие. Это опыт, который останется с
             вами навсегда. Добро пожаловать в мир, где каждая поездка становится
             приключением, а каждый день — открытием.
           </p>
@@ -109,13 +109,13 @@
               </ul>
             </div>
             <p class="about__text">
-              TravelTime — это не просто путешествие. Это опыт, который останется
-              с вами навсегда. Добро пожаловать в мир, где каждая поездка
+              FlyAway — это не просто путешествие. Это опыт, который останется с
+              вами навсегда. Добро пожаловать в мир, где каждая поездка
               становится приключением, а каждый день — открытием.
             </p>
             <p class="about__text">
-              TravelTime — это не просто путешествие. Это опыт, который останется
-              с вами навсегда. Добро пожаловать в мир, где каждая поездка
+              FlyAway — это не просто путешествие. Это опыт, который останется с
+              вами навсегда. Добро пожаловать в мир, где каждая поездка
               становится приключением, а каждый день — открытием.
             </p>
           </div>

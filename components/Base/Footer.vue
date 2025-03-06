@@ -5,7 +5,7 @@
         <img
           class="footer__logo"
           src="@/assets/image/logo/FlyAway-logo.png"
-          alt="TravelTime"
+          alt="FlyAway"
         />
       </nuxt-link>
 
@@ -46,16 +46,6 @@ const footerList = reactive([
         link: "",
       },
       {
-        name: "Локации",
-        icon: "",
-        link: "",
-      },
-      {
-        name: "Способы оплаты",
-        icon: "",
-        link: "",
-      },
-      {
         name: "Контакты",
         icon: "",
         link: "",
@@ -71,17 +61,12 @@ const footerList = reactive([
         link: "",
       },
       {
-        name: "Полезные ссылки",
+        name: "Туры",
         icon: "",
         link: "",
       },
       {
-        name: "FAQ",
-        icon: "",
-        link: "",
-      },
-      {
-        name: "Политика конфиденциальности",
+        name: "Отели",
         icon: "",
         link: "",
       },
@@ -91,17 +76,17 @@ const footerList = reactive([
     id: 2,
     list: [
       {
-        name: "@TravelTime.kz",
+        name: "@FlyAway.kz",
         icon: "instagram",
         link: "",
       },
       {
-        name: "TravelTime@gmail.com",
+        name: "FlyAway@gmail.com",
         icon: "email",
         link: "",
       },
       {
-        name: "@TravelTime.kz",
+        name: "@FlyAway.kz",
         icon: "tiktok",
         link: "",
       },
@@ -116,7 +101,7 @@ const footerList = reactive([
         link: "",
       },
       {
-        name: "+7 777 (700) 77 77",
+        name: "+7 777 (777) 77 77",
         icon: "phone",
         link: "",
       },
@@ -140,6 +125,7 @@ const footerList = reactive([
     gap: 12px;
   }
   &__logo {
+    width: 64px;
     margin: 46px 0;
     cursor: pointer;
   }

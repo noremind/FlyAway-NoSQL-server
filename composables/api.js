@@ -20,7 +20,7 @@ export async function useApi(options = {}) {
 	};
 
 	if (store.value.getToken) {
-		headers.Authorization = `Bearer ${tokenCookie.value}`;
+		headers.Authorization = `Bearer ${store.value.getToken}`;
 	}
 
 	try {

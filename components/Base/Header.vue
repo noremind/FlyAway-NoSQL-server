@@ -6,12 +6,12 @@
           <img
             class="header__logo"
             src="@/assets/image/logo/FlyAway-logo.png"
-            alt="TravelTime Logo"
+            alt="FlyAway Logo"
           />
           <img
             class="header__logo header__logo--mobile"
             src="@/assets/image/logo/FlyAway-logo.png"
-            alt="TravelTime Logo"
+            alt="FlyAway Logo"
           />
         </nuxt-link>
 
@@ -272,6 +272,7 @@ watch(
       padding: 0 6px;
     }
     &__logo {
+      width: 64px;
       display: none;
       &--mobile {
         display: flex;

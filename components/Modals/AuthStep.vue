@@ -5,7 +5,7 @@
   />
   <TheAuthLogin
     v-if="userStore.isOpenLoginModal && currentStep === 2"
-    @next-step="nextStepStatusAuth"
+    @next-step="nextStepSuccessAuth"
   />
 
   <TheAuthSmsCode

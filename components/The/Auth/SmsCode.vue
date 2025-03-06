@@ -4,7 +4,7 @@
       <img
         class="sms-code__logo"
         src="@/assets/image/logo/FlyAway-logo.png"
-        alt="TravelTime"
+        alt="FlyAway"
       />
 
       <h4 class="sms-code__title">СМС-код</h4>
@@ -17,7 +17,7 @@
       <client-only>
         <form class="sms-code__form">
           <venCodeInput
-            v-model="sms"
+            v-model.trim="sms"
             :upper="true"
             :lower="false"
             :length="4"
@@ -72,7 +72,7 @@ const postLogin = () => {
       url: "/users/auth/register/verify-code",
       method: "post",
       data: {
-        phone: props.phone,
+        phone: props.phone.replace(/\D/g, ""),
         code: sms.value,
       },
     })
@@ -147,6 +147,9 @@ watch(
   }
   &__box {
     text-align: center;
+  }
+  &__logo {
+    width: 64px;
   }
 }
 

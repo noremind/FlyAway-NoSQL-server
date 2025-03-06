@@ -4,7 +4,7 @@
       <img
         class="register__logo"
         src="@/assets/image/logo/FlyAway-logo.png"
-        alt="TravelTime"
+        alt="FlyAway"
       />
 
       <h4 class="register__title">Регистрация</h4>
@@ -13,13 +13,13 @@
         <UiInput
           placeholder="Введите"
           label="Ваше имя*"
-          v-model="name"
+          v-model.trim="name"
         ></UiInput>
         <div>
           <UiInput
             placeholder="+7 (_ _ _) - _ _ _ - _ _ - _ _"
             label="Номер телефона*"
-            v-model="phone"
+            v-model.trim="phone"
             maska="+7(###)-###-##-##"
             :is-error="!!errorMessage"
           ></UiInput>
@@ -62,7 +62,7 @@ const postSignUp = () => {
       url: "/users/auth/register/send-code",
       method: "post",
       data: {
-        phone: phone.value,
+        phone: phone.value.replace(/\D/g, ""),
         name: name.value,
       },
     })
@@ -109,6 +109,9 @@ watch(
   &__error {
     font-size: 12px;
     color: $orange-200;
+  }
+  &__logo {
+    width: 64px;
   }
 }
 </style>

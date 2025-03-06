@@ -4,7 +4,7 @@
       <img
         class="login-user__logo"
         src="@/assets/image/logo/FlyAway-logo.png"
-        alt="TravelTime"
+        alt="FlyAway"
       />
 
       <h4 class="login-user__title">Войти</h4>
@@ -13,21 +13,32 @@
         <UiInput
           placeholder="+7 (_ _ _) - _ _ _ - _ _ - _ _"
           label="Номер телефона"
-          v-model="phone"
+          v-model.trim="phone"
           maska="+7(###)-###-##-##"
+          name="phone"
+          :is-error="!!errorMessage"
         ></UiInput>
-        <UiInput
-          placeholder="Пароль"
-          label="Введите пароль"
-          v-model="password"
-          :type="'password'"
-        ></UiInput>
+        <div>
+          <UiInput
+            placeholder="Пароль"
+            label="Введите пароль"
+            v-model.trim="password"
+            :type="'password'"
+            name="password"
+            :is-error="!!errorMessage"
+          ></UiInput>
+
+          <p class="login-user__error" v-if="errorMessage">
+            {{ errorMessage }}
+          </p>
+        </div>
 
         <UiButton
           label="Войти"
           @click="postLogin"
           class="login-user__btn button-primary"
           :disabled="!disabledBtn"
+          :is-loading="isLoading"
         ></UiButton>
       </form>
     </div>
@@ -36,42 +47,58 @@
 
 <script setup>
 const emit = defineEmits(["nextStep"]);
-
+const userStore = useAuthStore();
 const tokenCookie = useCookie("token");
-const userCookie = useCookie("user");
 
 const password = ref("");
 const phone = ref("");
 
+const errorMessage = ref("");
+const isLoading = ref(false);
+
 const disabledBtn = computed(() => {
-  return password.value.length > 3 && phone.value.length === 17;
+  return (
+    password.value.length > 3 &&
+    password.value.length < 25 &&
+    phone.value.length === 17
+  );
 });
 
 const postLogin = () => {
   if (disabledBtn.value) {
+    isLoading.value = true;
     useApi({
-      url: "/auth/login",
+      url: "/users/auth/login",
       method: "post",
       data: {
-        phone: phone.value,
+        phone: phone.value.replace(/\D/g, ""),
         password: password.value,
       },
-    }).then((res) => {
-      tokenCookie.value = res.data.token;
-      userCookie.value = res.data.user;
-      emit("nextStep", phone.value, password.value);
-    });
+    })
+      .then((res) => {
+        userStore.setToken(res.token);
+        userStore.setUser();
+        isLoading.value = false;
+        emit("nextStep");
+      })
+      .catch((error) => {
+        isLoading.value = false;
+        errorMessage.value = error.message;
+      });
   }
 };
 
 watch(
+  () => phone.value,
+  () => {
+    errorMessage.value = "";
+  }
+);
+
+watch(
   () => password.value,
   () => {
-    nextTick(() => {
-      if (password.value.length > 3) {
-        password.value = password.value.slice(0, 4);
-      }
-    });
+    errorMessage.value = "";
   }
 );
 </script>
@@ -96,6 +123,13 @@ watch(
     display: flex;
     flex-direction: column;
     gap: 20px;
+  }
+  &__logo {
+    width: 64px;
+  }
+  &__error {
+    font-size: 14px;
+    color: $orange-200;
   }
 }
 </style>

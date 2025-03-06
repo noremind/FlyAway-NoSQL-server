@@ -4,7 +4,7 @@
       <img
         class="password__logo"
         src="@/assets/image/logo/FlyAway-logo.png"
-        alt="TravelTime"
+        alt="FlyAway"
       />
 
       <h4 class="password__title">Задайте пароль</h4>
@@ -89,6 +89,9 @@ const postLogin = () => {
     display: flex;
     flex-direction: column;
     gap: 20px;
+  }
+  &__logo {
+    width: 64px;
   }
 }
 </style>

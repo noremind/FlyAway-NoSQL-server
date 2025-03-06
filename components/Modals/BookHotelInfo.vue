@@ -4,7 +4,7 @@
       <img
         class="info__logo"
         src="@/assets/image/logo/FlyAway-logo.png"
-        alt="TravelTime"
+        alt="FlyAway"
       />
 
       <h4 class="info__title">Заполните поля</h4>
@@ -55,6 +55,9 @@ const emit = defineEmits(["nextStep"]);
     display: flex;
     flex-direction: column;
     gap: 20px;
+  }
+  &__logo {
+    width: 64px;
   }
 }
 </style>
