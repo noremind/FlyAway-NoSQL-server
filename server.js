@@ -18,7 +18,7 @@ app.use("/api", routes)
 // app.use("/uploads", express.static(path.resolve("uploads")))
 
 app.use(express.static("public"))
-app.use("/storage", express.static("public/images"))
+app.use("/storage", express.static("public/images/avatar"))
 
 app.get("/", (req, res) => {
 	res.send(`
