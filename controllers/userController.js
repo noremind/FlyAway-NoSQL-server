@@ -15,7 +15,7 @@ export const getUsers = async (req, res) => {
 	} catch (error) {
 		console.log(error)
 		res.status(500).json({
-			message: "Geting users is failed",
+			message: "Ошибка пи получении пользователя",
 		})
 	}
 }
@@ -149,7 +149,7 @@ export const login = async (req, res) => {
 
 		if (!user) {
 			return res.status(400).json({
-				message: "User not founnd",
+				message: "Пользователь не найден",
 			})
 		}
 
@@ -157,7 +157,7 @@ export const login = async (req, res) => {
 
 		if (!isValidPassword) {
 			return res.status(400).json({
-				message: "Incorrect password",
+				message: "Неправильный пароль или телефон",
 			})
 		}
 
@@ -172,14 +172,14 @@ export const login = async (req, res) => {
 		)
 
 		res.json({
-			message: "Login is success",
+			message: "Вы успешно вошли",
 			token: token,
 			phone,
 		})
 	} catch (error) {
 		console.log(error)
 		res.status(500).json({
-			message: "Login is failed",
+			message: "Не удалось войти",
 		})
 	}
 }
@@ -187,12 +187,9 @@ export const login = async (req, res) => {
 export const getUserInfo = async (req, res) => {
 	try {
 		const user = await UserModel.findById(req.userId)
-
-		// console.log("user", user)
-
 		if (!user) {
 			return res.status(404).json({
-				message: "User not found",
+				message: "Пользователь не найден",
 			})
 		}
 

@@ -7,7 +7,7 @@ export const getHotels = async (req, res) => {
 	} catch (error) {
 		console.error("❌ Ошибка получения отелей:", error)
 		res.status(500).json({
-			message: "Get hotels is failed",
+			message: "Ошибка при получении отелей",
 		})
 	}
 }
