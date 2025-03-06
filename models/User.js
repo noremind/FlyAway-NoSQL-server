@@ -17,7 +17,7 @@ const UserSchema = new mongoose.Schema(
 		avatar: {
 			type: String,
 			default:
-				"https://no-sql-project-server.vercel.app/storage/images/avatar.avif",
+				"https://no-sql-project-server.vercel.app/storage/images/default-avatar.avif",
 		},
 	},
 	{ timestamps: true }
