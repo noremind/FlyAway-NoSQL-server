@@ -27,4 +27,4 @@ userRoutes.put("/:userId/update", updateUser)
 
 userRoutes.post("/auth/login", login)
 
-userRoutes.get("/profile", checkAuth, getProfile)
+userRoutes.get("/current-info", checkAuth, getUserInfo)
