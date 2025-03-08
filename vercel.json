@@ -6,16 +6,32 @@
 		{
 			"src": "server.js",
 			"use": "@vercel/node"
+		},
+		{
+			"src": "public/",
+			"use": "@vercel/static"
 		}
 	],
 	"routes": [
 		{
 			"src": "/(.*)",
-			"dest": "server.js"
+			"dest": "server.js",
+			"methods": ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+			"headers": {
+				"Access-Control-Allow-Origin": "*"
+			}
 		},
 		{
 			"src": "/storage/(.*)",
 			"dest": "/public/images/avatar/$1"
+		},
+		{
+			"src": "/(.+\\.[a-z]+)$",
+			"dest": "/public/$1"
+		},
+		{
+			"src": "/((?!.\\.\\w+$).)",
+			"dest": "/server.js"
 		}
 	]
 }
