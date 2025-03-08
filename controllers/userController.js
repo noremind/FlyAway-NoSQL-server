@@ -115,8 +115,8 @@ export const setPassword = async (req, res) => {
 export const updateUser = async (req, res) => {
 	try {
 		const userId = req.userId
+		const user = await UserModel.findById(req.userId)
 
-		// Обновляем только переданные поля
 		const updatedUser = await UserModel.findByIdAndUpdate(
 			userId,
 			{ $set: req.body }, // Только переданные поля изменяются
@@ -129,9 +129,19 @@ export const updateUser = async (req, res) => {
 			})
 		}
 
+		const {
+			password,
+			createdAt,
+			updatedAt,
+			verificationCode,
+			__v,
+			isVerified,
+			...userData
+		} = user._doc
+
 		res.json({
 			message: "Данные успешно обновлены",
-			user: updatedUser,
+			data: {...userData},
 		})
 	} catch (error) {
 		console.error("Ошибка обновления пользователя:", error)
