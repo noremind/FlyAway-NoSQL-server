@@ -13,7 +13,7 @@
       <form class="info__form">
         <UiInput placeholder="Введите" label="Ваше имя"></UiInput>
         <UiInput
-          placeholder="+7 (7__) ___ __ __"
+          placeholder="8 (___) ___ __ __"
           label="Номер телефона"
         ></UiInput>
 

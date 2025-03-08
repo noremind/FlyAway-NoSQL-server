@@ -11,10 +11,10 @@
 
       <form class="login-user__form">
         <UiInput
-          placeholder="+7 (_ _ _) - _ _ _ - _ _ - _ _"
+          placeholder="8 (_ _ _) - _ _ _ - _ _ - _ _"
           label="Номер телефона"
           v-model.trim="phone"
-          maska="+7(###)-###-##-##"
+          maska="8(###)-###-##-##"
           name="phone"
           :is-error="!!errorMessage"
         ></UiInput>
@@ -60,7 +60,7 @@ const disabledBtn = computed(() => {
   return (
     password.value.length > 3 &&
     password.value.length < 25 &&
-    phone.value.length === 17
+    phone.value.length === 16
   );
 });
 
@@ -78,6 +78,8 @@ const postLogin = () => {
       .then((res) => {
         userStore.setToken(res.token);
         userStore.setUser();
+      })
+      .then(() => {
         isLoading.value = false;
         emit("nextStep");
       })

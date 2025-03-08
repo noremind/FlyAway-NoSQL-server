@@ -31,6 +31,7 @@
 
 <script setup>
 const emit = defineEmits(["nextStep"]);
+const userStore = useAuthStore();
 
 const props = defineProps({
   userId: {
@@ -61,8 +62,9 @@ const postLogin = () => {
         password: password.value,
       },
     }).then((res) => {
-      tokenCookie.value = res.token;
+      userStore.setToken(res.token);
       isLoading.value = false;
+      userStore.setUser();
       emit("nextStep");
     });
   }

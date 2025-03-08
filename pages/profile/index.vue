@@ -28,14 +28,14 @@
           class="profile-main__input"
           label="Ваше имя"
           placeholder="Дана"
-          v-model="name"
+          v-model.trim="name"
         ></UiInput>
         <UiInput
           class="profile-main__input"
           label="Номер телефона"
-          :placeholder="'777'"
-          maska="+7(###)-###-##-##"
-          v-model="phone"
+          maska="8(###)-###-##-##"
+          v-model.trim="phone"
+          :disabled="true"
         ></UiInput>
 
         <UiButton
@@ -48,34 +48,43 @@
         <UiInput
           class="profile-main__input profile-main__input--mobile"
           label="Ваше имя"
-          v-model="name"
+          v-model.trim="name"
+        ></UiInput>
+
+        <UiInput
+          class="profile-main__input"
+          label="Ваша почта"
+          v-model.trim="email"
+          placeholder="Не указан"
         ></UiInput>
 
         <UiInput
           class="profile-main__input profile-main__input--mobile"
           label="Номер телефона"
-          placeholder="+7 (---) --- -- --"
-          v-model="phone"
+          placeholder="8 (___) ___ __ __"
+          v-model.trim="phone"
         ></UiInput>
 
         <UiInput
           class="profile-main__input profile-main__input--mobile"
           label="Ваша почта"
           :placeholder="email"
-          v-model="email"
+          v-model.trim="email"
         ></UiInput>
 
         <UiCalendar
           label="Дата рождения"
           class="profile-main__calendar"
-          v-model="birthDate"
+          placeholder="Не указан"
+          v-model.trim="birthDate"
         />
 
         <UiSelect
           class="profile-main__select"
-          v-model="selectedGender"
-          :options="genders"
+          v-model.trim="selectedGender"
+          :options="genders.slice(0, 3)"
           label="Пол"
+          placeholder="Не указан"
         ></UiSelect>
 
         <UiButton
@@ -109,19 +118,31 @@ const genders = reactive([
     name: "Женский",
     value: "woman",
   },
+  {
+    id: 3,
+    name: "Другой",
+    value: "another",
+  },
+  {
+    id: 4,
+    name: "Не указан",
+    value: null,
+  },
 ]);
-const selectedGender = ref(genders[0]);
+const selectedGender = ref(genders[3]);
 
 const postProfile = () => {
+  const formatBirthdate = formatBirthDate(birthDate.value);
   useApi({
-    url: "/personal-cabinet/profile",
+    url: "/users/update",
     method: "put",
     data: {
       name: name.value,
       email: email.value,
       phone: phone.value,
       avatar: null,
-      birthday: birthDate.value,
+      birthDate: formatBirthdate,
+      gender: selectedGender.value.value,
     },
   }).then((res) => {
     userCookie.value = res.data;

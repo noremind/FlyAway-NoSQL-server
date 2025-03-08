@@ -17,10 +17,10 @@
         ></UiInput>
         <div>
           <UiInput
-            placeholder="+7 (_ _ _) - _ _ _ - _ _ - _ _"
+            placeholder="8 (_ _ _) - _ _ _ - _ _ - _ _"
             label="Номер телефона*"
             v-model.trim="phone"
-            maska="+7(###)-###-##-##"
+            maska="8(###)-###-##-##"
             :is-error="!!errorMessage"
           ></UiInput>
           <p class="register__error" v-if="!!errorMessage">
@@ -51,7 +51,7 @@ const isLoading = ref(false);
 
 const disabledBtn = computed(() => {
   return (
-    name.value.length > 1 && name.value.length < 50 && phone.value.length === 17
+    name.value.length > 1 && name.value.length < 50 && phone.value.length === 16
   );
 });
 

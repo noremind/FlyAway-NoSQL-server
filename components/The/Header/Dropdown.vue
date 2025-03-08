@@ -56,7 +56,7 @@
         label="Выйти"
         before-icon="login"
         icon-color="orange-200"
-        @click="leaveUser"
+        @click="userStore.logoutUser"
       ></UiButton>
     </div>
   </div>
@@ -66,8 +66,6 @@
 const userStore = useAuthStore();
 const user = computed(() => userStore.getUser);
 const emit = defineEmits(["closeDropdown"]);
-const tokenCookie = useCookie("token");
-const userCookie = useCookie("user");
 const dropdownNav = [
   {
     id: 1,
@@ -100,11 +98,6 @@ const dropdownNav = [
     icon: "credit-card",
   },
 ];
-
-const leaveUser = () => {
-  tokenCookie.value = null;
-  userCookie.value = null;
-};
 </script>
 
 <style lang="scss" scoped>

@@ -28,7 +28,7 @@
     status="success"
     btn-label="Перейти в личный кабинет"
     go-to="/profile"
-    @action="userStore.closeAuthModalRegister()"
+    @action="userStore.closeAuthModalLogin()"
   />
 </template>
 
@@ -43,7 +43,6 @@ const nextStepSmsCode = (phone, name) => {
   phoneReg.value = phone;
   nameReg.value = name;
   currentStep.value = 3;
-  console.log(currentStep.value);
 };
 
 const nextStepStatusAuth = (id) => {

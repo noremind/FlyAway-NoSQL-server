@@ -38,6 +38,13 @@ export const useAuthStore = defineStore('auth', () => {
 		isOpenLoginModal.value = false
 	}
 
+	const logoutUser = (route) => {
+		const router = useRouter()
+		tokenCookie.value = null
+		userCookie.value = null
+		router.push(route ? route : '/')
+	}
+
 	const setUser = () => {
 		useApi({
 			url: '/users/current-info',
@@ -77,6 +84,7 @@ export const useAuthStore = defineStore('auth', () => {
 		getToken,
 		getUser,
 		setUser,
-		setToken
+		setToken,
+		logoutUser
 	};
 });

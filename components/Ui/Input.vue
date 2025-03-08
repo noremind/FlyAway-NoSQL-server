@@ -15,6 +15,7 @@
         class="input__field"
         :class="{
           'input__field--center': isCenter,
+          'input__field--disabled': disabled,
         }"
         :type="type"
         :name="name"
@@ -23,6 +24,7 @@
         :value="modelValue"
         @input="$emit('update:modelValue', $event.target.value)"
         :placeholder="placeholder"
+        :disabled="disabled"
       />
       <UiIcons
         v-if="afterIcon"
@@ -59,6 +61,7 @@ const props = defineProps({
   isCenter: Boolean,
   isError: Boolean,
   name: String,
+  disabled: Boolean,
 });
 </script>
 
@@ -88,6 +91,10 @@ const props = defineProps({
     }
     &--error {
       border: 1px solid $orange-200;
+    }
+    &--disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
     }
     &[placeholder] {
       color: $surface-900;

@@ -15,6 +15,10 @@
 </template>
 
 <script setup>
+const userStore = useAuthStore();
+
+userStore.setUser();
+
 useSeoMeta({
   title: "FlyAway - Личный кабинет",
   ogTitle: "FlyAway - Личный кабинет",
