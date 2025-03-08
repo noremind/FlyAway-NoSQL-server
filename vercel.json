@@ -13,10 +13,6 @@
 			"dest": "/images/avatar/$1"
 		},
 		{
-			"src": "/storage/(.*)",
-			"dest": "/images/avatar/$1"
-		},
-		{
 			"src": "/(.*)",
 			"dest": "server.js"
 		}
