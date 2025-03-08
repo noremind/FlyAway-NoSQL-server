@@ -16,9 +16,9 @@ app.use(express.json())
 app.use(cors())
 app.use("/api", routes)
 // app.use("/uploads", express.static(path.resolve("uploads")))
-app.use("/public", express.static("public"))
+// app.use("/public", express.static("public"))
 // app.use(express.static("public"))
-app.use("/storage", express.static("public/images/avatar"))
+// app.use("/storage", express.static("public/images/avatar"))
 
 app.get("/", (req, res) => {
 	res.send(`
