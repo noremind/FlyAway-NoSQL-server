@@ -15,8 +15,5 @@
 			"src": "/storage/(.*)",
 			"dest": "/public/images/avatar/$1"
 		}
-	],
-	"static": {
-		"public": "public"
-	}
+	]
 }
