@@ -7,6 +7,9 @@ import {
 	updateUser,
 	login,
 	getUserInfo,
+	sendResetCode,
+	verifyResetCode,
+	resetPassword,
 } from "../controllers/userController.js"
 import { checkAuth } from "../utils/checkAuth.middleware.js"
 
@@ -22,9 +25,11 @@ userRoutes.post("/auth/register/verify-code", verifyCode)
 
 // 3. Установка пароля
 userRoutes.post("/auth/register/set-password", setPassword)
-
 userRoutes.put("/update", checkAuth, updateUser)
-
 userRoutes.post("/auth/login", login)
-
 userRoutes.get("/current-info", checkAuth, getUserInfo)
+
+// Reset password
+userRoutes.post("/send-reset-code", sendResetCode)
+userRoutes.post("/verify-reset-code", verifyResetCode)
+userRoutes.post("/reset-password", resetPassword)

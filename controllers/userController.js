@@ -141,7 +141,7 @@ export const updateUser = async (req, res) => {
 
 		res.json({
 			message: "Данные успешно обновлены",
-			data: {...userData},
+			data: { ...userData },
 		})
 	} catch (error) {
 		console.error("Ошибка обновления пользователя:", error)
@@ -221,5 +221,80 @@ export const getUserInfo = async (req, res) => {
 		res.status(500).json({
 			message: "Ошибка при получении пользователя",
 		})
+	}
+}
+
+// СБРОС ПАРОЛЯ
+export const sendResetCode = async (req, res) => {
+	try {
+		const { phone } = req.body
+		let user = await UserModel.findOne({ phone })
+
+		if (!user) {
+			return res.status(404).json({ message: "Пользователь не найден" })
+		}
+
+		const verificationCode = generateVerificationCode()
+
+		user = await UserModel.findOneAndUpdate(
+			{ phone },
+			{ $set: { verificationCode } },
+			{ new: true }
+		)
+
+		res.json({
+			message: "Код отправлен",
+			phone: phone,
+		})
+	} catch (error) {
+		res.status(500).json({ message: "Ошибка при отправке кода" })
+	}
+}
+
+export const verifyResetCode = async (req, res) => {
+	try {
+		const { phone, code } = req.body
+
+		const user = await UserModel.findOne({ phone })
+
+		if (!user || user.verificationCode !== code) {
+			return res.status(400).json({
+				message: "Неверный код или неверный пароль",
+			})
+		}
+
+		await user.save()
+
+		res.json({
+			message: "Код подтвержден",
+		})
+	} catch (error) {
+		res.status(500).json({ message: "Ошибка при проверке кода" })
+	}
+}
+
+export const resetPassword = async (req, res) => {
+	try {
+		const { phone, newPassword } = req.body
+
+		const user = await UserModel.findOne({ phone })
+
+		if (!user) {
+			return res
+				.status(400)
+				.json({ message: "Пользователь не найден или не подтверждён" })
+		}
+
+		user.isVerified = true
+		user.verificationCode = null // Код больше не нужен
+
+		user.password = await bcrypt.hash(newPassword, 10)
+		await user.save()
+
+		res.json({
+			message: "Новый пароль установлен.",
+		})
+	} catch (error) {
+		res.status(500).json({ message: "Ошибка при сбросе пароля" })
 	}
 }
