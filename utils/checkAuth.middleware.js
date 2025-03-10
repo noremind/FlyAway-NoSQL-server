@@ -15,6 +15,8 @@ export const checkAuth = (req, res, next) => {
 		req.userId = decoded.userId
 		next()
 	} catch (error) {
-		return res.status(401).json({ message: "Неверный или истёкший токен" })
+		return res
+			.status(401)
+			.json({ message: "Неверный или истёкший токен", statusCode: 401 })
 	}
 }
