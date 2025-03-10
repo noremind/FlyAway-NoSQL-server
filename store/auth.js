@@ -1,4 +1,6 @@
 export const useAuthStore = defineStore('auth', () => {
+	const router = useRouter()
+	const route = useRoute()
 
 	const tokenCookie = useCookie("token", {
 		maxAge: 604800,
@@ -28,6 +30,7 @@ export const useAuthStore = defineStore('auth', () => {
 		isOpenRegisteredModal.value = true
 	}
 	const closeAuthModalRegister = () => {
+		router.push({ path: route.path, query: {} })
 		isOpenRegisteredModal.value = false
 	}
 
@@ -35,11 +38,12 @@ export const useAuthStore = defineStore('auth', () => {
 		isOpenLoginModal.value = true
 	}
 	const closeAuthModalLogin = () => {
+		router.push({ path: route.path, query: {} })
 		isOpenLoginModal.value = false
 	}
 
 	const logoutUser = (route) => {
-		const router = useRouter()
+
 		tokenCookie.value = null
 		userCookie.value = null
 		router.push(route ? route : '/')

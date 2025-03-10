@@ -50,6 +50,8 @@
 <script setup>
 const emit = defineEmits(["nextStep", "prevStep"]);
 
+const route = useRoute();
+
 const props = defineProps({
   phone: {
     type: String,
@@ -69,7 +71,10 @@ const postLogin = () => {
   if (!disabledBtn.value) {
     isLoading.value = true;
     useApi({
-      url: "/users/auth/register/verify-code",
+      url:
+        route.query?.["reset-password"] != null
+          ? "/users/auth/register/verify-code"
+          : "/users/verify-reset-code",
       method: "post",
       data: {
         phone: props.phone.replace(/\D/g, ""),

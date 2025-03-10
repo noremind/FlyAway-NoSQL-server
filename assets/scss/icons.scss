@@ -332,6 +332,16 @@ i.icon {
 		-webkit-mask-image: url("@/assets/icons/tablets.svg");
 		mask-image: url("@/assets/icons/tablets.svg");
 }
+.eye{
+								@extend i, .icon;
+		-webkit-mask-image: url("@/assets/icons/eye.svg");
+		mask-image: url("@/assets/icons/eye.svg");
+}
+.eye-open{
+								@extend i, .icon;
+		-webkit-mask-image: url("@/assets/icons/eye-open.svg");
+		mask-image: url("@/assets/icons/eye-open.svg");
+}
 .tablet-blog{
 								@extend i, .icon;
 		-webkit-mask-image: url("@/assets/icons/tablet-blog.svg");

@@ -18,20 +18,31 @@
           name="phone"
           :is-error="!!errorMessage"
         ></UiInput>
-        <div>
+        <div class="login-user__form-box">
           <UiInput
             placeholder="Пароль"
             label="Введите пароль"
             v-model.trim="password"
-            :type="'password'"
+            :type="isOpenEye ? 'text' : 'password'"
             name="password"
             :is-error="!!errorMessage"
           ></UiInput>
+          <UiIcons
+            @click="toggleEye"
+            :icon="isOpenEye ? 'eye' : 'eye-open'"
+            class="login-user__form-eye"
+            size="size-20"
+          >
+          </UiIcons>
 
           <p class="login-user__error" v-if="errorMessage">
             {{ errorMessage }}
           </p>
         </div>
+
+        <p @click="emit('forgetPassword')" class="login-user__forget-password">
+          Забыли пароль?
+        </p>
 
         <UiButton
           label="Войти"
@@ -46,12 +57,13 @@
 </template>
 
 <script setup>
-const emit = defineEmits(["nextStep"]);
+const emit = defineEmits(["nextStep", "forgetPassword"]);
 const userStore = useAuthStore();
-const tokenCookie = useCookie("token");
 
 const password = ref("");
 const phone = ref("");
+
+const isOpenEye = ref(false);
 
 const errorMessage = ref("");
 const isLoading = ref(false);
@@ -63,6 +75,10 @@ const disabledBtn = computed(() => {
     phone.value.length === 16
   );
 });
+
+const toggleEye = () => {
+  isOpenEye.value = !isOpenEye.value;
+};
 
 const postLogin = () => {
   if (disabledBtn.value) {
@@ -114,6 +130,12 @@ watch(
     gap: 26px;
     padding: 40px 0 60px 0;
   }
+  &__forget-password {
+    color: $blue-500;
+    cursor: pointer;
+    text-align: center;
+    font-size: 12px;
+  }
   &__title {
     font-size: 32px;
     font-weight: 700;
@@ -125,6 +147,16 @@ watch(
     display: flex;
     flex-direction: column;
     gap: 20px;
+    position: relative;
+    &-box {
+      position: relative;
+    }
+    &-eye {
+      position: absolute;
+      top: 28px;
+      right: 13px;
+      cursor: pointer;
+    }
   }
   &__logo {
     width: 64px;
