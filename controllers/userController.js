@@ -100,7 +100,7 @@ export const setPassword = async (req, res) => {
 		const token = jwt.sign(
 			{ userId: userId }, // Полезная информация в токене
 			SECRET_KEY,
-			{ expiresIn: "7d" }
+			{ expiresIn: "30s" }
 		)
 
 		res.json({
@@ -177,7 +177,7 @@ export const login = async (req, res) => {
 			},
 			SECRET_KEY,
 			{
-				expiresIn: "7d",
+				expiresIn: "30s",
 			}
 		)
 
@@ -231,7 +231,7 @@ export const sendResetCode = async (req, res) => {
 		let user = await UserModel.findOne({ phone })
 
 		if (!user) {
-			return res.status(404).json({ message: "Пользователь не найден" })
+			return res.status(404).json({ message: "Номер не зарегестрирован или не найден" })
 		}
 
 		const verificationCode = generateVerificationCode()
@@ -245,6 +245,7 @@ export const sendResetCode = async (req, res) => {
 		res.json({
 			message: "Код отправлен",
 			phone: phone,
+			code: verificationCode
 		})
 	} catch (error) {
 		res.status(500).json({ message: "Ошибка при отправке кода" })
@@ -259,7 +260,7 @@ export const verifyResetCode = async (req, res) => {
 
 		if (!user || user.verificationCode !== code) {
 			return res.status(400).json({
-				message: "Неверный код или неверный пароль",
+				message: "Неверный код",
 			})
 		}
 
