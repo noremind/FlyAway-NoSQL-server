@@ -100,7 +100,7 @@ export const setPassword = async (req, res) => {
 		const token = jwt.sign(
 			{ userId: userId }, // Полезная информация в токене
 			SECRET_KEY,
-			{ expiresIn: "30s" }
+			{ expiresIn: "7d" }
 		)
 
 		res.json({
@@ -177,7 +177,7 @@ export const login = async (req, res) => {
 			},
 			SECRET_KEY,
 			{
-				expiresIn: "30s",
+				expiresIn: "7d",
 			}
 		)
 
