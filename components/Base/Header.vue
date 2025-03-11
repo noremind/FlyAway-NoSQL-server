@@ -41,11 +41,11 @@
           custom-class="header__search"
           placeholder="Введите название"
           after-icon="lupa"
-          icon-color="blue-500"
+          icon-color="red-500"
         ></UiInput>
 
         <nuxt-link to="/profile/favourites" v-if="userStore.isLoggedIn">
-          <UiIcons icon="heart" size="size-24" color="blue-500"></UiIcons>
+          <UiIcons icon="heart" size="size-24" color="red-500"></UiIcons>
         </nuxt-link>
 
         <div class="header__profile" ref="headerDropdown">
@@ -55,7 +55,7 @@
             @click="openDropdownMenu"
             v-if="!userStore.isLoggedIn"
           >
-            <UiIcons icon="profile-user" color="blue-500"></UiIcons>
+            <UiIcons icon="profile-user" color="red-500"></UiIcons>
           </button>
 
           <img
@@ -77,7 +77,7 @@
         class="header__burger"
         icon="burger-menu"
         size="size-32"
-        color="blue-500"
+        color="red-500"
         @click="openMobileNavMenu"
       ></UiIcons>
     </div>
@@ -223,7 +223,7 @@ watch(
       font-size: 14px;
       font-weight: 400;
       &--active {
-        color: $blue-500;
+        color: $red-500;
       }
     }
   }

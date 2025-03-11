@@ -52,7 +52,7 @@ const model = ref(props.modelValue);
 .custom-checkbox {
   width: 20px;
   height: 20px;
-  border: 2px solid $blue-500;
+  border: 2px solid $red-500;
   border-radius: 50%;
   margin-right: 8px;
   position: relative;
@@ -68,7 +68,7 @@ const model = ref(props.modelValue);
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  background-color: $blue-500;
+  background-color: $red-500;
 }
 
 .checkbox-container--checkmark input:checked + .custom-checkbox::after {
@@ -81,6 +81,6 @@ const model = ref(props.modelValue);
   width: 17px;
   height: 17px;
   border-radius: 50%;
-  background-color: $blue-500;
+  background-color: $red-500;
 }
 </style>

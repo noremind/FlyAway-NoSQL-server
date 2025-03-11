@@ -8,11 +8,7 @@
           alt="Avatar"
         />
         <button class="menu__avatar-default">
-          <UiIcons
-            icon="profile-user"
-            color="blue-500"
-            size="size-32"
-          ></UiIcons>
+          <UiIcons icon="profile-user" color="red-500" size="size-32"></UiIcons>
         </button>
       </div>
 
@@ -20,12 +16,12 @@
         <UiButton
           label="Войти"
           before-icon="login"
-          icon-color="blue-500"
+          icon-color="red-500"
           @click="openAuthModal"
           class="menu__auth-login"
         ></UiButton>
         <UiButton
-          background-color="blue-500"
+          background-color="red-500"
           label="Зарегестрироваться"
           @click="openAuthModal"
           class="menu__auth-register button-primary"
@@ -39,11 +35,7 @@
             class="menu__link"
             :class="{ 'menu__link--active': list.link === route.path }"
           >
-            <UiIcons
-              size="size-20"
-              color="blue-500"
-              :icon="list.icon"
-            ></UiIcons>
+            <UiIcons size="size-20" color="red-500" :icon="list.icon"></UiIcons>
             <p class="menu__text">{{ list.name }}</p>
           </nuxt-link>
         </li>

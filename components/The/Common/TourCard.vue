@@ -142,7 +142,7 @@ const toggleDropdown = () => {
   &__price-box {
     display: inline-flex;
     gap: 6px;
-    background-color: $blue-500;
+    background-color: $red-500;
     padding: 8px 12px;
     border-radius: 26px;
     font-weight: 400;
@@ -232,7 +232,7 @@ const toggleDropdown = () => {
   }
   &__count {
     font-size: 14px;
-    color: $blue-500;
+    color: $red-500;
     font-weight: 700;
   }
   &__date-plus {

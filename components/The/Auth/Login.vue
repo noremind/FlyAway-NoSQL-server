@@ -131,7 +131,7 @@ watch(
     padding: 40px 0 60px 0;
   }
   &__forget-password {
-    color: $blue-500;
+    color: $red-500;
     cursor: pointer;
     text-align: center;
     font-size: 12px;

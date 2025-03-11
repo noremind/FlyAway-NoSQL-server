@@ -67,7 +67,7 @@
     font-weight: 700;
   }
   &__summa {
-    color: $blue-500;
+    color: $red-500;
     font-size: 20px;
     font-weight: 700;
   }

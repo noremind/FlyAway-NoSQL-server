@@ -17,7 +17,7 @@
             <div class="details__header">
               <h1 class="details__title title">{{ hotel.name }}</h1>
               <div class="details__icons">
-                <UiIcons icon="heart" size="size-24" color="blue-500"></UiIcons>
+                <UiIcons icon="heart" size="size-24" color="red-500"></UiIcons>
               </div>
             </div>
 
@@ -126,7 +126,7 @@
                       <UiIcons
                         icon="location"
                         size="size-24"
-                        color="blue-500"
+                        color="red-500"
                       ></UiIcons>
                       <p class="details__location-text">
                         <span class="details__location-path">20 км</span> от
@@ -177,7 +177,7 @@
                   <li class="details__tourist-item details__tourist-item--icon">
                     <UiIcons
                       icon="check"
-                      color="blue-500"
+                      color="red-500"
                       size="size-24"
                     ></UiIcons>
                     <p>Полный пансион</p>
@@ -185,7 +185,7 @@
                   <li class="details__tourist-item details__tourist-item--icon">
                     <UiIcons
                       icon="check"
-                      color="blue-500"
+                      color="red-500"
                       size="size-24"
                     ></UiIcons>
                     <p>Ресторан</p>
@@ -193,7 +193,7 @@
                   <li class="details__tourist-item details__tourist-item--icon">
                     <UiIcons
                       icon="check"
-                      color="blue-500"
+                      color="red-500"
                       size="size-24"
                     ></UiIcons>
                     <p>
@@ -210,7 +210,7 @@
                   <li class="details__tourist-item details__tourist-item--icon">
                     <UiIcons
                       icon="star-unfill"
-                      color="blue-500"
+                      color="red-500"
                       size="size-24"
                     ></UiIcons>
                     <p>Проживание 1 ночь</p>
@@ -218,7 +218,7 @@
                   <li class="details__tourist-item details__tourist-item--icon">
                     <UiIcons
                       icon="home"
-                      color="blue-500"
+                      color="red-500"
                       size="size-24"
                     ></UiIcons>
                     <p>Одноместный номер в Лоло</p>
@@ -240,7 +240,7 @@
                   <li class="details__tourist-item details__tourist-item--icon">
                     <UiIcons
                       icon="check"
-                      color="blue-500"
+                      color="red-500"
                       size="size-24"
                     ></UiIcons>
                     <p>Полный пансион</p>
@@ -248,7 +248,7 @@
                   <li class="details__tourist-item details__tourist-item--icon">
                     <UiIcons
                       icon="check"
-                      color="blue-500"
+                      color="red-500"
                       size="size-24"
                     ></UiIcons>
                     <p>Ресторан</p>
@@ -256,7 +256,7 @@
                   <li class="details__tourist-item details__tourist-item--icon">
                     <UiIcons
                       icon="check"
-                      color="blue-500"
+                      color="red-500"
                       size="size-24"
                     ></UiIcons>
                     <p>
@@ -273,7 +273,7 @@
                   <li class="details__tourist-item details__tourist-item--icon">
                     <UiIcons
                       icon="check"
-                      color="blue-500"
+                      color="red-500"
                       size="size-24"
                     ></UiIcons>
                     <p>Детские кроватки, услуги няни, детская площадка</p>
@@ -287,7 +287,7 @@
                   <li class="details__tourist-item details__tourist-item--icon">
                     <UiIcons
                       icon="check"
-                      color="blue-500"
+                      color="red-500"
                       size="size-24"
                     ></UiIcons>
                     <p>
@@ -304,7 +304,7 @@
                   <li class="details__tourist-item details__tourist-item--icon">
                     <UiIcons
                       icon="check"
-                      color="blue-500"
+                      color="red-500"
                       size="size-24"
                     ></UiIcons>
                     <p>Полный пансион</p>
@@ -312,7 +312,7 @@
                   <li class="details__tourist-item details__tourist-item--icon">
                     <UiIcons
                       icon="check"
-                      color="blue-500"
+                      color="red-500"
                       size="size-24"
                     ></UiIcons>
                     <p>Ресторан</p>
@@ -320,7 +320,7 @@
                   <li class="details__tourist-item details__tourist-item--icon">
                     <UiIcons
                       icon="check"
-                      color="blue-500"
+                      color="red-500"
                       size="size-24"
                     ></UiIcons>
                     <p>
@@ -340,7 +340,7 @@
                   <div class="details__contacts-info">
                     <UiIcons
                       icon="globe"
-                      color="blue-500"
+                      color="red-500"
                       size="size-24"
                     ></UiIcons>
                     <p class="details__contacts-desc">website</p>
@@ -348,7 +348,7 @@
                   <div class="details__contacts-info">
                     <UiIcons
                       icon="phone"
-                      color="blue-500"
+                      color="red-500"
                       size="size-24"
                     ></UiIcons>
                     <p class="details__contacts-desc">phone number</p>
@@ -356,7 +356,7 @@
                   <div class="details__contacts-info">
                     <UiIcons
                       icon="location"
-                      color="blue-500"
+                      color="red-500"
                       size="size-24"
                     ></UiIcons>
                     <p class="details__contacts-desc">address</p>
@@ -364,7 +364,7 @@
                   <div class="details__contacts-info">
                     <UiIcons
                       icon="instagram"
-                      color="blue-500"
+                      color="red-500"
                       size="size-24"
                     ></UiIcons>
                     <p class="details__contacts-desc">instagram</p>
@@ -400,7 +400,7 @@
             <div class="details__message">
               <UiIcons
                 icon="circle-check"
-                color="blue-500"
+                color="red-500"
                 size="size-20"
               ></UiIcons>
               <p class="details__message-text">Вы выбрали премиум номер</p>
@@ -473,7 +473,7 @@
           label="Все отзывы"
           after-icon="chevron"
           icon-size="size-20"
-          icon-color="blue-500"
+          icon-color="red-500"
         ></UiButton>
       </section>
     </section>
@@ -636,11 +636,7 @@
           <h2 class="overlay-payment__title title">Business po kazakhsky</h2>
         </div>
         <div class="details__message">
-          <UiIcons
-            icon="circle-check"
-            color="blue-500"
-            size="size-20"
-          ></UiIcons>
+          <UiIcons icon="circle-check" color="red-500" size="size-20"></UiIcons>
           <p class="details__message-text">Вы выбрали премиум номер</p>
         </div>
         <table class="overlay-payment__table">
@@ -894,7 +890,7 @@ const getInfoMap = () => {
     align-items: center;
   }
   &__title {
-    color: $blue-500;
+    color: $red-500;
     &--mobile {
       display: none;
     }
@@ -925,7 +921,7 @@ const getInfoMap = () => {
         display: flex;
         justify-content: center;
         align-items: center;
-        background-color: $blue-500;
+        background-color: $red-500;
         color: $white;
         padding: 10px;
         margin-top: 12px;
@@ -957,9 +953,9 @@ const getInfoMap = () => {
       font-size: 12px;
     }
     &-btn {
-      border: 1px solid $blue-500;
+      border: 1px solid $red-500;
       background-color: transparent;
-      color: $blue-500;
+      color: $red-500;
       font-weight: 400;
       width: 100%;
       padding: 10px;
@@ -1017,7 +1013,7 @@ const getInfoMap = () => {
   }
   &__date {
     flex-grow: 1;
-    color: $blue-500;
+    color: $red-500;
     font-size: 14px;
     font-weight: 400;
   }
@@ -1026,7 +1022,7 @@ const getInfoMap = () => {
     gap: 8px;
     align-items: center;
     &-text {
-      color: $blue-500;
+      color: $red-500;
       font-size: 16px;
       font-weight: 400;
     }
@@ -1051,7 +1047,7 @@ const getInfoMap = () => {
       align-items: center;
     }
     &-path {
-      color: $blue-500;
+      color: $red-500;
     }
   }
   &__map {
@@ -1093,7 +1089,7 @@ const getInfoMap = () => {
       align-items: center;
     }
     &-link {
-      color: $blue-500;
+      color: $red-500;
       font-weight: 700;
       cursor: pointer;
     }
@@ -1149,7 +1145,7 @@ const getInfoMap = () => {
     gap: 16px;
     height: 100%;
     &-btn {
-      background-color: $blue-500;
+      background-color: $red-500;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -1182,7 +1178,7 @@ const getInfoMap = () => {
       align-items: center;
       font-size: 14px;
       &--result {
-        color: $blue-500;
+        color: $red-500;
       }
     }
     &-question {
@@ -1221,7 +1217,7 @@ const getInfoMap = () => {
     }
   }
   &__accept {
-    color: $blue-500;
+    color: $red-500;
     font-size: 14px;
     font-weight: 400;
     cursor: pointer;
@@ -1339,7 +1335,7 @@ const getInfoMap = () => {
       padding-top: 24px;
     }
     &--blue {
-      color: $blue-500;
+      color: $red-500;
       font-weight: 400;
       & td {
         padding-top: 16px;
@@ -1389,9 +1385,9 @@ const getInfoMap = () => {
         display: flex;
         justify-content: center;
         align-items: center;
-        border: 1px solid $blue-500;
+        border: 1px solid $red-500;
         padding: 10px 0;
-        color: $blue-500;
+        color: $red-500;
       }
       &-link {
         display: none;

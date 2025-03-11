@@ -5,7 +5,7 @@
       <p class="book__description">Business po kazakhsky</p>
 
       <div class="book__message">
-        <UiIcons icon="circle-check" color="blue-500" size="size-20"></UiIcons>
+        <UiIcons icon="circle-check" color="red-500" size="size-20"></UiIcons>
         <p class="book__message-text">Вы выбрали премиум номер</p>
       </div>
 
@@ -79,7 +79,7 @@ const emit = defineEmits(["nextStep"]);
     gap: 8px;
     align-items: center;
     &-text {
-      color: $blue-500;
+      color: $red-500;
       font-size: 16px;
       font-weight: 400;
     }
@@ -110,7 +110,7 @@ const emit = defineEmits(["nextStep"]);
       padding-top: 24px;
     }
     &--blue {
-      color: $blue-500;
+      color: $red-500;
       font-weight: 400;
       & td {
         padding-top: 16px;

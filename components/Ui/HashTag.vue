@@ -48,7 +48,7 @@ const props = defineProps({
     font-size: 14px;
     cursor: pointer;
     &--active {
-      background-color: $blue-500;
+      background-color: $red-500;
       color: $white;
     }
   }

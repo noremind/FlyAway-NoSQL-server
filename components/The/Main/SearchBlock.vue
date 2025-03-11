@@ -21,7 +21,7 @@
               placeholder="17.12.2024"
               :have-icon="false"
             ></UiCalendar>
-            <UiIcons icon="arrow" color="blue-500" size="size-14"></UiIcons>
+            <UiIcons icon="arrow" color="red-500" size="size-14"></UiIcons>
             <UiCalendar
               class="search__start-date"
               placeholder="17.12.2024"
@@ -39,7 +39,7 @@
           class="search__btn button-secondary"
           label="Найти туры"
           before-icon="lupa"
-          icon-color="blue-500"
+          icon-color="red-500"
         ></UiButton>
       </div>
     </div>

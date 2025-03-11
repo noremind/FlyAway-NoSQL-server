@@ -106,15 +106,15 @@
           <div class="block__benefits">
             <ul class="block__list">
               <li class="block__list-item">
-                <UiIcons icon="check" color="blue-500" size="size-20"></UiIcons>
+                <UiIcons icon="check" color="red-500" size="size-20"></UiIcons>
                 <p class="block__benefits-text">Одноместный номер в Лоло</p>
               </li>
               <li class="block__list-item">
-                <UiIcons icon="check" color="blue-500" size="size-20"></UiIcons>
+                <UiIcons icon="check" color="red-500" size="size-20"></UiIcons>
                 <p class="block__benefits-text">Одноместный номер в Лоло</p>
               </li>
               <li class="block__list-item">
-                <UiIcons icon="check" color="blue-500" size="size-20"></UiIcons>
+                <UiIcons icon="check" color="red-500" size="size-20"></UiIcons>
                 <p class="block__benefits-text">Одноместный номер в Лоло</p>
               </li>
             </ul>
@@ -188,7 +188,7 @@ const props = defineProps({
     color: $surface-400;
   }
   &__more {
-    color: $blue-500;
+    color: $red-500;
     font-weight: 400;
     font-size: 14px;
     cursor: pointer;
@@ -312,7 +312,7 @@ const props = defineProps({
     }
   }
   &__price {
-    background-color: $blue-500;
+    background-color: $red-500;
     padding: 8px 12px;
     border-radius: 24px;
     color: $white;

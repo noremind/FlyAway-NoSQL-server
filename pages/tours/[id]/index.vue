@@ -17,7 +17,7 @@
             <div class="details__header">
               <h1 class="details__title title">Однодевный тур на Кольсай</h1>
               <div class="details__icons">
-                <UiIcons icon="heart" size="size-24" color="blue-500"></UiIcons>
+                <UiIcons icon="heart" size="size-24" color="red-500"></UiIcons>
                 <div class="details__icons-box">
                   <UiIcons
                     icon="hot"
@@ -226,7 +226,7 @@
                   <li class="details__tourist-item details__tourist-item--icon">
                     <UiIcons
                       icon="star-unfill"
-                      color="blue-500"
+                      color="red-500"
                       size="size-24"
                     ></UiIcons>
                     <p>Проживание 1 ночь</p>
@@ -234,7 +234,7 @@
                   <li class="details__tourist-item details__tourist-item--icon">
                     <UiIcons
                       icon="home"
-                      color="blue-500"
+                      color="red-500"
                       size="size-24"
                     ></UiIcons>
                     <p>Одноместный номер в Лоло</p>
@@ -262,7 +262,7 @@
                   <div class="details__contacts-info">
                     <UiIcons
                       icon="globe"
-                      color="blue-500"
+                      color="red-500"
                       size="size-24"
                     ></UiIcons>
                     <p class="details__contacts-desc">website</p>
@@ -270,7 +270,7 @@
                   <div class="details__contacts-info">
                     <UiIcons
                       icon="phone"
-                      color="blue-500"
+                      color="red-500"
                       size="size-24"
                     ></UiIcons>
                     <p class="details__contacts-desc">phone number</p>
@@ -278,7 +278,7 @@
                   <div class="details__contacts-info">
                     <UiIcons
                       icon="location"
-                      color="blue-500"
+                      color="red-500"
                       size="size-24"
                     ></UiIcons>
                     <p class="details__contacts-desc">address</p>
@@ -286,7 +286,7 @@
                   <div class="details__contacts-info">
                     <UiIcons
                       icon="instagram"
-                      color="blue-500"
+                      color="red-500"
                       size="size-24"
                     ></UiIcons>
                     <p class="details__contacts-desc">instagram</p>
@@ -431,7 +431,7 @@
           label="Все отзывы"
           after-icon="chevron"
           icon-size="size-20"
-          icon-color="blue-500"
+          icon-color="red-500"
           @click="goTo('/tours/1/reviews')"
         ></UiButton>
       </section>
@@ -856,7 +856,7 @@ const getPathMap = () => {
     align-items: center;
   }
   &__title {
-    color: $blue-500;
+    color: $red-500;
   }
   &__icons {
     display: flex;
@@ -899,7 +899,7 @@ const getPathMap = () => {
       gap: 4px;
     }
     &-item {
-      color: $blue-500;
+      color: $red-500;
       font-weight: 400;
     }
   }
@@ -943,7 +943,7 @@ const getPathMap = () => {
       display: flex;
       align-items: center;
       gap: 10px;
-      color: $blue-500;
+      color: $red-500;
     }
     &-text {
       color: $surface-900;
@@ -969,7 +969,7 @@ const getPathMap = () => {
       align-items: center;
     }
     &-link {
-      color: $blue-500;
+      color: $red-500;
       font-weight: 700;
       cursor: pointer;
     }
@@ -1018,7 +1018,7 @@ const getPathMap = () => {
     gap: 16px;
     height: 100%;
     &-btn {
-      background-color: $blue-500;
+      background-color: $red-500;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -1048,7 +1048,7 @@ const getPathMap = () => {
       align-items: center;
       font-size: 14px;
       &--result {
-        color: $blue-500;
+        color: $red-500;
       }
     }
     &-question {
@@ -1078,7 +1078,7 @@ const getPathMap = () => {
         display: flex;
         justify-content: center;
         align-items: center;
-        background-color: $blue-500;
+        background-color: $red-500;
         color: $white;
         padding: 10px;
         margin-top: 12px;
@@ -1099,9 +1099,9 @@ const getPathMap = () => {
       font-size: 12px;
     }
     &-btn {
-      border: 1px solid $blue-500;
+      border: 1px solid $red-500;
       background-color: transparent;
-      color: $blue-500;
+      color: $red-500;
       font-weight: 400;
       width: 100%;
       padding: 10px;
@@ -1140,7 +1140,7 @@ const getPathMap = () => {
     }
   }
   &__accept {
-    color: $blue-500;
+    color: $red-500;
     font-size: 14px;
     font-weight: 400;
     cursor: pointer;
@@ -1274,7 +1274,7 @@ const getPathMap = () => {
       padding-top: 24px;
     }
     &--blue {
-      color: $blue-500;
+      color: $red-500;
       font-weight: 400;
       & td {
         padding-top: 16px;
@@ -1314,9 +1314,9 @@ const getPathMap = () => {
         display: flex;
         justify-content: center;
         align-items: center;
-        border: 1px solid $blue-500;
+        border: 1px solid $red-500;
         padding: 10px 0;
-        color: $blue-500;
+        color: $red-500;
       }
       &-link {
         display: none;

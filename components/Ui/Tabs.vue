@@ -20,7 +20,7 @@
             v-if="tab.icon"
             :icon="tab.icon"
             size="size-30"
-            :color="tab.id === modelValue?.id ? 'white' : 'blue-500'"
+            :color="tab.id === modelValue?.id ? 'white' : 'red-500'"
           ></UiIcons>
           <p class="tabs__list-name">{{ tab.name }}</p>
         </li>
@@ -74,13 +74,13 @@ const props = defineProps({
     gap: 6px;
     align-items: center;
     &--active {
-      background-color: $blue-500;
+      background-color: $red-500;
       color: $white;
     }
     &--active-line {
-      color: $blue-500;
+      color: $red-500;
       background-color: transparent;
-      border-bottom: 3px solid $blue-500;
+      border-bottom: 3px solid $red-500;
       border-radius: 0;
     }
   }

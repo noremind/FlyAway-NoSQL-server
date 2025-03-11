@@ -43,7 +43,6 @@ export const useAuthStore = defineStore('auth', () => {
 	}
 
 	const logoutUser = (route) => {
-
 		tokenCookie.value = null
 		userCookie.value = null
 		router.push(route ? route : '/')

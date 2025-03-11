@@ -65,18 +65,18 @@
 }
 .p-datepicker-year:hover{
 	cursor: pointer; 
-  border: 1px solid $blue-500 !important;  
+  border: 1px solid $red-500 !important;  
 }
 .p-datepicker-month:hover{
 	cursor: pointer; 
-  border: 1px solid $blue-500 !important; 
+  border: 1px solid $red-500 !important; 
 }
 .p-datepicker-day{
 	padding: 3px !important;
 }
 .p-datepicker-day-cell:hover {
   cursor: pointer; 
-  border: 1px solid $blue-500;
+  border: 1px solid $red-500;
 	border-radius: 8px !important;
 }
 .p-disabled{
@@ -86,6 +86,6 @@
 }
 .p-datepicker-day-selected{
 	cursor: pointer; 
-  border: 1px solid $blue-500 !important; 
+  border: 1px solid $red-500 !important; 
 	border-radius: 8px !important;
 }

@@ -127,7 +127,7 @@ const emit = defineEmits(["payed"]);
       padding-top: 24px;
     }
     &--blue {
-      color: $blue-500;
+      color: $red-500;
       font-weight: 400;
       & td {
         padding-top: 16px;

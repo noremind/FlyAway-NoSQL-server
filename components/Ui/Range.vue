@@ -56,7 +56,7 @@ const priceValue = ref([]);
 .p-slider :deep(.p-slider-range) {
   border-radius: 6px !important;
   height: 100% !important;
-  background: $blue-500 !important;
+  background: $red-500 !important;
   transition: all 0.18s linear;
   transform: translateX(6px);
 }
@@ -68,7 +68,7 @@ const priceValue = ref([]);
   height: 20px;
   width: 20px;
   background: $white;
-  border: 2px solid $blue-500 !important;
+  border: 2px solid $red-500 !important;
   border-radius: 50%;
   transition: all 0.18s linear;
   // transition: background-color 0.4s, color 0.4s, border-color 0.4s,

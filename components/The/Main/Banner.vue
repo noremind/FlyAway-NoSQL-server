@@ -20,7 +20,7 @@
             <UiButton
               class="banner__btn button-secondary"
               afterIcon="arrow"
-              iconColor="blue-400"
+              iconColor="red-400"
               label="подробнее"
               iconSize="size-26"
             ></UiButton>
@@ -74,7 +74,7 @@
     font-size: clamp(2rem, -0.348rem + 11.74vw, 8.75rem); //140
     font-family: "Miama Nueva", sans-serif;
     text-align: center;
-    color: $blue-400;
+    color: $red-400;
     font-style: italic;
   }
   &__description {

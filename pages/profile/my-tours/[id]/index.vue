@@ -27,7 +27,7 @@
             </button>
             <UiButton
               before-icon="upload"
-              icon-color="blue-500"
+              icon-color="red-500"
               label="Скачать билет"
               class="ticket__download ticket__download--mobile"
             ></UiButton>
@@ -110,7 +110,7 @@
                     <td class="ticket__td ticket__td--box">
                       <UiIcons
                         icon="credit-card"
-                        color="blue-500"
+                        color="red-500"
                         size="size-24"
                       ></UiIcons>
                       <span>Банковская карта</span>
@@ -134,7 +134,7 @@
               </button>
               <UiButton
                 before-icon="upload"
-                icon-color="blue-500"
+                icon-color="red-500"
                 label="Скачать билет"
                 class="ticket__download"
               ></UiButton>
@@ -383,7 +383,7 @@ const closeStatusRefundModal = () => {
       padding-top: 24px;
     }
     &--blue {
-      color: $blue-500;
+      color: $red-500;
       font-weight: 400;
       & td {
         padding-top: 16px;
@@ -391,13 +391,13 @@ const closeStatusRefundModal = () => {
     }
   }
   &__download {
-    border: 1px solid $blue-500;
+    border: 1px solid $red-500;
     max-width: 240px;
     background-color: transparent;
     width: 100%;
     display: flex;
     justify-content: center;
-    color: $blue-500;
+    color: $red-500;
     padding: 10px;
     &--mobile {
       display: none;

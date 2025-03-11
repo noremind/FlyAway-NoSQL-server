@@ -9,7 +9,7 @@
 		margin: 46px 0 26px 0;
 		position: relative;
 		&-link{
-			color: $blue-500;
+			color: $red-500;
 			font-weight: 700;
 			&--mobile{
 				display: none !important;
@@ -53,7 +53,7 @@
 			margin: 26px 0 12px 0;
 		}
 		&-link{
-			color: $blue-500;
+			color: $red-500;
 			font-weight: 700;
 			&--mobile{
 				display: none !important;
@@ -90,7 +90,7 @@
 
 
 .button-primary{
-	background-color: $blue-500;
+	background-color: $red-500;
 	padding: 10px !important;
 	display: flex;
 	justify-content: center;
@@ -99,12 +99,12 @@
 }
 
 .button-secondary{
-	border: 1px solid $blue-500;
+	border: 1px solid $red-500;
 	padding: 10px;
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	color: $blue-500;
+	color: $red-500;
 	font-weight: 400;
 	background-color: transparent !important;
 }
@@ -140,8 +140,8 @@
 				&--mobile{
 					width: 100%;
 					margin: 0 auto;
-					border: 1px solid $blue-500;
-					color: $blue-500;
+					border: 1px solid $red-500;
+					color: $red-500;
 					padding: 8px 0 !important;
 					text-align: center;
 					margin-top: 16px;
@@ -173,8 +173,8 @@
 					max-width: 327px;
 					width: 100%;
 					margin: 0 auto;
-					border: 1px solid $blue-500;
-					color: $blue-500;
+					border: 1px solid $red-500;
+					color: $red-500;
 					padding: 8px 0 !important;
 					text-align: center;
 					margin-top: 16px;

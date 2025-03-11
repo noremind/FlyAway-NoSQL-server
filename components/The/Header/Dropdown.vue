@@ -14,7 +14,7 @@
             size="size-32"
             icon="profile-user"
             @click="userStore.openAuthModal"
-            color="blue-500"
+            color="red-500"
           ></UiIcons>
         </button>
       </div>
@@ -23,12 +23,12 @@
         <UiButton
           label="Войти"
           before-icon="login"
-          icon-color="blue-500"
+          icon-color="red-500"
           class="dropdown__auth-login"
           @click="userStore.openAuthModalLogin"
         ></UiButton>
         <UiButton
-          background-color="blue-500"
+          background-color="red-500"
           label="Зарегестрироваться"
           class="dropdown__auth-register button-primary"
           @click="userStore.openAuthModalRegister"
@@ -43,7 +43,7 @@
           v-for="item in dropdownNav"
           :key="item.id"
         >
-          <UiIcons :icon="item.icon" color="blue-500" size="size-24"></UiIcons>
+          <UiIcons :icon="item.icon" color="red-500" size="size-24"></UiIcons>
           <nuxt-link class="dropdown__link" :to="item.link">{{
             item.name
           }}</nuxt-link>

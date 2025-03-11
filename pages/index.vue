@@ -54,7 +54,7 @@
       class="main__tours-link main__tours-link--mobile"
       label="Все горящие туры"
       after-icon="chevron"
-      icon-color="blue-500"
+      icon-color="red-500"
       icon-size="size-14"
       @click="router.push('/tours')"
     ></UiButton>
@@ -79,7 +79,7 @@
       class="main__hotels-link main__hotels-link--mobile"
       label="Все отели"
       after-icon="chevron"
-      icon-color="blue-500"
+      icon-color="red-500"
       icon-size="size-14"
       @click="router.push('/tours')"
     ></UiButton>

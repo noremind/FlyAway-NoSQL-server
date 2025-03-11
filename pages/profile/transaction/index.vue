@@ -210,7 +210,7 @@ const formatAmount = (amount) => {
   &__banner {
     width: 100%;
     height: 160px;
-    background-color: $blue-500;
+    background-color: $red-500;
     border-radius: 16px;
     padding: 16px;
     display: flex;
@@ -264,7 +264,7 @@ const formatAmount = (amount) => {
   }
   &__question {
     font-weight: 400;
-    color: $blue-500;
+    color: $red-500;
   }
   &__table {
     width: 100%;
@@ -279,9 +279,9 @@ const formatAmount = (amount) => {
       .transaction__header {
         text-align: left;
         padding: 12px;
-        color: $blue-500;
+        color: $red-500;
         font-weight: 600;
-        border-bottom: 2px solid $blue-500;
+        border-bottom: 2px solid $red-500;
       }
     }
 
@@ -303,7 +303,7 @@ const formatAmount = (amount) => {
           &--type {
             .transaction__type-badge {
               background-color: $blue-300;
-              color: $blue-500;
+              color: $red-500;
               padding: 6px 10px;
               font-weight: 100;
               border-radius: 16px;
@@ -378,7 +378,7 @@ const formatAmount = (amount) => {
       padding: 2px 6px;
       border-radius: 36px;
       background-color: $blue-300;
-      color: $blue-500;
+      color: $red-500;
       display: inline-block;
     }
     &-price {

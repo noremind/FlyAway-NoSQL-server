@@ -20,7 +20,7 @@
               <UiIcons
                 icon="filter-burger"
                 size="size-36"
-                color="blue-500"
+                color="red-500"
               ></UiIcons>
               <h2 class="partners__filters-title">Фильтр</h2>
             </div>
@@ -283,7 +283,7 @@ const paginationPage = (page) => {
       align-items: center;
       gap: 12px;
       &-text {
-        color: $blue-500;
+        color: $red-500;
         font-weight: 400;
         cursor: pointer;
       }

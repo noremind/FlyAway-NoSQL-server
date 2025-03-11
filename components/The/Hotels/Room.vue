@@ -129,12 +129,12 @@ const props = defineProps({
   &__btn {
     justify-content: center;
     &--active {
-      background-color: $blue-500;
+      background-color: $red-500;
       color: $white;
     }
   }
   &__price {
-    background-color: $blue-500;
+    background-color: $red-500;
     padding: 4px 12px;
     border-radius: 24px;
     color: $white;
@@ -175,7 +175,7 @@ const props = defineProps({
     &__price {
       &--mobile {
         background-color: transparent;
-        color: $blue-500;
+        color: $red-500;
         justify-content: flex-start;
         padding: 0;
       }

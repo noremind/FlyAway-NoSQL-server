@@ -40,6 +40,11 @@ export async function useApi(options = {}) {
 		return data;
 
 	} catch (error) {
+		console.log(error)
+		if (error.statusCode === 401) {
+			store.value.logoutUser()
+			console.log('Token token')
+		}
 		throw error;
 	}
 };

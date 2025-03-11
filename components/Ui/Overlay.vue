@@ -10,7 +10,7 @@
             class="overlay__icon down"
             icon="arrow"
             size="size-20"
-            color="blue-500"
+            color="red-500"
             @click="emit('close')"
           ></UiIcons>
 
@@ -25,7 +25,7 @@
             v-if="headerIcon && showHeaderIcons"
             size="size-20"
             class="overlay__icon"
-            color="blue-500"
+            color="red-500"
             :icon="headerIcon"
           ></UiIcons>
           <p v-if="!headerIcon && showHeaderIcons" class="overlay__reset">
@@ -35,7 +35,7 @@
             v-if="haveFavoriteIcon"
             size="size-20"
             class="overlay__icon"
-            color="blue-500"
+            color="red-500"
             icon="heart"
           ></UiIcons>
         </div>
@@ -144,7 +144,7 @@ const props = defineProps({
       background-color: $white;
     }
     &__reset {
-      color: $blue-500;
+      color: $red-500;
       font-weight: 400;
       font-size: 14px;
       cursor: pointer;
@@ -175,7 +175,7 @@ const props = defineProps({
       margin: 0 auto 16px 0;
       left: 17px;
       z-index: 100;
-      background-color: $blue-500;
+      background-color: $red-500;
       padding: 10px;
       display: flex;
       justify-content: center;

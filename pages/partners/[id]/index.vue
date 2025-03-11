@@ -53,7 +53,7 @@
             <div class="partner__baige">
               <UiIcons
                 icon="circle-check"
-                color="blue-500"
+                color="red-500"
                 size="size-24"
               ></UiIcons>
               <p class="partner__baige-text">Есть рассрочка</p>
@@ -68,7 +68,7 @@
               >
                 <UiIcons
                   :icon="item.icon"
-                  color="blue-500"
+                  color="red-500"
                   size="size-24"
                 ></UiIcons>
                 <p class="partner__contacts-text">{{ item.name }}</p>
@@ -128,7 +128,7 @@
             class="partner__btn button-secondary partner__btn--mobile"
             label="Все туры"
             after-icon="chevron"
-            icon-color="blue-500"
+            icon-color="red-500"
             icon-size="size-20"
           ></UiButton>
         </div>
@@ -176,7 +176,7 @@
               class="partner__btn button-secondary partner__btn--mobile"
               label="Все отзывы"
               after-icon="chevron"
-              icon-color="blue-500"
+              icon-color="red-500"
               icon-size="size-20"
             ></UiButton>
           </section>
@@ -306,7 +306,7 @@ const contacts = [
     color: $surface-400;
   }
   &__number {
-    color: $blue-500;
+    color: $red-500;
     font-weight: 400;
     font-size: 14px;
   }
@@ -357,7 +357,7 @@ const contacts = [
       align-items: center;
     }
     &-link {
-      color: $blue-500;
+      color: $red-500;
       font-weight: 600;
     }
   }
@@ -399,7 +399,7 @@ const contacts = [
       align-items: center;
     }
     &-link {
-      color: $blue-500;
+      color: $red-500;
       font-weight: 700;
       cursor: pointer;
     }

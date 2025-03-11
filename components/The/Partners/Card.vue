@@ -118,7 +118,7 @@ const props = defineProps({
     color: $surface-400;
   }
   &__number {
-    color: $blue-500;
+    color: $red-500;
     font-weight: 400;
     font-size: 14px;
   }

@@ -120,7 +120,7 @@ const props = defineProps({
     padding: 16px 0;
   }
   &__more {
-    color: $blue-500;
+    color: $red-500;
     font-weight: 100;
     font-size: 14px;
     cursor: pointer;
@@ -137,7 +137,7 @@ const props = defineProps({
     }
   }
   &__info {
-    color: $blue-500;
+    color: $red-500;
     font-weight: 700;
     line-height: 17.5px;
     font-size: 14px;

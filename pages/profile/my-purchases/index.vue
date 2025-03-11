@@ -8,7 +8,7 @@
           :key="index"
           :to="block.link"
         >
-          <UiIcons :icon="block.icon" size="size-24" color="blue-500"></UiIcons>
+          <UiIcons :icon="block.icon" size="size-24" color="red-500"></UiIcons>
           <p class="purchases__text">{{ block.name }}</p>
         </nuxt-link>
       </div>

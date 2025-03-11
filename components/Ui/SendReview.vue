@@ -43,7 +43,7 @@
     gap: 16px;
   }
   &__text {
-    color: $blue-500;
+    color: $red-500;
     font-weight: 400;
   }
   &__stars {

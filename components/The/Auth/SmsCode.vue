@@ -147,7 +147,7 @@ watch(
       color: $surface-900;
     }
     &--confirm {
-      background-color: $blue-500;
+      background-color: $red-500;
     }
   }
   &__box {

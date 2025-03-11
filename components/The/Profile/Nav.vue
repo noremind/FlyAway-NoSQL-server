@@ -11,11 +11,7 @@
           }"
         >
           <nuxt-link class="nav__link" :to="list.link">
-            <UiIcons
-              color="blue-500"
-              size="size-24"
-              :icon="list.icon"
-            ></UiIcons>
+            <UiIcons color="red-500" size="size-24" :icon="list.icon"></UiIcons>
             <p class="nav__list-text">{{ list.name }}</p>
           </nuxt-link>
         </li>

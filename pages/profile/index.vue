@@ -10,7 +10,7 @@
           />
           <div class="profile-main__inner">
             <div class="profile-main__inner-box">
-              <UiIcons color="blue-500" icon="upload"></UiIcons>
+              <UiIcons color="red-500" icon="upload"></UiIcons>
               <p class="profile-main__box-text profile-main__box-text--upload">
                 Загрузить другое фото
               </p>
@@ -212,7 +212,7 @@ const deleteAvatar = () => {
       font-size: 12px;
       cursor: pointer;
       &--upload {
-        color: $blue-500;
+        color: $red-500;
       }
       &--delete {
         color: $orange-200;

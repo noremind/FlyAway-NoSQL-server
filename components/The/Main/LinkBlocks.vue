@@ -40,7 +40,7 @@ const links = reactive([
     margin-top: 40px;
   }
   &__title {
-    color: $blue-500;
+    color: $red-500;
   }
   &__list {
     display: flex;
@@ -61,7 +61,7 @@ const links = reactive([
     transition: 0.5s;
     border: 1px solid transparent;
     &:hover {
-      border: 1px solid $blue-500;
+      border: 1px solid $red-500;
     }
   }
 }

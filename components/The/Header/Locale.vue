@@ -8,8 +8,8 @@
 
 <style lang="scss" scoped>
 .locale {
-  border: 1px solid $blue-500;
-  color: $blue-500;
+  border: 1px solid $red-500;
+  color: $red-500;
   width: 38px;
   height: 38px;
   border-radius: 50%;

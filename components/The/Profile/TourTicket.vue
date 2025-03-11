@@ -35,7 +35,7 @@
   border-radius: 16px;
   box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.1);
   padding: 16px;
-  border-right: 40px solid $blue-500;
+  border-right: 40px solid $red-500;
   &--nonactive {
     border-right: 40px solid $surface-400;
   }
@@ -84,7 +84,7 @@
     }
   }
   &__price {
-    color: $blue-500;
+    color: $red-500;
     font-size: 24px;
     font-weight: 700;
     &--mobile {
@@ -96,7 +96,7 @@
 
 @media (max-width: 375px) {
   .ticket {
-    border-right: 20px solid $blue-500;
+    border-right: 20px solid $red-500;
     font-size: 12px;
     &__total {
       display: none;

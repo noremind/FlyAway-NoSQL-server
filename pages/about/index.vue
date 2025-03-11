@@ -222,7 +222,7 @@
     padding: 0 0 0 46px;
   }
   &__number {
-    color: $blue-500;
+    color: $red-500;
     font-size: 64px;
     font-weight: 300;
   }
@@ -259,7 +259,7 @@
       color: $white;
     }
     &-btn {
-      background-color: $blue-500;
+      background-color: $red-500;
       color: $white;
       padding: 16px;
       opacity: 1;

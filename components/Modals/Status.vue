@@ -56,7 +56,7 @@ const checkStatus = computed(() => {
     max-width: 400px;
   }
   &__title {
-    color: $blue-500;
+    color: $red-500;
     font-size: 32px;
     font-weight: 400;
     text-align: center;
