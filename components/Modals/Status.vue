@@ -14,7 +14,7 @@
 
       <h4 class="status__title">{{ title }}</h4>
 
-      <nuxt-link :to="goTo" @click="emit('action')" class="status__link">
+      <nuxt-link @click="clickAction" class="status__link">
         <UiButton
           :label="btnLabel"
           class="status__btn button-primary"
@@ -32,6 +32,13 @@ const props = defineProps({
   btnLabel: String,
   goTo: String,
 });
+
+const router = useRouter();
+
+const clickAction = () => {
+  emit("action");
+  router.push(props.goTo);
+};
 
 const checkStatus = computed(() => {
   switch (props.status) {

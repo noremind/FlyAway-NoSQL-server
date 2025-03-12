@@ -24,15 +24,20 @@
           </div>
         </div>
 
+        <div>
+          <UiInput
+            class="profile-main__input"
+            label="Ваше имя*"
+            placeholder="Дана"
+            v-model.trim="name"
+          ></UiInput>
+          <p class="profile-main__input-error" v-if="errorMessage.name">
+            {{ errorMessage.name }}
+          </p>
+        </div>
         <UiInput
           class="profile-main__input"
-          label="Ваше имя"
-          placeholder="Дана"
-          v-model.trim="name"
-        ></UiInput>
-        <UiInput
-          class="profile-main__input"
-          label="Номер телефона"
+          label="Номер телефона*"
           maska="8(###)-###-##-##"
           v-model.trim="phone"
           :disabled="true"
@@ -42,40 +47,54 @@
           class="profile-main__btn button-primary"
           label="Сохранить"
           @click="postProfile"
+          :is-loading="isLoading"
         ></UiButton>
       </div>
       <div class="profile-main__side">
         <UiInput
           class="profile-main__input profile-main__input--mobile"
-          label="Ваше имя"
+          label="Ваше имя*"
           v-model.trim="name"
         ></UiInput>
 
-        <UiInput
-          class="profile-main__input"
-          label="Ваша почта"
-          v-model.trim="email"
-          placeholder="Не указан"
-        ></UiInput>
+        <div>
+          <UiInput
+            class="profile-main__input"
+            label="Ваша почта*"
+            v-model.trim="email"
+            placeholder="Не указан"
+          ></UiInput>
+          <p class="profile-main__input-error" v-if="errorMessage.email">
+            {{ errorMessage.email }}
+          </p>
+        </div>
 
         <UiInput
           class="profile-main__input profile-main__input--mobile"
-          label="Номер телефона"
+          label="Номер телефона*"
           placeholder="8 (___) ___ __ __"
           v-model.trim="phone"
         ></UiInput>
 
-        <UiInput
-          class="profile-main__input profile-main__input--mobile"
-          label="Ваша почта"
-          :placeholder="email"
-          v-model.trim="email"
-        ></UiInput>
+        <div>
+          <UiInput
+            class="profile-main__input profile-main__input--mobile"
+            label="Ваша почта"
+            :placeholder="email"
+            v-model.trim="email"
+          ></UiInput>
+          <p
+            class="profile-main__input-error profile-main__input-error--mobile"
+            v-if="errorMessage.email"
+          >
+            {{ errorMessage.email }}
+          </p>
+        </div>
 
         <UiCalendar
           label="Дата рождения"
           class="profile-main__calendar"
-          placeholder="Не указан"
+          placeholder="dd.mm.yyyy"
           v-model.trim="birthDate"
         />
 
@@ -91,6 +110,7 @@
           class="profile-main__btn profile-main__btn--mobile button-primary"
           label="Сохранить"
           @click="postProfile"
+          :is-loading="isLoading"
         ></UiButton>
       </div>
     </div>
@@ -106,6 +126,8 @@ const email = ref(user.value?.email || null);
 const phone = ref(user.value?.phone || null);
 const birthDate = ref(user.value?.birthday || null);
 const avatar = ref(user.value?.avatar || null);
+
+const isLoading = ref(false);
 
 const genders = reactive([
   {
@@ -131,27 +153,70 @@ const genders = reactive([
 ]);
 const selectedGender = ref(genders[3]);
 
+const errorMessage = reactive({
+  name: "",
+  email: "",
+});
+
+const checkFields = () => {
+  if (name.value < 2) {
+    errorMessage.name = "Минимум 2 букв";
+    return false;
+  }
+  if (!email.value?.length) {
+    errorMessage.email = "Укажите Email";
+    return false;
+  }
+  if (!email.value?.includes("@") && !email.value?.includes(".")) {
+    errorMessage.email = "Напишите корректный Email";
+    return false;
+  }
+  return true;
+};
+
 const postProfile = () => {
-  const formatBirthdate = formatBirthDate(birthDate.value);
-  useApi({
-    url: "/users/update",
-    method: "put",
-    data: {
-      name: name.value,
-      email: email.value,
-      phone: phone.value,
-      avatar: null,
-      birthDate: formatBirthdate,
-      gender: selectedGender.value.value,
-    },
-  }).then((res) => {
-    userCookie.value = res.data;
-  });
+  if (checkFields()) {
+    isLoading.value = true;
+    const formatBirthdate = formatBirthDate(birthDate.value);
+    useApi({
+      url: "/users/update",
+      method: "put",
+      data: {
+        name: name.value,
+        email: email.value,
+        phone: phone.value,
+        avatar: null,
+        birthDate: formatBirthdate,
+        gender: selectedGender.value.value,
+      },
+    })
+      .then((res) => {
+        userCookie.value = res.data;
+        isLoading.value = false;
+      })
+      .catch(() => {
+        isLoading.value = false;
+      });
+  }
 };
 
 const deleteAvatar = () => {
   user.value.avatar = null;
 };
+
+watch(
+  () => name.value,
+  () => {
+    errorMessage.name = "";
+  }
+);
+
+watch(
+  () => email.value,
+  () => {
+    errorMessage.email = "";
+  }
+);
 </script>
 
 <style lang="scss" scoped>
@@ -179,6 +244,13 @@ const deleteAvatar = () => {
     display: block;
     &--mobile {
       display: none;
+    }
+    &-error {
+      color: $orange-200;
+      font-size: 14px;
+      &--mobile {
+        display: none;
+      }
     }
   }
   &__select {
@@ -270,6 +342,11 @@ const deleteAvatar = () => {
     &__input {
       &--mobile {
         display: block;
+      }
+      &-error {
+        &--mobile {
+          display: block;
+        }
       }
     }
   }

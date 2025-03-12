@@ -34,7 +34,15 @@
     title="Вы зарегестрированы"
     status="success"
     btn-label="Перейти в личный кабинет"
-    go-to="/profile"
+    :go-to="'/profile'"
+    @action="userStore.closeAuthModalLogin()"
+  />
+  <ModalsStatus
+    v-if="currentStep === 7"
+    title="Вы вошли"
+    status="success"
+    btn-label="Перейти в личный кабинет"
+    :go-to="'/profile'"
     @action="userStore.closeAuthModalLogin()"
   />
 </template>
@@ -70,7 +78,7 @@ const nextStepForgetPassword = () => {
 };
 
 const nextStepSuccessAuth = () => {
-  currentStep.value = 5;
+  currentStep.value = 7;
 };
 
 const prevStep = () => {
