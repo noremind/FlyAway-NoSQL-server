@@ -4,7 +4,8 @@ dotenv.config()
 
 export const connectDB = async () => {
 	try {
-		const uri = `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@cluster0.rexkz.mongodb.net/FlyAway?retryWrites=true&w=majority&appName=Cluster0`
+		const uri = `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@cluster0.rexkz.mongodb.net/FlyAwayDEV?retryWrites=true&w=majority&appName=Cluster0`
+		// const uri = `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@cluster0.rexkz.mongodb.net/FlyAway?retryWrites=true&w=majority&appName=Cluster0`
 
 		await mongoose.connect(uri, {
 			useNewUrlParser: true,

@@ -2,10 +2,10 @@ import HotelModel from "../models/Hotel.js"
 
 export const getHotels = async (req, res) => {
 	try {
-		const hotel = await HotelModel.find()
-		res.json({ data: hotel })
+		const hotels = await HotelModel.find()
+		res.json({ data: hotels })
 	} catch (error) {
-		console.error("❌ Ошибка получения отелей:", error)
+		console.error("error")
 		res.status(500).json({
 			message: "Ошибка при получении отелей",
 		})
