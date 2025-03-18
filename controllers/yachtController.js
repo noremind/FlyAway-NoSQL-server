@@ -24,7 +24,7 @@ export const getOneYacht = async (req, res) => {
 			})
 		}
 
-		res.json(yacht)
+		res.json({ data: yacht })
 	} catch (error) {
 		res.status(500).json({
 			message: "Ошибка при получении яхты",

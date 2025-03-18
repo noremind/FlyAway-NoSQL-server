@@ -24,7 +24,7 @@ export const getOneCar = async (req, res) => {
 			})
 		}
 
-		res.json(car)
+		res.json({ data: car })
 	} catch (error) {
 		res.status(500).json({
 			message: "Ошибка при получении яхты",
@@ -32,7 +32,6 @@ export const getOneCar = async (req, res) => {
 		console.error(error)
 	}
 }
-
 
 export const createCars = async (req, res) => {
 	try {
