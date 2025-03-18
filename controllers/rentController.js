@@ -31,14 +31,14 @@ export const getOneRent = async (req, res) => {
 
 export const createRents = async (req, res) => {
 	try {
-		const { item, itemType, user, startDate, endDate } = req.body
+		const { item, item_type } = req.body
 
 		const validTypes = ["Yacht", "Car"]
-		if (!validTypes.includes(itemType)) {
+		if (!validTypes.includes(item_type)) {
 			return res.status(400).json({ message: "Некорректный тип аренды" })
 		}
 
-		const rent = new RentModel({ item, itemType, user, startDate, endDate })
+		const rent = new RentModel({ item, item_type })
 		await rent.save()
 
 		res.status(201).json({ message: "Аренда успешно создана", data: { rent } })

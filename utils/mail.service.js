@@ -20,7 +20,7 @@ export const sendEmail = async (to, subject, text) => {
 			from: `"Сайт" <${process.env.EMAIL_USER}>`, // Отправитель
 			to,
 			subject,
-			text,
+			html: text,
 		})
 		console.log("✅ Email отправлен:", to)
 	} catch (error) {
@@ -28,4 +28,3 @@ export const sendEmail = async (to, subject, text) => {
 		console.error("📩 Ответ сервера:", error.response)
 	}
 }
-
