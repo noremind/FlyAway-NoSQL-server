@@ -13,9 +13,9 @@ export const submitForm = async (req, res) => {
 		}
 
 		let item
-		if (item_type === "Car") {
+		if (item_type === "cars") {
 			item = await CarModel.findById(id)
-		} else if (item_type === "Yacht") {
+		} else if (item_type === "yachts") {
 			item = await YachtModel.findById(id)
 		}
 
@@ -50,7 +50,6 @@ export const submitForm = async (req, res) => {
 			<b>Комментарий:</b> ${comment}</p>
 		`
 
-		// Отправляем на почту менеджера
 		await sendEmail("isanartayuly@gmail.com", "Новая заявка с сайта", message)
 
 		res.status(200).json({ message: "Форма успешно отправлена" })
