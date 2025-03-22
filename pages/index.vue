@@ -141,7 +141,6 @@ useSeoMeta({
     "https://res.cloudinary.com/dcl8oteoe/image/upload/v1742648028/common/a1nugquoqbtdj2wborzx.png",
   twitterCard:
     "https://res.cloudinary.com/dcl8oteoe/image/upload/v1742648028/common/a1nugquoqbtdj2wborzx.png",
-  ogSite_name: "Daryn Online",
   vkImage:
     "https://res.cloudinary.com/dcl8oteoe/image/upload/v1742648028/common/a1nugquoqbtdj2wborzx.png",
 });
