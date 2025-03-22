@@ -4,9 +4,11 @@ import { userRoutes } from "./users.js"
 import { hotelRoutes } from "./hotels.js"
 import { partnerRoutes } from './partners.js'
 import adRoutes from "./ad.js"; 
+import { bannerRoutes } from "./banner.js";
 
 const router = express.Router()
 
+router.use("/banners", bannerRoutes);
 router.use("/ads", adRoutes);
 router.use("/users", userRoutes)
 router.use("/hotels", hotelRoutes)
