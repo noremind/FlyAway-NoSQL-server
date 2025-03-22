@@ -33,7 +33,7 @@ export const getOnePartner = async (req, res) => {
 		const { createdAt, updatedAt, __v, ...partnerData } = partner._doc
 
 		res.json({
-			data: { partnerData },
+			data: { ...partnerData },
 		})
 	} catch (error) {
 		console.error("Ошибка при получении партнеров:", error)
