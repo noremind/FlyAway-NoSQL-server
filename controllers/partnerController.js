@@ -22,7 +22,7 @@ export const getPartners = async (req, res) => {
 
 export const getOnePartner = async (req, res) => {
 	try {
-		const partner = await PartnerModel.findById(req.params.id)
+		const partner = await PartnerModel.findById(req.params.id).populate("tours")
 
 		if (!partner) {
 			return res.status(404).json({
