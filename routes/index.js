@@ -3,9 +3,11 @@ import express from "express"
 import { userRoutes } from "./users.js"
 import { hotelRoutes } from "./hotels.js"
 import { partnerRoutes } from './partners.js'
+import adRoutes from "./ad.js"; 
 
 const router = express.Router()
 
+router.use("/ads", adRoutes);
 router.use("/users", userRoutes)
 router.use("/hotels", hotelRoutes)
 router.use("/partners", partnerRoutes)
