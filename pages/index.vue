@@ -111,6 +111,13 @@
 <script setup>
 const router = useRouter();
 
+const banners = ref(null);
+const getBanners = () => {
+  useApi({
+    url: "/ads",
+  });
+};
+
 useSeoMeta({
   title: "FlyAway - Главная страница",
   ogTitle: "FlyAway - Главная страница",
