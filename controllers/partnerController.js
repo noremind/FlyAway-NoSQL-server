@@ -6,11 +6,34 @@ export const getPartners = async (req, res) => {
 
 		const formattedPartners = partners.map((partner) => {
 			const { createdAt, updatedAt, __v, ...partnerData } = partner.toObject()
-			return {...partnerData, tour_count: partner.tours.length}
+			return { ...partnerData, tour_count: partner.tours.length }
 		})
 
 		res.json({
 			data: formattedPartners,
+		})
+	} catch (error) {
+		console.error("Ошибка при получении партнеров:", error)
+		res.status(500).json({
+			message: "Ошибка при получении партнеров",
+		})
+	}
+}
+
+export const getOnePartner = async (req, res) => {
+	try {
+		const partner = await PartnerModel.findById(req.params.id)
+
+		if (!partner) {
+			return res.status(404).json({
+				message: "Партнер не найден",
+			})
+		}
+
+		const { createdAt, updatedAt, __v, ...partnerData } = partner._doc
+
+		res.json({
+			data: { partnerData },
 		})
 	} catch (error) {
 		console.error("Ошибка при получении партнеров:", error)
