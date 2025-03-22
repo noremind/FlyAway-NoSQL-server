@@ -6,7 +6,7 @@
     @close="goTo('/partners')"
   >
     <section class="partner">
-      <div class="partner__wrapper">
+      <div class="partner__wrapper" v-if="!!partner">
         <UiGoBack
           class="partner__go-back"
           label="Партнеры"
@@ -20,44 +20,28 @@
               src="@/assets/image/common/tour-avatar.png"
               alt="Partner"
             />
-            <h2 class="partner__author">Mili Tour</h2>
+            <h2 class="partner__author">{{ partner.title }}</h2>
             <div class="partner__review">
-              <p class="partner__count">20 отзывов</p>
+              <p class="partner__count">{{ partner?.review_count }} отзывов</p>
               <UiIcons icon="star" color="yellow-500" size="size-14"></UiIcons>
-              <p class="partner__average">4,1</p>
+              <p class="partner__average">{{ partner.rating }}</p>
             </div>
             <ThePartnersCard class="partner__info-card"></ThePartnersCard>
             <ul class="partner__list">
               <li class="partner__list-item">
                 <p class="partner__text">Количество туров</p>
-                <p class="partner__number">3</p>
+                <p class="partner__number">{{ partner.tours?.length }}</p>
               </li>
               <li class="partner__list-item">
                 <p class="partner__text">Количество отелей</p>
-                <p class="partner__number">3</p>
-              </li>
-              <li class="partner__list-item">
-                <p class="partner__text">Количество активностей</p>
-                <p class="partner__number">3</p>
+                <p class="partner__number">{{ partner.hotels?.length }}</p>
               </li>
             </ul>
 
             <p class="partner__bold">О нас</p>
             <p class="partner__description">
-              Мы организуем уникальные туры, чтобы каждый наш клиент мог открыть
-              для себя самые красивые уголки природы, испытать незабываемые
-              эмоции и почувствовать настоящий дух приключений. Ваш комфорт,
-              безопасность и яркие впечатления — наш главный приоритет!
+              {{ partner.description }}
             </p>
-
-            <div class="partner__baige">
-              <UiIcons
-                icon="circle-check"
-                color="red-500"
-                size="size-24"
-              ></UiIcons>
-              <p class="partner__baige-text">Есть рассрочка</p>
-            </div>
 
             <p class="partner__bold">Контакты</p>
             <ul class="partner__contacts">
@@ -79,37 +63,34 @@
             <section class="partner__block">
               <div class="partner__block-header">
                 <h2 class="title">Туры</h2>
-                <nuxt-link class="partner__block-link" to="/tours"
+                <nuxt-link
+                  v-if="partner.tours?.length > 5"
+                  class="partner__block-link"
+                  to="/tours"
                   >Все туры</nuxt-link
                 >
               </div>
-              <div class="partner__tours">
-                <TheCommonTourCard v-for="card in 6" :key="card" />
+              <div class="partner__tours" v-if="partner?.tours.length">
+                <TheCommonTourCard
+                  v-for="tour in partner?.tours"
+                  :key="tour._id"
+                  :tour="tour"
+                />
               </div>
+              <p v-else>Пока пусто</p>
             </section>
 
             <section class="partner__block">
               <div class="partner__block-header">
                 <h2 class="title">Отели</h2>
               </div>
-              <div class="partner__hotels">
-                <TheHotelsBlock
+              <div class="partner__hotels" v-if="partner?.hotels.length">
+                <!-- <TheHotelsBlock
                   v-for="hotel in 2"
                   :key="hotel"
-                ></TheHotelsBlock>
+                ></TheHotelsBlock> -->
               </div>
-            </section>
-
-            <section class="partner__block">
-              <div class="partner__block-header">
-                <h2 class="title">Наша команда</h2>
-              </div>
-              <div class="partner__teams">
-                <ThePartnersEmployee
-                  v-for="employee in 5"
-                  :key="employee"
-                ></ThePartnersEmployee>
-              </div>
+              <p v-else>Пока пусто</p>
             </section>
           </div>
 
@@ -120,7 +101,7 @@
             :tabs="tabs"
           ></UiTabs>
 
-          <div class="partner__tours partner__tours--mobile">
+          <div class="partner__tours partner__tours--mobile" v-if="!!partner">
             <TheCommonTourCard v-for="card in 6" :key="card" />
           </div>
 
@@ -188,6 +169,20 @@
 
 <script setup>
 const isOpenOverlayMobile = ref(false);
+const partner = ref(null);
+
+const route = useRoute();
+
+const getPartner = () => {
+  useApi({
+    url: `/partners/${route.params.id}`,
+    method: "get",
+  }).then((res) => {
+    partner.value = res.data;
+  });
+};
+
+getPartner();
 
 const tabs = reactive([
   {
@@ -207,38 +202,28 @@ const tabs = reactive([
   },
 ]);
 const selectedTab = ref(tabs[0]);
-const contacts = [
-  {
-    id: 1,
-    icon: "globe",
-    name: "website",
-  },
-  {
-    id: 2,
-    icon: "location",
-    name: "location",
-  },
-  {
-    id: 3,
-    icon: "phone",
-    name: "address",
-  },
-  {
-    id: 4,
-    icon: "instagram",
-    name: "website",
-  },
-  {
-    id: 5,
-    icon: "youtube",
-    name: "youtube",
-  },
-  {
-    id: 6,
-    icon: "tiktok",
-    name: "tiktok",
-  },
-];
+
+let contacts;
+
+watchEffect(() => {
+  contacts = [
+    {
+      id: 1,
+      icon: "globe",
+      name: partner.value?.contacts.website,
+    },
+    {
+      id: 2,
+      icon: "location",
+      name: partner.value?.contacts.address,
+    },
+    {
+      id: 3,
+      icon: "phone",
+      name: partner.value?.contacts.phone,
+    },
+  ];
+});
 </script>
 
 <style lang="scss" scoped>

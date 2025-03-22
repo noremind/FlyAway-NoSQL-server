@@ -15,18 +15,18 @@
         </div>
         <div>
           <div class="tour__price-box">
-            <p class="tour__new-price" v-if="tour?.min_price">
-              {{ tour?.min_price }} ₸
+            <p class="tour__new-price">{{ tour?.discount_price }} ₸</p>
+            <p class="tour__old-price">
+              <s>{{ tour?.price }} ₸</s>
             </p>
-            <p class="tour__old-price"><s>89 000 ₸</s></p>
           </div>
         </div>
       </div>
 
       <div class="tour__info">
         <div class="tour__info-box" v-if="viewType === 'tablet'">
-          <img class="tour__avatar" :src="tour.partner?.logo" alt="" />
-          <p class="tour__author">{{ tour.partner?.name }}</p>
+          <img class="tour__avatar" :src="tour?.partner?.avatar" alt="" />
+          <p class="tour__author">{{ tour.partner?.title }}</p>
         </div>
 
         <div class="tour__reviews">
@@ -37,17 +37,17 @@
       </div>
       <span
         v-if="viewType === 'tablet'"
-        class="tour__discount tour__discount--new tour__discount--mobile"
-        >Новинка</span
+        class="tour__discount tour__discount--new"
+        >{{ tour?.discount }}%</span
       >
       <div class="tour__content">
         <h3 class="tour__title">
-          <nuxt-link class="tour__link" to="/tours/1">{{
-            tour?.name
+          <nuxt-link class="tour__link" :to="`/tours/${tour?._id}`">{{
+            tour?.title
           }}</nuxt-link>
         </h3>
         <p class="tour__description">
-          {{ tour?.description_mini }}
+          {{ tour?.description }}
         </p>
         <div class="tour__box">
           <p class="tour__text">Осталось</p>
@@ -67,8 +67,8 @@
           </div>
           <span
             :class="{ 'tour__discount--show': viewType === 'list' }"
-            class="tour__discount tour__discount--new"
-            >Новинка</span
+            class="tour__discount"
+            >{{ tour?.discount }}%</span
           >
         </div>
       </div>
@@ -267,7 +267,7 @@ const toggleDropdown = () => {
     }
   }
   &__discount {
-    padding: 8px 16px;
+    padding: 4px 8px;
     border-radius: 26px;
     color: $white;
     font-size: 14px;

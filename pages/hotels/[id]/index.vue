@@ -63,7 +63,7 @@
               <div class="details__totals-box">
                 <img
                   class="details__avatar"
-                  :src="hotel.partner?.logo"
+                  :src="hotel?.partner?.logo"
                   alt="Avatar"
                 />
               </div>
@@ -379,7 +379,7 @@
               <div class="details__totals-box">
                 <img
                   class="details__avatar"
-                  :src="hotel.partner?.logo"
+                  :src="hotel?.partner?.logo"
                   alt="Avatar"
                 />
                 <p class="details__name">{{ hotel.partner?.name }}</p>

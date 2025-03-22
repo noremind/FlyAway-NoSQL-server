@@ -28,7 +28,7 @@
         <div class="block__content-top">
           <img
             class="block__avatar"
-            :src="hotel.partner?.logo"
+            :src="hotel?.partner?.logo"
             alt="Avatar"
             :class="{ 'block__avatar--laptop': viewType === 'tablet' }"
           />

@@ -48,10 +48,10 @@
             ></UiCheckbox>
           </section>
 
-          <div class="partners__cards" v-if="partners?.length">
+          <div class="partners__cards" v-if="!!partners && partners?.length">
             <ThePartnersCard
               v-for="partner in partners"
-              :key="partner.id"
+              :key="partner._id"
               :partner="partner"
             ></ThePartnersCard>
           </div>
@@ -137,17 +137,17 @@ const getPartners = () => {
     url: "/partners",
     method: "get",
   }).then((res) => {
-    partners.value = res.data.data;
-    pagination.last_page = res.data.last_page;
-    pagination.total_items = res.data.total;
-    pagination.per_page = res.data.per_page;
+    partners.value = res.data;
+    // pagination.last_page = res.data.last_page;
+    // pagination.total_items = res.data.total;
+    // pagination.per_page = res.data.per_page;
   });
 };
 getPartners();
 
 const paginationPage = (page) => {
   currentPage.value = page;
-  getBlogs();
+  getPartners();
 };
 </script>
 

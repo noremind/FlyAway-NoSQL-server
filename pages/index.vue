@@ -60,9 +60,14 @@
     ></UiButton>
   </section>
 
-  <UiSwiper :pagination="{ clickable: true }" :per-slides="1" :autoplay="true">
-    <swiper-slide v-for="banner in 4" :key="banner">
-      <TheCommonPopularBanner></TheCommonPopularBanner>
+  <UiSwiper
+    :pagination="{ clickable: true }"
+    :per-slides="1"
+    :autoplay="true"
+    v-if="banners?.length"
+  >
+    <swiper-slide v-for="banner in banners" :key="banner._id">
+      <TheCommonPopularBanner :banner="banner"></TheCommonPopularBanner>
     </swiper-slide>
   </UiSwiper>
 
@@ -115,14 +120,31 @@ const banners = ref(null);
 const getBanners = () => {
   useApi({
     url: "/ads",
+  }).then((res) => {
+    banners.value = res.data;
   });
 };
+getBanners();
 
 useSeoMeta({
   title: "FlyAway - Главная страница",
   ogTitle: "FlyAway - Главная страница",
   description: "FlyAway - сайт для бронирования туров и отелей",
   ogDescription: "FlyAway - сайт для бронирования туров и отелей",
+  image:
+    "https://res.cloudinary.com/dcl8oteoe/image/upload/v1742648028/common/a1nugquoqbtdj2wborzx.png",
+  ogImage:
+    "https://res.cloudinary.com/dcl8oteoe/image/upload/v1742648028/common/a1nugquoqbtdj2wborzx.png",
+  aiturecImage:
+    "https://res.cloudinary.com/dcl8oteoe/image/upload/v1742648028/common/a1nugquoqbtdj2wborzx.png",
+  twitterImage:
+    "https://res.cloudinary.com/dcl8oteoe/image/upload/v1742648028/common/a1nugquoqbtdj2wborzx.png",
+  twitterCard:
+    "https://res.cloudinary.com/dcl8oteoe/image/upload/v1742648028/common/a1nugquoqbtdj2wborzx.png",
+  twitterDescription: t("seo.home_description"),
+  ogSite_name: "Daryn Online",
+  vkImage:
+    "https://res.cloudinary.com/dcl8oteoe/image/upload/v1742648028/common/a1nugquoqbtdj2wborzx.png",
 });
 </script>
 
