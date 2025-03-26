@@ -16,6 +16,8 @@ const adSchema = new mongoose.Schema(
 export default mongoose.model("Ads", adSchema);
 
 
+    //rename  
+
 
 
 
