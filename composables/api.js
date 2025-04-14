@@ -1,7 +1,7 @@
 export async function useApi(options = {}) {
 	const config = useRuntimeConfig();
-	const store = ref(useAuthStore());
-	// const commonStore = useCommonStore();
+	const userStore = ref(useAuthStore());
+	const commonStore = useCommonStore();
 	// const { $i18n } = useNuxtApp();
 	// const route = useRoute()
 	// const locale = $i18n.locale;
@@ -9,8 +9,7 @@ export async function useApi(options = {}) {
 
 
 
-	// commonStore.setLoader(true);
-	const tokenCookie = useCookie("token");
+	commonStore.setLoader(true);
 
 	const headers = {
 		Accept: "application/json",
@@ -19,8 +18,8 @@ export async function useApi(options = {}) {
 		...options?.headers,
 	};
 
-	if (store.value.getToken) {
-		headers.Authorization = `Bearer ${store.value.getToken}`;
+	if (userStore.value.getToken) {
+		headers.Authorization = `Bearer ${userStore.value.getToken}`;
 	}
 
 	try {
@@ -34,16 +33,15 @@ export async function useApi(options = {}) {
 
 		const data = response?.data.value
 		const error = response?.error.value?.data
+		commonStore.setLoader(false);
 
 		if (error) throw error
 
 		return data;
 
 	} catch (error) {
-		console.log(error)
 		if (error.statusCode === 401) {
-			store.value.logoutUser()
-			console.log('Token token')
+			userStore.value.logoutUser()
 		}
 		throw error;
 	}

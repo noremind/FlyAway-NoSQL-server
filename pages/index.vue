@@ -2,7 +2,7 @@
   <TheMainBanner></TheMainBanner>
   <TheMainSearchBlock></TheMainSearchBlock>
 
-  <TheMainLinkBlocks></TheMainLinkBlocks>
+  <!-- <TheMainLinkBlocks></TheMainLinkBlocks> -->
 
   <section class="main__tours">
     <img
@@ -16,11 +16,11 @@
         <UiIcons icon="hot" size="size-32" color="orange-200"></UiIcons>
         <h2 class="main__title title">Горящие туры</h2>
       </div>
-      <nuxt-link class="main__tours-link" to="/tours"
+      <nuxt-link v-if="tours?.length > 4" class="main__tours-link" to="/tours"
         >Все горящие туры</nuxt-link
       >
     </div>
-    <div class="main__tours-slider">
+    <div class="main__tours-slider" v-if="tours?.length">
       <UiSwiper
         :pagination="{ clickable: true }"
         :autoplay="true"
@@ -42,13 +42,21 @@
           },
         }"
       >
-        <swiper-slide v-for="slide in 5" :key="slide">
-          <TheCommonTourCard></TheCommonTourCard>
+        <swiper-slide v-for="tour in tours" :key="tour._id">
+          <TheCommonTourCard
+            :tour="tour"
+            :view-type="'tablet'"
+          ></TheCommonTourCard>
         </swiper-slide>
       </UiSwiper>
     </div>
     <div class="main__tours-slider main__tours-slider--block">
-      <TheCommonTourCard v-for="slide in 5" :key="slide"></TheCommonTourCard>
+      <TheCommonTourCard
+        v-for="tour in tours"
+        :key="tour._id"
+        :tour="tour"
+        :view-type="'tablet'"
+      ></TheCommonTourCard>
     </div>
     <UiButton
       class="main__tours-link main__tours-link--mobile"
@@ -115,6 +123,7 @@
 
 <script setup>
 const router = useRouter();
+const tours = ref(null);
 
 const banners = ref(null);
 const getBanners = () => {
@@ -144,6 +153,17 @@ useSeoMeta({
   vkImage:
     "https://res.cloudinary.com/dcl8oteoe/image/upload/v1742648028/common/a1nugquoqbtdj2wborzx.png",
 });
+
+const getTours = () => {
+  useApi({
+    url: "/tours",
+    method: "get",
+  }).then((res) => {
+    tours.value = res.data;
+  });
+};
+
+getTours();
 </script>
 
 <style lang="scss" scoped>

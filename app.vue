@@ -16,6 +16,8 @@
   >
     <ModalsAuthStep></ModalsAuthStep>
   </UiModal>
+
+  <UiLoader />
 </template>
 
 <script setup>

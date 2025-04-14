@@ -8,10 +8,15 @@
       />
       <div class="tour__header">
         <div class="tour__header-box">
-          <span class="tour__icon">
+          <span class="tour__icon" v-if="tour?.is_hot">
             <UiIcons icon="hot" color="orange-200" size="size-14"></UiIcons>
           </span>
-          <UiIcons icon="heart-fill" color="white" size="size-24"></UiIcons>
+          <UiIcons
+            v-if="userStore.isLoggedIn"
+            icon="heart-fill"
+            color="white"
+            size="size-24"
+          ></UiIcons>
         </div>
         <div>
           <div class="tour__price-box">
@@ -36,7 +41,7 @@
         </div>
       </div>
       <span
-        v-if="viewType === 'tablet'"
+        v-if="viewType === 'list'"
         class="tour__discount tour__discount--new"
         >{{ tour?.discount }}%</span
       >
@@ -78,6 +83,8 @@
 
 <script setup>
 const isOpenDropdown = ref(false);
+const userStore = useAuthStore();
+
 const props = defineProps({
   tour: {
     type: Object,

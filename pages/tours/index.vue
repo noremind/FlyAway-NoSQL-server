@@ -93,58 +93,62 @@
               :label="item.label"
             ></UiCheckbox>
           </section>
-          <div
-            v-show="selectedTab?.id === 1"
-            class="tours__cards"
-            :class="{ 'tours__cards--tablet': selectedTabMobile.id === 1 }"
-          >
-            <TheCommonTourCard
-              v-for="tour in tours"
-              :key="tour.id"
-              :tour="tour"
-              :view-type="selectedTabMobile.id === 1 ? 'tablet' : 'list'"
-            ></TheCommonTourCard>
+          <template v-if="tours?.length">
+            <div
+              v-show="selectedTab?.id === 1"
+              class="tours__cards"
+              :class="{ 'tours__cards--tablet': selectedTabMobile.id === 1 }"
+            >
+              <TheCommonTourCard
+                v-for="tour in tours"
+                :key="tour._id"
+                :tour="tour"
+                :view-type="selectedTabMobile.id === 1 ? 'tablet' : 'list'"
+              ></TheCommonTourCard>
 
-            <TheCommonPopularBanner
-              class="tours__banner"
-            ></TheCommonPopularBanner>
-          </div>
-          <div v-show="selectedTab?.id === 2" class="tours__location">
-            <div class="tours__map" ref="mapContainer"></div>
-            <div class="tours__scroll-wrapper">
-              <div class="tours__scroll-cards">
-                <TheCommonTourCard
-                  v-for="tour in tours"
-                  :key="tour.id"
-                  :tour="tour"
-                ></TheCommonTourCard>
-                <div class="tours__scroll-pagination">
-                  <UiPagination
-                    v-if="pagination?.last_page && pagination?.last_page !== 1"
-                    :total-items="pagination?.total_items"
-                    :current-page="currentPage"
-                    @change-page="paginationPage"
-                    :last-page="pagination?.last_page"
-                    :per-page="pagination?.per_page"
-                    class="tours__pagination tours__pagination--scroll"
-                  ></UiPagination>
+              <!-- <TheCommonPopularBanner
+                class="tours__banner"
+              ></TheCommonPopularBanner> -->
+            </div>
+            <div v-show="selectedTab?.id === 2" class="tours__location">
+              <div class="tours__map" ref="mapContainer"></div>
+              <div class="tours__scroll-wrapper">
+                <div class="tours__scroll-cards">
+                  <TheCommonTourCard
+                    v-for="tour in tours"
+                    :key="tour.id"
+                    :tour="tour"
+                  ></TheCommonTourCard>
+                  <div class="tours__scroll-pagination">
+                    <UiPagination
+                      v-if="
+                        pagination?.last_page && pagination?.last_page !== 1
+                      "
+                      :total-items="pagination?.total_items"
+                      :current-page="currentPage"
+                      @change-page="paginationPage"
+                      :last-page="pagination?.last_page"
+                      :per-page="pagination?.per_page"
+                      class="tours__pagination tours__pagination--scroll"
+                    ></UiPagination>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <UiPagination
-            v-if="
-              pagination?.last_page &&
-              pagination?.last_page !== 1 &&
-              selectedTab?.id === 1
-            "
-            :total-items="pagination?.total_items"
-            :current-page="currentPage"
-            @change-page="paginationPage"
-            :last-page="pagination?.last_page"
-            :per-page="pagination?.per_page"
-            class="tours__pagination"
-          ></UiPagination>
+            <UiPagination
+              v-if="
+                pagination?.last_page &&
+                pagination?.last_page !== 1 &&
+                selectedTab?.id === 1
+              "
+              :total-items="pagination?.total_items"
+              :current-page="currentPage"
+              @change-page="paginationPage"
+              :last-page="pagination?.last_page"
+              :per-page="pagination?.per_page"
+              class="tours__pagination"
+            ></UiPagination>
+          </template>
         </div>
       </div>
     </div>
@@ -225,6 +229,7 @@ const isOpenPartialLocationCards = ref(false);
 const tours = ref(null);
 const pagination = reactive({});
 const currentPage = ref(1);
+
 const tabs = reactive([
   {
     id: 1,
@@ -293,10 +298,10 @@ const getTours = () => {
     method: "get",
     query: { page: currentPage.value },
   }).then((res) => {
-    tours.value = res.data.data;
-    pagination.last_page = res.data.last_page;
-    pagination.total_items = res.data.total;
-    pagination.per_page = res.data.per_page;
+    tours.value = res.data;
+    // pagination.last_page = res.data.last_page;
+    // pagination.total_items = res.data.total;
+    // pagination.per_page = res.data.per_page;
   });
 };
 getTours();

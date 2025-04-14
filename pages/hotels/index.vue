@@ -117,7 +117,7 @@
                 :view-type="selectedTabMobile.id === 1 ? 'tablet' : 'list'"
               ></TheHotelsBlock>
 
-              <TheCommonPopularBanner></TheCommonPopularBanner>
+              <!-- <TheCommonPopularBanner></TheCommonPopularBanner> -->
             </div>
           </div>
           <UiPagination class="hotels__pagination"></UiPagination>

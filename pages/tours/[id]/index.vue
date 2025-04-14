@@ -8,17 +8,17 @@
     @close="goTo('/tours')"
     @action="openPartialModalPayment"
   >
-    <section class="details">
+    <section class="details" v-if="tour">
       <div class="details__wrapper">
         <UiGoBack class="details__go-back" label="Туры" go-back="/tours" />
 
         <div class="details__box">
           <section class="details__content">
             <div class="details__header">
-              <h1 class="details__title title">Однодевный тур на Кольсай</h1>
+              <h1 class="details__title title">{{ tour.title }}</h1>
               <div class="details__icons">
                 <UiIcons icon="heart" size="size-24" color="red-500"></UiIcons>
-                <div class="details__icons-box">
+                <div class="details__icons-box" v-if="tour.is_hot">
                   <UiIcons
                     icon="hot"
                     size="size-24"
@@ -65,7 +65,7 @@
                   src="@/assets/image/common/tour-avatar.png"
                   alt="Avatar"
                 />
-                <p class="details__name">Mili Tour</p>
+                <p class="details__name">{{ tour.partner?.title }}</p>
               </div>
               <div
                 class="details__reviews-inner details__reviews-inner--mobile"
@@ -78,15 +78,20 @@
                   color="yellow-500"
                   size="size-14"
                 ></UiIcons>
-                <p class="details__reviews-average">4,1</p>
+                <p class="details__reviews-average">
+                  {{ tour.partner?.rating }}
+                </p>
               </div>
             </div>
 
             <h1 class="details__title details__title--mobile title">
-              Однодевный тур на Кольсай
+              {{ tour.title }}
             </h1>
 
-            <div class="details__icons details__icons--mobile">
+            <div
+              class="details__icons details__icons--mobile"
+              v-if="tour.is_hot"
+            >
               <div class="details__icons-box">
                 <UiIcons icon="hot" size="size-24" color="orange-200"></UiIcons>
                 <p class="details__icons-text">Горящий тур</p>
@@ -107,9 +112,7 @@
               <p class="details__about">О туре</p>
 
               <p class="details__description">
-                Приглашаем вас отправиться в увлекательное путешествие на
-                Кольсайские озера — настоящую жемчужину Алматинской области, где
-                природа поражает своей первозданной красотой и чистотой.
+                {{ tour.description }}
               </p>
 
               <div>
@@ -265,7 +268,9 @@
                       color="red-500"
                       size="size-24"
                     ></UiIcons>
-                    <p class="details__contacts-desc">website</p>
+                    <p class="details__contacts-desc">
+                      {{ tour.partner?.website }}
+                    </p>
                   </div>
                   <div class="details__contacts-info">
                     <UiIcons
@@ -273,7 +278,9 @@
                       color="red-500"
                       size="size-24"
                     ></UiIcons>
-                    <p class="details__contacts-desc">phone number</p>
+                    <p class="details__contacts-desc">
+                      {{ tour.partner?.phone }}
+                    </p>
                   </div>
                   <div class="details__contacts-info">
                     <UiIcons
@@ -281,7 +288,9 @@
                       color="red-500"
                       size="size-24"
                     ></UiIcons>
-                    <p class="details__contacts-desc">address</p>
+                    <p class="details__contacts-desc">
+                      {{ tour.partner?.address }}
+                    </p>
                   </div>
                   <div class="details__contacts-info">
                     <UiIcons
@@ -303,9 +312,9 @@
                   src="@/assets/image/common/tour-avatar.png"
                   alt="Avatar"
                 />
-                <p class="details__name">Mili Tour</p>
+                <p class="details__name">{{ tour.partner?.title }}</p>
               </div>
-              <p class="details__baige">-20%</p>
+              <p class="details__baige">-{{ tour.discount }}%</p>
             </div>
 
             <Calendar class="details__calendar" v-model="date" inline />
@@ -373,7 +382,7 @@
                 <p
                   class="details__totals-question details__totals-question--discount"
                 >
-                  -20%
+                  -{{ tour.discount }}%
                 </p>
               </li>
               <li class="details__totals-item details__totals-item--result">
@@ -575,7 +584,7 @@
             alt="Preview"
           />
           <h2 class="overlay-payment__title title">
-            Однодевный тур на Кольсай
+            {{ tour.title }}
           </h2>
         </div>
         <table class="overlay-payment__table">
@@ -667,6 +676,8 @@ const isOpenPartialModalPayment = ref(false);
 const isOpenOverlayPayment = ref(false);
 const isOpenMobileStatusPayment = ref(null);
 
+const route = useRoute();
+
 const date = new Date();
 const yandexMapInfo = ref(null);
 const yandexMapPath = ref(null);
@@ -690,6 +701,27 @@ const tabs = reactive([
 ]);
 const selectedTab = ref(tabs[0]);
 const isMapReady = ref(false);
+
+const tour = ref(null);
+
+const getTour = (id) => {
+  useApi({
+    url: `/tours/${id}`,
+    mehtod: "get",
+  }).then((res) => {
+    tour.value = res.data;
+  });
+};
+getTour(route.params.id);
+
+watchEffect(() => {
+  useSeoMeta({
+    title: `${tour.value?.title} / FlyAway`,
+    ogTitle: `${tour.value?.title} / FlyAway`,
+    description: `${tour.value?.description} / FlyAway`,
+    ogDescription: `${tour.value?.description} / FlyAway`,
+  });
+});
 
 // Step 1
 const closePartialModalPayment = () => {
