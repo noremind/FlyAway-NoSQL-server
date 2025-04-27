@@ -12,6 +12,46 @@ export const getExcursions = async (req, res) => {
 	}
 }
 
+export const getOneExcursion = async (req, res) => {
+	try {
+		const { excursionId } = req.params
+
+		const excursion = await ExcursionModel.findById(excursionId)
+
+		if (!excursion) {
+			return res.status(404).json({ message: "Экскурсия не найдена" })
+		}
+
+		res.json({ data: excursion })
+	} catch (error) {
+		console.error("Ошибка:", error.message)
+		res.status(500).json({ message: "Ошибка при получении элемента экскурсии" })
+	}
+}
+
+export const getOneExcursionItem = async (req, res) => {
+	try {
+		const { excursionId, itemId } = req.params
+
+		const excursion = await ExcursionModel.findById(excursionId)
+
+		if (!excursion) {
+			return res.status(404).json({ message: "Экскурсия не найдена" })
+		}
+
+		const item = excursion.items.find((item) => item._id.toString() === itemId)
+
+		if (!item) {
+			return res.status(404).json({ message: "Элемент экскурсии не найден" })
+		}
+
+		res.json({ data: item })
+	} catch (error) {
+		console.error("Ошибка:", error.message)
+		res.status(500).json({ message: "Ошибка при получении элемента экскурсии" })
+	}
+}
+
 export const createExcursion = async (req, res) => {
 	try {
 		const doc = new ExcursionModel({

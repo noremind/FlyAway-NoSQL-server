@@ -11,7 +11,6 @@ import { excursionRoutes } from "./excursions.js"
 const router = express.Router()
 
 router.use("/users", userRoutes)
-// router.use("/hotels", hotelRoutes)
 router.use("/rents", rentRoutes)
 router.use("/cars", carRoutes)
 router.use("/yachts", yachtRoutes)
