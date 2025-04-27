@@ -3,6 +3,7 @@ import FormModel from "../models/Form.js"
 // import RentModel from "../models/Rent.js"
 import CarModel from "../models/Car.js"
 import YachtModel from "../models/Yacht.js"
+import ExcursionModel from '../models/Excursion.js'
 
 export const submitForm = async (req, res) => {
 	try {
@@ -17,6 +18,8 @@ export const submitForm = async (req, res) => {
 			item = await CarModel.findById(id)
 		} else if (item_type === "yachts") {
 			item = await YachtModel.findById(id)
+		} else if (item_type === "excursions") {
+			item = await ExcursionModel.findById(id)
 		}
 
 		if (!item) {
