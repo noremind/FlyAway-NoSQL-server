@@ -28,7 +28,9 @@ export const sendVerificationCode = async (req, res) => {
 	try {
 		const { name, phone, email } = req.body
 
-		let user = await UserModel.findOne({ phone })
+		let user = await UserModel.findOne({
+			$or: [{ phone: phone }, { email: email }],
+		})
 
 		if (!user) {
 			const verificationCode = generateVerificationCode()
@@ -45,7 +47,9 @@ export const sendVerificationCode = async (req, res) => {
 				{ new: true }
 			)
 		} else {
-			return res.status(400).json({ message: "Этот номер уже зарегистрирован" })
+			return res
+				.status(400)
+				.json({ message: "Этот номер или email уже зарегистрирован" })
 		}
 
 		const message = `
@@ -264,6 +268,7 @@ export const sendResetCode = async (req, res) => {
 			message: "Код отправлен на почту",
 			phone: phone,
 			code: verificationCode,
+			email: user.email,
 		})
 	} catch (error) {
 		res.status(500).json({ message: "Ошибка при отправке кода" })
