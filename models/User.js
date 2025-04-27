@@ -5,7 +5,7 @@ const UserSchema = new mongoose.Schema(
 		name: { type: String, required: true },
 		phone: { type: String, required: true, unique: true },
 		password: { type: String, required: false }, // Необязательное поле на этапе регистрации
-		email: { type: String, default: null },
+		email: { type: String, default: null, uniquie: true },
 		birthDate: { type: String, default: null },
 		gender: {
 			type: String,

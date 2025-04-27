@@ -2,6 +2,7 @@ import UserModel from "../models/User.js"
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import dotenv from "dotenv"
+import { sendEmail } from "../utils/mail.service.js"
 dotenv.config()
 
 const SECRET_KEY = process.env.JWT_SECRET
@@ -25,7 +26,7 @@ const generateVerificationCode = () =>
 
 export const sendVerificationCode = async (req, res) => {
 	try {
-		const { name, phone } = req.body
+		const { name, phone, email } = req.body
 
 		let user = await UserModel.findOne({ phone })
 
@@ -33,7 +34,7 @@ export const sendVerificationCode = async (req, res) => {
 			const verificationCode = generateVerificationCode()
 			console.log(`🔹 Код подтверждения для ${phone}: ${verificationCode}`)
 
-			user = new UserModel({ name, phone, verificationCode })
+			user = new UserModel({ name, phone, email, verificationCode })
 			await user.save()
 		} else if (!user.isVerified) {
 			const verificationCode = generateVerificationCode()
@@ -47,9 +48,17 @@ export const sendVerificationCode = async (req, res) => {
 			return res.status(400).json({ message: "Этот номер уже зарегистрирован" })
 		}
 
+		const message = `
+			<p>Test<p/>
+			<p>Code: ${user.verificationCode}<p/>
+		`
+
+		await sendEmail(email, "Подтверждения кода", message)
+
 		res.json({
 			message: "Код отправлен",
 			phone,
+			email,
 			code: `${user.verificationCode}`,
 		})
 	} catch (error) {
@@ -231,7 +240,9 @@ export const sendResetCode = async (req, res) => {
 		let user = await UserModel.findOne({ phone })
 
 		if (!user) {
-			return res.status(404).json({ message: "Номер не зарегестрирован или не найден" })
+			return res
+				.status(404)
+				.json({ message: "Номер не зарегестрирован или не найден" })
 		}
 
 		const verificationCode = generateVerificationCode()
@@ -242,10 +253,17 @@ export const sendResetCode = async (req, res) => {
 			{ new: true }
 		)
 
+		const message = `
+			<p>Test<p/>
+			<p>Code: ${user.verificationCode}<p/>
+		`
+
+		await sendEmail(user.email, "Сброс пароля", message)
+
 		res.json({
-			message: "Код отправлен",
+			message: "Код отправлен на почту",
 			phone: phone,
-			code: verificationCode
+			code: verificationCode,
 		})
 	} catch (error) {
 		res.status(500).json({ message: "Ошибка при отправке кода" })
