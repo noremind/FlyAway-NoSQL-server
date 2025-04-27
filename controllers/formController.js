@@ -3,7 +3,7 @@ import FormModel from "../models/Form.js"
 // import RentModel from "../models/Rent.js"
 import CarModel from "../models/Car.js"
 import YachtModel from "../models/Yacht.js"
-import ExcursionModel from '../models/Excursion.js'
+import ExcursionModel from "../models/Excursion.js"
 
 export const submitForm = async (req, res) => {
 	try {
@@ -19,7 +19,15 @@ export const submitForm = async (req, res) => {
 		} else if (item_type === "yachts") {
 			item = await YachtModel.findById(id)
 		} else if (item_type === "excursions") {
-			item = await ExcursionModel.findById(id)
+			const excursion = await ExcursionModel.findOne({ "items._id": id })
+			if (!excursion) {
+				return res.status(404).json({ message: "Экскурсия не найдена" })
+			}
+
+			item = excursion.items.find((el) => el._id.toString() === id)
+			if (!item) {
+				return res.status(404).json({ message: "Элемент экскурсии не найден" })
+			}
 		}
 
 		if (!item) {
