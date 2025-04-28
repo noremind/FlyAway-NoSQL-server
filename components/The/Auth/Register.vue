@@ -21,12 +21,18 @@
             label="Номер телефона*"
             v-model.trim="phone"
             maska="8(###)-###-##-##"
-            :is-error="!!errorMessage"
           ></UiInput>
-          <p class="register__error" v-if="!!errorMessage">
-            {{ errorMessage }}
-          </p>
         </div>
+
+        <UiInput
+          label="Ваше email*"
+          placeholder="Введите email для подтверждения"
+          v-model.trim="email"
+        ></UiInput>
+
+        <p class="register__error" v-if="!!errorMessage">
+          {{ errorMessage }}
+        </p>
 
         <UiButton
           label="Зарегестрироваться"
@@ -45,13 +51,22 @@ const emit = defineEmits(["nextStep"]);
 
 const name = ref("");
 const phone = ref("");
+const email = ref("");
 
 const errorMessage = ref("");
 const isLoading = ref(false);
 
 const disabledBtn = computed(() => {
+  const isValidEmail =
+    email.value.includes("@") &&
+    email.value.includes(".") &&
+    email.value.split(".").pop().length >= 2;
+
   return (
-    name.value.length > 1 && name.value.length < 50 && phone.value.length === 16
+    name.value.length > 1 &&
+    name.value.length < 50 &&
+    phone.value.length === 16 &&
+    isValidEmail
   );
 });
 
@@ -64,10 +79,11 @@ const postSignUp = () => {
       data: {
         phone: phone.value.replace(/\D/g, ""),
         name: name.value,
+        email: email.value,
       },
     })
       .then((res) => {
-        emit("nextStep", phone.value, name.value);
+        emit("nextStep", phone.value, name.value, email.value);
         isLoading.value = false;
       })
       .catch((res) => {

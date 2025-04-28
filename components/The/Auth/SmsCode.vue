@@ -10,8 +10,8 @@
       <h4 class="sms-code__title">СМС-код</h4>
 
       <div class="sms-code__box">
-        <p class="sms-code__message">Введите СМС-код отправленный на номер</p>
-        <p class="sms-code__number">{{ phone }}</p>
+        <p class="sms-code__message">Введите СМС-код отправленный на почту</p>
+        <p class="sms-code__number">{{ email }}</p>
       </div>
 
       <client-only>
@@ -53,6 +53,10 @@ const emit = defineEmits(["nextStep", "prevStep"]);
 const route = useRoute();
 
 const props = defineProps({
+  email: {
+    type: String,
+    default: "",
+  },
   phone: {
     type: String,
     default: "",
@@ -72,7 +76,7 @@ const postLogin = () => {
     isLoading.value = true;
     useApi({
       url:
-        route.query?.["reset-password"] != null
+        route.query?.["reset-password"] !== null
           ? "/users/auth/register/verify-code"
           : "/users/verify-reset-code",
       method: "post",

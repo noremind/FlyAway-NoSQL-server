@@ -7,7 +7,12 @@
         alt="FlyAway"
       />
 
-      <h4 class="password-reset__title">Сбросить по номеру телефону</h4>
+      <div>
+        <h4 class="password-reset__title">Сбросить пароля</h4>
+        <p class="password-reset__description">
+          Введите номер телефона чтобы получить код по почте
+        </p>
+      </div>
 
       <form class="password-reset__form">
         <div>
@@ -61,7 +66,7 @@ const postPhone = () => {
     })
       .then((res) => {
         isLoading.value = false;
-        emit("nextStep", phone.value);
+        emit("nextStep", phone.value, res.email);
       })
       .catch((error) => {
         isLoading.value = false;
@@ -91,6 +96,11 @@ watch(
     font-size: 32px;
     font-weight: 700;
     margin: 16px 0;
+    text-align: center;
+  }
+  &__description {
+    font-size: 14px;
+    text-align: center;
   }
   &__form {
     max-width: 352px;

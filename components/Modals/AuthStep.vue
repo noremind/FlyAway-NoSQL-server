@@ -13,6 +13,7 @@
     v-if="currentStep === 3"
     @next-step="nextStepStatusAuth"
     @prev-step="prevStep"
+    :email="emailReg"
     :phone="phoneReg"
   />
 
@@ -52,17 +53,22 @@ const router = useRouter();
 const route = useRoute();
 const userStore = useAuthStore();
 const currentStep = ref(userStore.isOpenRegisteredModal ? 1 : 2);
+
 const phoneReg = ref("");
 const nameReg = ref("");
+const emailReg = ref("");
+
 const userId = ref("");
 
-const nextStepSmsCode = (phone, name) => {
+const nextStepSmsCode = (phone, name, email) => {
   phoneReg.value = phone;
   nameReg.value = name;
+  emailReg.value = email;
   currentStep.value = 3;
 };
 
-const nextStepResetSms = (phone) => {
+const nextStepResetSms = (phone, email) => {
+  emailReg.value = email;
   phoneReg.value = phone;
   currentStep.value = 3;
 };
