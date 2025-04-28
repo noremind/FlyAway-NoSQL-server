@@ -714,14 +714,20 @@ const getTour = (id) => {
 };
 getTour(route.params.id);
 
-watchEffect(() => {
-  useSeoMeta({
-    title: `${tour.value?.title} / FlyAway`,
-    ogTitle: `${tour.value?.title} / FlyAway`,
-    description: `${tour.value?.description} / FlyAway`,
-    ogDescription: `${tour.value?.description} / FlyAway`,
-  });
-});
+watch(
+  () => tour.value,
+  (newVal) => {
+    if (newVal) {
+      useSeoMeta({
+        title: `${tour.value?.title} / FlyAway`,
+        ogTitle: `${tour.value?.title} / FlyAway`,
+        description: `${tour.value?.description} / FlyAway`,
+        ogDescription: `${tour.value?.description} / FlyAway`,
+      });
+    }
+  },
+  { immediate: true }
+);
 
 // Step 1
 const closePartialModalPayment = () => {
