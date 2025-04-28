@@ -704,30 +704,33 @@ const isMapReady = ref(false);
 
 const tour = ref(null);
 
-const getTour = (id) => {
+const getTour = async (id) => {
   useApi({
     url: `/tours/${id}`,
-    mehtod: "get",
+    method: "get",
   }).then((res) => {
     tour.value = res.data;
   });
 };
-getTour(route.params.id);
+await getTour(route.params.id);
 
-watch(
-  () => tour.value,
-  (newVal) => {
-    if (newVal) {
-      useSeoMeta({
-        title: `${tour.value?.title} / FlyAway`,
-        ogTitle: `${tour.value?.title} / FlyAway`,
-        description: `${tour.value?.description} / FlyAway`,
-        ogDescription: `${tour.value?.description} / FlyAway`,
-      });
-    }
-  },
-  { immediate: true }
-);
+useHead(() => ({
+  title: tour.value ? `${tour.value.title} / FlyAway` : "FlyAway",
+  meta: [
+    {
+      name: "description",
+      content: tour.value ? `${tour.value.description} / FlyAway` : "FlyAway",
+    },
+    {
+      property: "og:title",
+      content: tour.value ? `${tour.value.title} / FlyAway` : "FlyAway",
+    },
+    {
+      property: "og:description",
+      content: tour.value ? `${tour.value.description} / FlyAway` : "FlyAway",
+    },
+  ],
+}));
 
 // Step 1
 const closePartialModalPayment = () => {
