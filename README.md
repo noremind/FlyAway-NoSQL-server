@@ -98,3 +98,6 @@ npm run dev
 ```
 
 После запуска проект будет доступен локально на `http://localhost:3000`.
+
+1. npm i
+2. npm run start
