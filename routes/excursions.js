@@ -4,6 +4,7 @@ import {
 	createExcursion,
 	getOneExcursion,
 	getOneExcursionItem,
+	addExcursionItem,
 } from "../controllers/excursionController.js"
 export const excursionRoutes = express.Router()
 
@@ -11,3 +12,4 @@ excursionRoutes.get("/", getExcursions)
 excursionRoutes.get("/:excursionId", getOneExcursion)
 excursionRoutes.get("/:excursionId/item/:itemId", getOneExcursionItem)
 excursionRoutes.post("/create", createExcursion)
+excursionRoutes.post("/:excursionId/add-item", addExcursionItem)

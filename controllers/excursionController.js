@@ -68,3 +68,26 @@ export const createExcursion = async (req, res) => {
 		})
 	}
 }
+
+
+export const addExcursionItem = async (req, res) => {
+	try {
+		const { excursionId } = req.params
+		const newItem = req.body // объект с title, images, content
+
+		const updated = await ExcursionModel.findByIdAndUpdate(
+			excursionId,
+			{ $push: { items: newItem } },
+			{ new: true }
+		)
+
+		if (!updated) {
+			return res.status(404).json({ message: "Экскурсия не найдена" })
+		}
+
+		res.json(updated)
+	} catch (error) {
+		console.error(error)
+		res.status(500).json({ message: "Ошибка при добавлении пункта" })
+	}
+}
