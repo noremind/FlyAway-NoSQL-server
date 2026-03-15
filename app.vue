@@ -25,6 +25,8 @@ const userStore = useAuthStore();
 const checkModal = computed(() =>
   userStore.isOpenRegisteredModal
     ? userStore.closeAuthModalRegister
-    : userStore.closeAuthModalLogin
+    : userStore.closeAuthModalLogin,
 );
+
+console.log("Issa chmo");
 </script>
