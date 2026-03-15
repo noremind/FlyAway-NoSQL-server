@@ -4,7 +4,7 @@ dotenv.config()
 
 export const connectDB = async () => {
 	try {
-		const uri = `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@cluster0.rexkz.mongodb.net/FlyAway-Project?retryWrites=true&w=majority&appName=Cluster0`
+		const uri = `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@flyaway.7rlc0lc.mongodb.net/FlyAway`
 
 		await mongoose.connect(uri, {
 			useNewUrlParser: true,
