@@ -27,6 +27,4 @@ const checkModal = computed(() =>
     ? userStore.closeAuthModalRegister
     : userStore.closeAuthModalLogin,
 );
-
-console.log("Issa chmo");
 </script>
