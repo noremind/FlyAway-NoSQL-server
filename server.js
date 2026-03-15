@@ -1,6 +1,6 @@
 import express from "express"
 import cors from "cors"
-import { connectDB } from "./config/db.js"
+import { connectDB } from "./config/mongoDB.js"
 import routes from "./routes/index.js"
 import dotenv from "dotenv"
 // import path from "path"
@@ -45,7 +45,7 @@ app.get("/", (req, res) => {
       <body>
 				<img src="/public/images/logo/logo-flyaway.jpg" alt="Logo" width="300px">
         <h1>Добро пожаловать на сервер!</h1>
-        <a href="https://no-sql-project-client.vercel.app/ru" class="btn">Перейти на клиентскую часть</a>
+        <a href="https://flyaway-project.vercel.app/" class="btn">Перейти на клиентскую часть</a>
       </body>
     </html>
   `)
