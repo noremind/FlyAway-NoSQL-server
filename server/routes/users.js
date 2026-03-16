@@ -11,7 +11,7 @@ import {
 	verifyResetCode,
 	resetPassword,
 } from "../controllers/userController.js"
-import { checkAuth } from "../utils/checkAuth.middleware.js"
+import { checkAuth } from "../middleware/checkAuth.js"
 
 export const userRoutes = express.Router()
 
