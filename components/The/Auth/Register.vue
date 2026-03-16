@@ -73,15 +73,16 @@ const disabledBtn = computed(() => {
 const postSignUp = () => {
   if (disabledBtn.value) {
     isLoading.value = true;
-    useApi({
-      url: "/users/auth/register/send-code",
-      method: "post",
-      data: {
-        phone: phone.value.replace(/\D/g, ""),
-        name: name.value,
-        email: email.value,
-      },
-    })
+    useApi()
+      .client({
+        url: "/users/auth/register/send-code",
+        method: "post",
+        data: {
+          phone: phone.value.replace(/\D/g, ""),
+          name: name.value,
+          email: email.value,
+        },
+      })
       .then((res) => {
         emit("nextStep", phone.value, name.value, email.value);
         isLoading.value = false;
@@ -97,7 +98,7 @@ watch(
   () => phone.value,
   () => {
     if (errorMessage.value) errorMessage.value = "";
-  }
+  },
 );
 </script>
 

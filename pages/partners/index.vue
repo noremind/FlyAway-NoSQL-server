@@ -132,18 +132,15 @@ useSeoMeta({
   ogDescription: "FlyAway - сайт для бронирования туров и отелей",
 });
 
-const getPartners = () => {
-  useApi({
-    url: "/partners",
-    method: "get",
-  }).then((res) => {
-    partners.value = res.data;
-    // pagination.last_page = res.data.last_page;
-    // pagination.total_items = res.data.total;
-    // pagination.per_page = res.data.per_page;
-  });
-};
-getPartners();
+useFetchSsr({
+  url: "/partners",
+  method: "get",
+}).then((res) => {
+  partners.value = res.data;
+  // pagination.last_page = res.data.last_page;
+  // pagination.total_items = res.data.total;
+  // pagination.per_page = res.data.per_page;
+});
 
 const paginationPage = (page) => {
   currentPage.value = page;

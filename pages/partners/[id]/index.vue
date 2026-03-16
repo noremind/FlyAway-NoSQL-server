@@ -173,16 +173,12 @@ const partner = ref(null);
 
 const route = useRoute();
 
-const getPartner = () => {
-  useApi({
-    url: `/partners/${route.params.id}`,
-    method: "get",
-  }).then((res) => {
-    partner.value = res.data;
-  });
-};
-
-getPartner();
+useFetchSsr({
+  url: `/partners/${route.params.id}`,
+  method: "get",
+}).then((res) => {
+  partner.value = res.data;
+});
 
 const tabs = reactive([
   {

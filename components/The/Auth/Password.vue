@@ -79,19 +79,21 @@ const postLogin = () => {
       data.password = password.value;
       data.userId = props.userId;
     }
-    useApi({
-      url:
-        route.query?.["reset-password"] !== null
-          ? "/users/auth/register/set-password"
-          : "/users/reset-password",
-      method: "post",
-      data,
-    }).then((res) => {
-      userStore.setToken(res.token);
-      isLoading.value = false;
-      userStore.setUser();
-      emit("nextStep");
-    });
+    useApi()
+      .client({
+        url:
+          route.query?.["reset-password"] !== null
+            ? "/users/auth/register/set-password"
+            : "/users/reset-password",
+        method: "post",
+        data,
+      })
+      .then((res) => {
+        userStore.setToken(res.token);
+        isLoading.value = false;
+        userStore.setUser();
+        emit("nextStep");
+      });
   }
 };
 </script>

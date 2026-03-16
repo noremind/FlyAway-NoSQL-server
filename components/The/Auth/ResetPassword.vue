@@ -57,13 +57,14 @@ const disabledBtn = computed(() => {
 const postPhone = () => {
   if (disabledBtn.value) {
     isLoading.value = true;
-    useApi({
-      url: "/users/send-reset-code",
-      method: "post",
-      data: {
-        phone: phone.value.replace(/\D/g, ""),
-      },
-    })
+    useApi()
+      .client({
+        url: "/users/send-reset-code",
+        method: "post",
+        data: {
+          phone: phone.value.replace(/\D/g, ""),
+        },
+      })
       .then((res) => {
         isLoading.value = false;
         emit("nextStep", phone.value, res.email);
@@ -79,7 +80,7 @@ watch(
   () => phone.value,
   () => {
     errorMessage.value = "";
-  }
+  },
 );
 </script>
 

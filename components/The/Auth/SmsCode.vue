@@ -74,17 +74,18 @@ const disabledBtn = computed(() => {
 const postLogin = () => {
   if (!disabledBtn.value) {
     isLoading.value = true;
-    useApi({
-      url:
-        route.query?.["reset-password"] !== null
-          ? "/users/auth/register/verify-code"
-          : "/users/verify-reset-code",
-      method: "post",
-      data: {
-        phone: props.phone.replace(/\D/g, ""),
-        code: sms.value,
-      },
-    })
+    useApi()
+      .client({
+        url:
+          route.query?.["reset-password"] !== null
+            ? "/users/auth/register/verify-code"
+            : "/users/verify-reset-code",
+        method: "post",
+        data: {
+          phone: props.phone.replace(/\D/g, ""),
+          code: sms.value,
+        },
+      })
       .then((res) => {
         emit("nextStep", res.userId);
         isLoading.value = false;
@@ -101,7 +102,7 @@ watch(
   () => sms.value,
   (newVal) => {
     if (newVal?.length >= 1 && errorSms.value) errorSms.value = "";
-  }
+  },
 );
 </script>
 

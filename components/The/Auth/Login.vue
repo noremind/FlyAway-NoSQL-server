@@ -83,14 +83,15 @@ const toggleEye = () => {
 const postLogin = () => {
   if (disabledBtn.value) {
     isLoading.value = true;
-    useApi({
-      url: "/users/auth/login",
-      method: "post",
-      data: {
-        phone: phone.value.replace(/\D/g, ""),
-        password: password.value,
-      },
-    })
+    useApi()
+      .client({
+        url: "/users/auth/login",
+        method: "post",
+        data: {
+          phone: phone.value.replace(/\D/g, ""),
+          password: password.value,
+        },
+      })
       .then((res) => {
         userStore.setToken(res.token);
         userStore.setUser();
@@ -110,14 +111,14 @@ watch(
   () => phone.value,
   () => {
     errorMessage.value = "";
-  }
+  },
 );
 
 watch(
   () => password.value,
   () => {
     errorMessage.value = "";
-  }
+  },
 );
 </script>
 

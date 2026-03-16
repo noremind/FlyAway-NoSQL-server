@@ -126,44 +126,25 @@ const router = useRouter();
 const tours = ref(null);
 
 const banners = ref(null);
-const getBanners = () => {
-  useApi({
-    url: "/ads",
-  }).then((res) => {
-    banners.value = res.data;
-  });
-};
-getBanners();
 
-useSeoMeta({
-  title: "FlyAway - Главная страница",
-  ogTitle: "FlyAway - Главная страница",
-  description: "FlyAway - сайт для бронирования туров и отелей",
-  ogDescription: "FlyAway - сайт для бронирования туров и отелей",
-  image:
-    "https://res.cloudinary.com/dcl8oteoe/image/upload/v1742648028/common/a1nugquoqbtdj2wborzx.png",
-  ogImage:
-    "https://res.cloudinary.com/dcl8oteoe/image/upload/v1742648028/common/a1nugquoqbtdj2wborzx.png",
-  aiturecImage:
-    "https://res.cloudinary.com/dcl8oteoe/image/upload/v1742648028/common/a1nugquoqbtdj2wborzx.png",
-  twitterImage:
-    "https://res.cloudinary.com/dcl8oteoe/image/upload/v1742648028/common/a1nugquoqbtdj2wborzx.png",
-  twitterCard:
-    "https://res.cloudinary.com/dcl8oteoe/image/upload/v1742648028/common/a1nugquoqbtdj2wborzx.png",
-  vkImage:
-    "https://res.cloudinary.com/dcl8oteoe/image/upload/v1742648028/common/a1nugquoqbtdj2wborzx.png",
+useFetchSsr({
+  url: "/ads",
+}).then((res) => {
+  banners.value = res.data;
 });
 
-const getTours = () => {
-  useApi({
-    url: "/tours",
-    method: "get",
-  }).then((res) => {
-    tours.value = res.data;
-  });
-};
+useSeo({
+  title: "Туры, отели и путешествия в одном месте",
+  description:
+    "FlyAway - удобный сервис для поиска туров, отелей и туристических предложений. Выбирайте путешествия, сравнивайте варианты и планируйте отдых легко и быстро.",
+});
 
-getTours();
+useFetchSsr({
+  url: "/tours",
+  method: "get",
+}).then((res) => {
+  tours.value = res.data;
+});
 </script>
 
 <style lang="scss" scoped>

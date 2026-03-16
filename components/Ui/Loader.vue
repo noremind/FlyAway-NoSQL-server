@@ -1,5 +1,5 @@
 <template>
-  <div class="loader" :class="{ show: commonStore.isLoader }">
+  <div class="loader" :class="{ show: loaderStore.isLoader }">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -128,7 +128,7 @@
 </template>
 
 <script setup>
-const commonStore = useCommonStore();
+const loaderStore = useLoaderStore();
 </script>
 
 <style scoped lang="scss">

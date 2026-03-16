@@ -264,15 +264,12 @@ useSeoMeta({
   ogDescription: "FlyAway - сайт для бронирования туров и отелей",
 });
 
-const getHotels = () => {
-  useApi({
-    url: "/hotels",
-    method: "get",
-  }).then((res) => {
-    hotels.value = res.data;
-  });
-};
-getHotels();
+useFetchSsr({
+  url: "/hotels",
+  method: "get",
+}).then((res) => {
+  hotels.value = res.data;
+});
 
 const openFilterMobile = () => {
   isOpenFilterMobile.value = true;
@@ -306,7 +303,7 @@ onMounted(() => {
         {
           preset: "islands#icon",
           iconColor: "#0095b6",
-        }
+        },
       );
 
       map.geoObjects.add(placemark);
@@ -330,7 +327,7 @@ onMounted(() => {
         {
           preset: "islands#icon",
           iconColor: "#0095b6",
-        }
+        },
       );
 
       map.geoObjects.add(placemark);
@@ -344,7 +341,7 @@ watch(
   () => selectedTabMobile.value,
   (newVal) => {
     newVal.id === 3 ? openPartialLocationCards() : null;
-  }
+  },
 );
 </script>
 

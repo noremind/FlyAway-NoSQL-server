@@ -742,16 +742,13 @@ const isMapReady = ref(false);
 
 const hotel = ref(null);
 const route = useRoute();
-const getHotel = () => {
-  useApi({
-    url: `/hotels/${route.params.id}`,
-    method: "get",
-  }).then((res) => {
-    hotel.value = res.data;
-  });
-};
 
-getHotel();
+useFetchSsr({
+  url: `/hotels/${route.params.id}`,
+  method: "get",
+}).then((res) => {
+  hotel.value = res.data;
+});
 
 onMounted(() => {
   getInfoMap();
@@ -836,7 +833,7 @@ const getInfoMap = () => {
         {
           preset: "islands#icon",
           iconColor: "#0095b6",
-        }
+        },
       );
 
       map.geoObjects.add(placemark);

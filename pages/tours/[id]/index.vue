@@ -704,15 +704,12 @@ const isMapReady = ref(false);
 
 const tour = ref(null);
 
-const getTour = async (id) => {
-  useApi({
-    url: `/tours/${id}`,
-    method: "get",
-  }).then((res) => {
-    tour.value = res.data;
-  });
-};
-await getTour(route.params.id);
+useFetchSsr({
+  url: `/tours/${route.params.id}`,
+  method: "get",
+}).then((res) => {
+  tour.value = res.data;
+});
 
 useHead(() => ({
   title: tour.value ? `${tour.value.title} / FlyAway` : "FlyAway",
@@ -799,7 +796,7 @@ const getInfoMap = () => {
         {
           preset: "islands#icon",
           iconColor: "#0095b6",
-        }
+        },
       );
 
       map.geoObjects.add(placemark);
@@ -826,7 +823,7 @@ const getPathMap = () => {
         {
           preset: "islands#icon",
           iconColor: "#0095b6",
-        }
+        },
       );
 
       map.geoObjects.add(placemark);

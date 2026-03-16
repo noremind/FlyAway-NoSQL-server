@@ -178,18 +178,19 @@ const postProfile = () => {
   if (checkFields()) {
     isLoading.value = true;
     const formatBirthdate = formatBirthDate(birthDate.value);
-    useApi({
-      url: "/users/update",
-      method: "put",
-      data: {
-        name: name.value,
-        email: email.value,
-        phone: phone.value,
-        avatar: null,
-        birthDate: formatBirthdate,
-        gender: selectedGender.value.value,
-      },
-    })
+    useApi()
+      .client({
+        url: "/users/update",
+        method: "put",
+        data: {
+          name: name.value,
+          email: email.value,
+          phone: phone.value,
+          avatar: null,
+          birthDate: formatBirthdate,
+          gender: selectedGender.value.value,
+        },
+      })
       .then((res) => {
         userCookie.value = res.data;
         isLoading.value = false;
@@ -208,14 +209,14 @@ watch(
   () => name.value,
   () => {
     errorMessage.name = "";
-  }
+  },
 );
 
 watch(
   () => email.value,
   () => {
     errorMessage.email = "";
-  }
+  },
 );
 </script>
 
