@@ -26,6 +26,11 @@ export const useAuthStore = defineStore('auth', () => {
 		tokenCookie.value = tokenInfo
 	}
 
+	const setUserData = (userInfo) => {
+		user.value = userInfo
+		userCookie.value = userInfo
+	}
+
 	const openAuthModalRegister = () => {
 		isOpenRegisteredModal.value = true
 	}
@@ -43,17 +48,20 @@ export const useAuthStore = defineStore('auth', () => {
 	}
 
 	const logoutUser = (route) => {
+		const redirectTo = typeof route === 'string' ? route : '/'
 		tokenCookie.value = null
 		userCookie.value = null
-		router.push(route ? route : '/')
+		token.value = null
+		user.value = null
+		router.push(redirectTo)
 	}
 
 	const setUser = () => {
-		useApi({
-			url: '/users/current-info',
+		return useApi().client({
+			url: '/auth/me',
 			method: 'get'
 		}).then(res => {
-			userCookie.value = res
+			setUserData(res.data)
 		})
 	}
 
@@ -88,6 +96,8 @@ export const useAuthStore = defineStore('auth', () => {
 		getUser,
 		setUser,
 		setToken,
-		logoutUser
+		setUserData,
+		logoutUser,
+		logout: logoutUser
 	};
 });

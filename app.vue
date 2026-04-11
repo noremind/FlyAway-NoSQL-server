@@ -1,12 +1,7 @@
 <template>
-  <div class="main">
-    <BaseHeader></BaseHeader>
-    <main class="main__wrapper">
+  <NuxtLayout>
       <NuxtPage />
-    </main>
-
-    <BaseFooter></BaseFooter>
-  </div>
+  </NuxtLayout>
 
   <UiModal
     :is-show="userStore.isOpenRegisteredModal || userStore.isOpenLoginModal"

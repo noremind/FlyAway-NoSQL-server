@@ -1,6 +1,16 @@
 export async function useFetchClient(options = {}) {
 	const authStore = useAuthStore()
 
+	const normalizeError = (error) => {
+		return (
+			error?.data ||
+			error?.response?._data ||
+			error?.response?.data ||
+			error?.response || {
+				message: error?.message || "Request failed",
+			}
+		)
+	}
 
 	const headers = {
 		Accept: "application/json",
@@ -24,10 +34,11 @@ export async function useFetchClient(options = {}) {
 		return data;
 
 	} catch (error) {
-		console.log(error.response)
-		if (error?.response?.status === 401) {
+		const normalizedError = normalizeError(error)
+		console.log(normalizedError)
+		if (error?.response?.status === 401 || error?.statusCode === 401) {
 			authStore.logout({ type: 'local' })
 		}
-		throw error.response;
+		throw normalizedError;
 	}
 };

@@ -1,95 +1,51 @@
 <template>
   <TheAuthRegister
     v-if="userStore.isOpenRegisteredModal && currentStep === 1"
-    @next-step="nextStepSmsCode"
+    @next-step="nextStepRegistered"
   />
+
   <TheAuthLogin
     v-if="userStore.isOpenLoginModal && currentStep === 2"
-    @next-step="nextStepSuccessAuth"
-    @forget-password="nextStepForgetPassword"
+    @next-step="nextStepLogin"
   />
-
-  <TheAuthSmsCode
-    v-if="currentStep === 3"
-    @next-step="nextStepStatusAuth"
-    @prev-step="prevStep"
-    :email="emailReg"
-    :phone="phoneReg"
-  />
-
-  <TheAuthPassword
-    v-if="currentStep === 4"
-    :userId="userId"
-    :phone="phoneReg"
-    @next-step="nextStepSuccessAuth"
-    @prev-step="prevStep"
-  />
-
-  <TheAuthResetPassword
-    v-if="currentStep === 6"
-    @next-step="nextStepResetSms"
-  ></TheAuthResetPassword>
 
   <ModalsStatus
     v-if="currentStep === 5"
-    title="Вы зарегестрированы"
+    title="Вы зарегистрированы"
     status="success"
     btn-label="Перейти в личный кабинет"
     :go-to="'/profile'"
-    @action="userStore.closeAuthModalLogin()"
+    @action="userStore.closeAuthModalRegister()"
   />
+
   <ModalsStatus
     v-if="currentStep === 7"
-    title="Вы вошли"
+    :title="loginStatus.title"
     status="success"
-    btn-label="Перейти в личный кабинет"
-    :go-to="'/profile'"
+    :btn-label="loginStatus.btnLabel"
+    :go-to="loginStatus.goTo"
     @action="userStore.closeAuthModalLogin()"
   />
 </template>
 
 <script setup>
-const router = useRouter();
-const route = useRoute();
 const userStore = useAuthStore();
 const currentStep = ref(userStore.isOpenRegisteredModal ? 1 : 2);
+const loginStatus = reactive({
+  title: "Вы вошли",
+  btnLabel: "Перейти в личный кабинет",
+  goTo: "/profile",
+});
 
-const phoneReg = ref("");
-const nameReg = ref("");
-const emailReg = ref("");
-
-const userId = ref("");
-
-const nextStepSmsCode = (phone, name, email) => {
-  phoneReg.value = phone;
-  nameReg.value = name;
-  emailReg.value = email;
-  currentStep.value = 3;
+const nextStepRegistered = () => {
+  currentStep.value = 5;
 };
 
-const nextStepResetSms = (phone, email) => {
-  emailReg.value = email;
-  phoneReg.value = phone;
-  currentStep.value = 3;
-};
-
-const nextStepStatusAuth = (id) => {
-  userId.value = id;
-  currentStep.value = 4;
-};
-
-const nextStepForgetPassword = () => {
-  router.push({ path: route.path, query: { "reset-password": null } });
-  currentStep.value = 6;
-};
-
-const nextStepSuccessAuth = () => {
+const nextStepLogin = (status = {}) => {
+  loginStatus.title = status.title || "Вы вошли";
+  loginStatus.btnLabel = status.btnLabel || "Перейти в личный кабинет";
+  loginStatus.goTo = status.goTo || "/profile";
   currentStep.value = 7;
-};
-
-const prevStep = () => {
-  if (currentStep.value === 3) return (currentStep.value = 1);
-  --currentStep.value;
 };
 </script>
 

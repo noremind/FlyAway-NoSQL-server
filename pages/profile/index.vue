@@ -49,6 +49,13 @@
           @click="postProfile"
           :is-loading="isLoading"
         ></UiButton>
+
+        <UiButton
+          v-if="userStore.getUser?.role !== 'partner'"
+          class="profile-main__btn profile-main__btn--partner"
+          label="Стать партнером"
+          @click="openPartnerModal"
+        ></UiButton>
       </div>
       <div class="profile-main__side">
         <UiInput
@@ -112,14 +119,28 @@
           @click="postProfile"
           :is-loading="isLoading"
         ></UiButton>
+
+        <UiButton
+          v-if="userStore.getUser?.role !== 'partner'"
+          class="profile-main__btn profile-main__btn--mobile"
+          label="Стать партнером"
+          @click="openPartnerModal"
+        ></UiButton>
       </div>
     </div>
+
+    <TheProfileBecomePartnerModal
+      :is-show="isPartnerModalOpen"
+      @close="closePartnerModal"
+      @created="handlePartnerCreated"
+    />
   </div>
 </template>
 
 <script setup>
 const userCookie = useCookie("user");
 const userStore = useAuthStore();
+const router = useRouter();
 const user = ref(userStore.getUser);
 const name = ref(user.value?.name || null);
 const email = ref(user.value?.email || null);
@@ -128,6 +149,7 @@ const birthDate = ref(user.value?.birthday || null);
 const avatar = ref(user.value?.avatar || null);
 
 const isLoading = ref(false);
+const isPartnerModalOpen = ref(false);
 
 const genders = reactive([
   {
@@ -205,6 +227,28 @@ const deleteAvatar = () => {
   user.value.avatar = null;
 };
 
+const openPartnerModal = () => {
+  isPartnerModalOpen.value = true;
+};
+
+const closePartnerModal = () => {
+  isPartnerModalOpen.value = false;
+};
+
+const handlePartnerCreated = (response) => {
+  if (response?.token) {
+    userStore.setToken(response.token);
+  }
+
+  if (response?.user) {
+    userStore.setUserData(response.user);
+    userCookie.value = response.user;
+  }
+
+  closePartnerModal();
+  router.push("/admin");
+};
+
 watch(
   () => name.value,
   () => {
@@ -261,6 +305,11 @@ watch(
   }
   &__btn {
     margin-top: 16px;
+    &--partner {
+      justify-content: center;
+      color: $red-500;
+      border: 1px solid $red-500;
+    }
     &--mobile {
       display: none;
     }

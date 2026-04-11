@@ -9,15 +9,23 @@
 
       <h4 class="login-user__title">Войти</h4>
 
-      <form class="login-user__form">
+      <button
+        class="login-user__switch"
+        type="button"
+        @click="toggleLoginType"
+      >
+        {{ isPartnerLogin ? "Войти как пользователь" : "Войти как партнер" }}
+      </button>
+
+      <form class="login-user__form" >
         <UiInput
-          placeholder="8 (_ _ _) - _ _ _ - _ _ - _ _"
-          label="Номер телефона"
-          v-model.trim="phone"
-          maska="8(###)-###-##-##"
-          name="phone"
+          placeholder="mail@example.com"
+          label="Email"
+          v-model.trim="email"
+          name="email"
           :is-error="!!errorMessage"
         ></UiInput>
+
         <div class="login-user__form-box">
           <UiInput
             placeholder="Пароль"
@@ -40,16 +48,12 @@
           </p>
         </div>
 
-        <p @click="emit('forgetPassword')" class="login-user__forget-password">
-          Забыли пароль?
-        </p>
-
         <UiButton
-          label="Войти"
-          @click="postLogin"
+          :label="isPartnerLogin ? 'Войти как партнер' : 'Войти'"
           class="login-user__btn button-primary"
           :disabled="!disabledBtn"
           :is-loading="isLoading"
+          @click="postLogin"
         ></UiButton>
       </form>
     </div>
@@ -57,11 +61,12 @@
 </template>
 
 <script setup>
-const emit = defineEmits(["nextStep", "forgetPassword"]);
+const emit = defineEmits(["nextStep"]);
 const userStore = useAuthStore();
 
 const password = ref("");
-const phone = ref("");
+const email = ref("");
+const isPartnerLogin = ref(false);
 
 const isOpenEye = ref(false);
 
@@ -69,15 +74,16 @@ const errorMessage = ref("");
 const isLoading = ref(false);
 
 const disabledBtn = computed(() => {
-  return (
-    password.value.length > 3 &&
-    password.value.length < 25 &&
-    phone.value.length === 16
-  );
+  return password.value.length >= 6 && email.value.includes("@");
 });
 
 const toggleEye = () => {
   isOpenEye.value = !isOpenEye.value;
+};
+
+const toggleLoginType = () => {
+  isPartnerLogin.value = !isPartnerLogin.value;
+  errorMessage.value = "";
 };
 
 const postLogin = () => {
@@ -85,30 +91,38 @@ const postLogin = () => {
     isLoading.value = true;
     useApi()
       .client({
-        url: "/users/auth/login",
+        url: isPartnerLogin.value ? "/auth/partner-login" : "/auth/login",
         method: "post",
         data: {
-          phone: phone.value.replace(/\D/g, ""),
+          email: email.value,
           password: password.value,
         },
       })
       .then((res) => {
         userStore.setToken(res.token);
-        userStore.setUser();
-      })
-      .then(() => {
+        userStore.setUserData(res.user);
         isLoading.value = false;
-        emit("nextStep");
+        emit("nextStep", {
+          goTo: res.user?.role === "partner" ? "/admin" : "/profile",
+          title:
+            res.user?.role === "partner"
+              ? "Вы вошли как партнер"
+              : "Вы вошли",
+          btnLabel:
+            res.user?.role === "partner"
+              ? "Перейти в админ-панель"
+              : "Перейти в личный кабинет",
+        });
       })
       .catch((error) => {
         isLoading.value = false;
-        errorMessage.value = error.message;
+        errorMessage.value = error?.message || "Не удалось войти";
       });
   }
 };
 
 watch(
-  () => phone.value,
+  () => email.value,
   () => {
     errorMessage.value = "";
   },
@@ -131,16 +145,19 @@ watch(
     gap: 26px;
     padding: 40px 0 60px 0;
   }
-  &__forget-password {
-    color: $red-500;
-    cursor: pointer;
-    text-align: center;
-    font-size: 12px;
-  }
   &__title {
     font-size: 32px;
     font-weight: 700;
-    margin: 16px 0;
+    margin: 16px 0 0;
+  }
+  &__switch {
+    color: $red-500;
+    font-size: 14px;
+    font-weight: 700;
+    transition: color 0.2s ease;
+    &:hover {
+      color: $orange-200;
+    }
   }
   &__form {
     max-width: 352px;
