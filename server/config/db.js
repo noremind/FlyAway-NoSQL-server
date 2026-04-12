@@ -4,6 +4,10 @@ dotenv.config()
 
 export const connectDB = async () => {
 	try {
+		if (mongoose.connection.readyState === 1) {
+			return mongoose.connection
+		}
+
 		// const uri =
 		// 	process.env.MONGODB_URI ||
 		// 	`mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@cluster0.rexkz.mongodb.net/FlyAway?retryWrites=true&w=majority&appName=Cluster0`
