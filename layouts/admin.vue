@@ -15,7 +15,7 @@
 .admin-layout {
   min-height: 100vh;
   display: grid;
-  grid-template-columns: 264px minmax(0, 1fr);
+  grid-template-columns: 286px minmax(0, 1fr);
   background: $surface-150;
 
   &__aside {
@@ -39,8 +39,11 @@
   &__content {
     width: 100%;
     max-width: 1440px;
-    margin: 0 auto;
+    margin: 28px auto;
     padding: 28px;
+    background: $white;
+    border: 1px solid $surface-300;
+    border-radius: 8px;
     animation: adminAppear 0.24s ease;
   }
 }
@@ -56,7 +59,7 @@
   }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1024px) {
   .admin-layout {
     grid-template-columns: 1fr;
 
@@ -66,7 +69,19 @@
     }
 
     &__content {
-      padding: 16px;
+      width: calc(100% - 32px);
+      margin: 16px;
+      padding: 20px;
+    }
+  }
+}
+
+@media (max-width: 520px) {
+  .admin-layout {
+    &__content {
+      width: calc(100% - 24px);
+      margin: 12px;
+      padding: 14px;
     }
   }
 }

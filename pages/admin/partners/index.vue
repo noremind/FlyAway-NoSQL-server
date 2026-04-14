@@ -5,7 +5,7 @@
       description="Список партнеров, контакты и связанные туры."
     />
 
-    <UiTable :columns="columns" :rows="partners" />
+    <UiTable :columns="columns" :rows="partners" :loading="isLoading" />
   </section>
 </template>
 
@@ -16,6 +16,7 @@ definePageMeta({
 });
 
 const partners = ref([]);
+const isLoading = ref(false);
 const columns = [
   { key: "title", label: "Название" },
   { key: "email", label: "Email" },
@@ -28,8 +29,14 @@ const columns = [
 ];
 
 const loadPartners = async () => {
-  const res = await useApi().client({ url: "/partners" });
-  partners.value = res.data || [];
+  isLoading.value = true;
+
+  try {
+    const res = await useApi().client({ url: "/partners" });
+    partners.value = res.data || [];
+  } finally {
+    isLoading.value = false;
+  }
 };
 
 onMounted(loadPartners);

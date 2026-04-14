@@ -7,7 +7,7 @@
       action-label="Создать тур"
     />
 
-    <UiTable :columns="columns" :rows="tours" />
+    <UiTable :columns="columns" :rows="tours" :loading="isLoading" />
   </section>
 </template>
 
@@ -18,6 +18,7 @@ definePageMeta({
 });
 
 const tours = ref([]);
+const isLoading = ref(false);
 const columns = [
   { key: "title", label: "Название" },
   { key: "partner.title", label: "Партнер" },
@@ -27,8 +28,14 @@ const columns = [
 ];
 
 const loadTours = async () => {
-  const res = await useApi().client({ url: "/tours" });
-  tours.value = res.data || [];
+  isLoading.value = true;
+
+  try {
+    const res = await useApi().client({ url: "/tours" });
+    tours.value = res.data || [];
+  } finally {
+    isLoading.value = false;
+  }
 };
 
 onMounted(loadTours);

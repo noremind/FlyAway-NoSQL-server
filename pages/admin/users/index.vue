@@ -5,7 +5,7 @@
       description="Управление аккаунтами и ролями пользователей."
     />
 
-    <UiTable :columns="columns" :rows="users" />
+    <UiTable :columns="columns" :rows="users" :loading="isLoading" />
   </section>
 </template>
 
@@ -16,6 +16,7 @@ definePageMeta({
 });
 
 const users = ref([]);
+const isLoading = ref(false);
 const columns = [
   { key: "name", label: "Имя" },
   { key: "email", label: "Email" },
@@ -25,8 +26,14 @@ const columns = [
 ];
 
 const loadUsers = async () => {
-  const res = await useApi().client({ url: "/users" });
-  users.value = res.data || [];
+  isLoading.value = true;
+
+  try {
+    const res = await useApi().client({ url: "/users" });
+    users.value = res.data || [];
+  } finally {
+    isLoading.value = false;
+  }
 };
 
 onMounted(loadUsers);

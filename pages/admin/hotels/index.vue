@@ -7,7 +7,7 @@
       action-label="Создать отель"
     />
 
-    <UiTable :columns="columns" :rows="hotels" />
+    <UiTable :columns="columns" :rows="hotels" :loading="isLoading" />
   </section>
 </template>
 
@@ -18,6 +18,7 @@ definePageMeta({
 });
 
 const hotels = ref([]);
+const isLoading = ref(false);
 const columns = [
   { key: "name", label: "Название" },
   { key: "partner.title", label: "Партнер" },
@@ -26,8 +27,14 @@ const columns = [
 ];
 
 const loadHotels = async () => {
-  const res = await useApi().client({ url: "/hotels" });
-  hotels.value = res.data || [];
+  isLoading.value = true;
+
+  try {
+    const res = await useApi().client({ url: "/hotels" });
+    hotels.value = res.data || [];
+  } finally {
+    isLoading.value = false;
+  }
 };
 
 onMounted(loadHotels);
