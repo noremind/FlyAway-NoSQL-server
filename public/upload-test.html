@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ru">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Проверка uploadToBlob</title>
+		<style>
+			:root {
+				--bg: #f4efe6;
+				--card: #fffaf2;
+				--text: #1f2937;
+				--muted: #6b7280;
+				--accent: #cc5f2f;
+				--accent-dark: #9f441d;
+				--border: #e8dcc7;
+				--success: #166534;
+				--error: #b91c1c;
+			}
+
+			* {
+				box-sizing: border-box;
+			}
+
+			body {
+				margin: 0;
+				font-family: Georgia, "Times New Roman", serif;
+				background:
+					radial-gradient(circle at top, rgba(204, 95, 47, 0.15), transparent 30%),
+					linear-gradient(180deg, #f8f3ea 0%, var(--bg) 100%);
+				color: var(--text);
+				min-height: 100vh;
+				display: grid;
+				place-items: center;
+				padding: 24px;
+			}
+
+			.card {
+				width: min(100%, 720px);
+				background: var(--card);
+				border: 1px solid var(--border);
+				border-radius: 20px;
+				padding: 28px;
+				box-shadow: 0 20px 50px rgba(73, 45, 24, 0.1);
+			}
+
+			h1 {
+				margin-top: 0;
+				font-size: 32px;
+			}
+
+			p {
+				color: var(--muted);
+				line-height: 1.5;
+			}
+
+			form {
+				display: grid;
+				gap: 16px;
+				margin-top: 24px;
+			}
+
+			label {
+				display: grid;
+				gap: 8px;
+				font-weight: 700;
+			}
+
+			input,
+			button {
+				font: inherit;
+			}
+
+			input[type="text"],
+			input[type="file"] {
+				width: 100%;
+				padding: 12px 14px;
+				border-radius: 12px;
+				border: 1px solid var(--border);
+				background: #fff;
+			}
+
+			button {
+				border: 0;
+				border-radius: 12px;
+				padding: 14px 18px;
+				background: var(--accent);
+				color: #fff;
+				font-weight: 700;
+				cursor: pointer;
+			}
+
+			button:hover {
+				background: var(--accent-dark);
+			}
+
+			button:disabled {
+				opacity: 0.7;
+				cursor: wait;
+			}
+
+			.info {
+				padding: 14px;
+				border-radius: 12px;
+				background: rgba(204, 95, 47, 0.08);
+				color: var(--text);
+				font-size: 14px;
+			}
+
+			.result {
+				margin-top: 20px;
+				padding: 16px;
+				border-radius: 12px;
+				background: #fff;
+				border: 1px solid var(--border);
+				white-space: pre-wrap;
+				word-break: break-word;
+				font-family: Consolas, monospace;
+				font-size: 14px;
+			}
+
+			.result.success {
+				border-color: rgba(22, 101, 52, 0.25);
+				color: var(--success);
+			}
+
+			.result.error {
+				border-color: rgba(185, 28, 28, 0.25);
+				color: var(--error);
+			}
+		</style>
+	</head>
+	<body>
+		<div class="card">
+			<h1>Проверка `uploadToBlob.js`</h1>
+			<p>
+				Страница отправляет выбранный файл на тестовый endpoint
+				<code>/api/dev/blob-upload-test</code>, который внутри вызывает
+				<code>uploadToBlob()</code>.
+			</p>
+			<div class="info">
+				Для успешной загрузки нужен <code>BLOB_READ_WRITE_TOKEN</code> в
+				<code>.env</code>. Ограничение файла: до 4.5MB.
+			</div>
+
+			<form id="upload-form">
+				<label>
+					Папка в Blob
+					<input
+						id="folder"
+						type="text"
+						value="uploads"
+						placeholder="Например: avatars"
+					/>
+				</label>
+
+				<label>
+					Файл
+					<input id="file" type="file" required />
+				</label>
+
+				<button id="submit" type="submit">Загрузить и проверить</button>
+			</form>
+
+			<pre id="result" class="result">Здесь появится результат проверки.</pre>
+		</div>
+
+		<script>
+			const form = document.getElementById("upload-form")
+			const fileInput = document.getElementById("file")
+			const folderInput = document.getElementById("folder")
+			const submitButton = document.getElementById("submit")
+			const resultNode = document.getElementById("result")
+
+			const fileToDataUrl = (file) =>
+				new Promise((resolve, reject) => {
+					const reader = new FileReader()
+					reader.onload = () => resolve(reader.result)
+					reader.onerror = () => reject(new Error("Не удалось прочитать файл"))
+					reader.readAsDataURL(file)
+				})
+
+			form.addEventListener("submit", async (event) => {
+				event.preventDefault()
+
+				const file = fileInput.files[0]
+				if (!file) {
+					resultNode.className = "result error"
+					resultNode.textContent = "Сначала выберите файл."
+					return
+				}
+
+				try {
+					submitButton.disabled = true
+					resultNode.className = "result"
+					resultNode.textContent = "Загрузка..."
+
+					const base64Data = await fileToDataUrl(file)
+
+					const response = await fetch("/api/dev/blob-upload-test", {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+						},
+						body: JSON.stringify({
+							fileName: file.name,
+							mimeType: file.type || "application/octet-stream",
+							size: file.size,
+							base64Data,
+							folder: folderInput.value.trim() || "uploads",
+						}),
+					})
+
+					const data = await response.json()
+
+					if (!response.ok) {
+						throw new Error(data.message || "Ошибка загрузки")
+					}
+
+					resultNode.className = "result success"
+					resultNode.textContent = JSON.stringify(data, null, 2)
+				} catch (error) {
+					resultNode.className = "result error"
+					resultNode.textContent = error.message
+				} finally {
+					submitButton.disabled = false
+				}
+			})
+		</script>
+	</body>
+</html>
