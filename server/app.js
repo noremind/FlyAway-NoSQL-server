@@ -37,9 +37,9 @@ app.get("/", (req, res) => {
         </style>
       </head>
       <body>
-        <img src="/public/images/logo/logo-flyaway.jpg" alt="Logo" width="300">
+        <img src="https://flyaway-project.vercel.app/assets/logo/FlyAwayLogo.png" alt="Logo" width="300">
         <h1>Добро пожаловать на сервер FlyAway</h1>
-        <a href="https://no-sql-project-client.vercel.app/ru" class="btn">Перейти на клиентскую часть</a>
+        <a href="https://flyaway-project.vercel.app/ru" class="btn">Перейти на клиентскую часть</a>
       </body>
     </html>
   `)

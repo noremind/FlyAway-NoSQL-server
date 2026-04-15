@@ -4,9 +4,12 @@ dotenv.config()
 
 export const connectDB = async () => {
 	try {
+		// const uri =
+		// 	process.env.MONGODB_URI ||
+		// 	`mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@cluster0.rexkz.mongodb.net/FlyAway?retryWrites=true&w=majority&appName=Cluster0`
 		const uri =
 			process.env.MONGODB_URI ||
-			`mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@cluster0.rexkz.mongodb.net/FlyAway?retryWrites=true&w=majority&appName=Cluster0`
+			`mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@flyaway-two.k7motbr.mongodb.net/?appName=FlyAway-Two&retryWrites=true&w=majority`
 
 		if (!uri) {
 			throw new Error("MongoDB URI is not configured")
