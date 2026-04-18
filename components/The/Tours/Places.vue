@@ -3,15 +3,31 @@
     <div class="places__wrapper">
       <img
         class="places__img"
-        src="@/assets/image/content/main-image.png"
-        alt="Places"
+        :src="imageSrc"
+        :alt="titleText"
       />
-      <h4 class="places__title">Озеро Кольсай</h4>
+      <h4 class="places__title">{{ titleText }}</h4>
     </div>
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import fallbackImage from "@/assets/image/content/main-image.png";
+
+const props = defineProps({
+  title: {
+    type: String,
+    default: "",
+  },
+  image: {
+    type: String,
+    default: "",
+  },
+});
+
+const titleText = computed(() => props.title || "Точка маршрута");
+const imageSrc = computed(() => props.image || fallbackImage);
+</script>
 
 <style lang="scss" scoped>
 .places {

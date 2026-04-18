@@ -14,34 +14,47 @@
           'favourites__cards--hotels': selectedTab.id === 2,
         }"
       >
-        <TheCommonTourCard
-          v-if="selectedTab.id === 1"
-          v-for="card in 15"
-          :key="card"
-          :view-type="screenWidth > 325 ? 'list' : 'tablet'"
-        ></TheCommonTourCard>
+        <template v-if="selectedTab.id === 1">
+          <div v-if="!userStore.isLoggedIn" class="favourites__empty">
+            <p class="favourites__empty-title">Войдите, чтобы сохранять избранное</p>
+            <p class="favourites__empty-text">
+              Нажмите на сердце у тура, и он появится здесь.
+            </p>
+            <UiButton
+              label="Войти"
+              class="favourites__empty-btn"
+              @click="userStore.openAuthModalLogin"
+            ></UiButton>
+          </div>
 
-        <TheHotelsBlock
-          v-if="selectedTab.id === 2"
-          v-for="hotel in 15"
-          :key="hotel"
-          :view-type="screenWidth > 325 ? 'list' : 'tablet'"
-        ></TheHotelsBlock>
+          <div v-else-if="!favouriteTours.length" class="favourites__empty">
+            <p class="favourites__empty-title">Пока нет избранных туров</p>
+            <p class="favourites__empty-text">
+              Откройте каталог, нажмите на сердце, и карточка появится здесь.
+            </p>
+          </div>
 
-        <TheBaqytZoneBlock
-          v-if="selectedTab.id === 3"
-          v-for="zone in 15"
-          :key="zone"
-          :view-type="screenWidth > 325 ? 'list' : 'tablet'"
-        ></TheBaqytZoneBlock>
+          <TheCommonTourCard
+            v-else
+            v-for="tour in favouriteTours"
+            :key="tour._id || tour.id"
+            :tour="tour"
+            :view-type="screenWidth > 325 ? 'list' : 'tablet'"
+          ></TheCommonTourCard>
+        </template>
+
+        <div v-if="selectedTab.id === 2" class="favourites__empty">
+          <p class="favourites__empty-title">Избранные отели появятся позже</p>
+        </div>
       </div>
     </div>
-    <br />
-    <UiPagination class="favourites__pagination"></UiPagination>
   </div>
 </template>
 
 <script setup>
+const userStore = useAuthStore();
+const favouritesStore = useFavouritesStore();
+
 const tabs = reactive([
   {
     id: 1,
@@ -50,10 +63,6 @@ const tabs = reactive([
   {
     id: 2,
     name: "Отели",
-  },
-  {
-    id: 3,
-    name: "BaqytZone",
   },
 ]);
 const selectedTab = ref(tabs[0]);
@@ -65,6 +74,7 @@ useSeoMeta({
   ogDescription: "FlyAway - сайт для бронирования туров и отелей",
 });
 
+const favouriteTours = computed(() => favouritesStore.favouriteTours);
 const windowWidth = ref(process.client ? window.innerWidth : null);
 
 const updateWidth = () => {
@@ -76,6 +86,7 @@ const screenWidth = computed(() => {
 });
 
 onMounted(() => {
+  favouritesStore.loadFavourites();
   window.addEventListener("resize", updateWidth);
 });
 
@@ -111,6 +122,29 @@ onUnmounted(() => {
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+  &__empty {
+    min-height: 220px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    text-align: center;
+    padding: 24px;
+    color: $surface-900;
+    &-title {
+      font-size: 20px;
+      font-weight: 700;
+    }
+    &-text {
+      max-width: 420px;
+      color: $surface-400;
+    }
+    &-btn {
+      margin-top: 6px;
+    }
   }
 }
 

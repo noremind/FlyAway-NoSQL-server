@@ -72,7 +72,7 @@ const lists = [
   {
     icon: "heart",
     name: "Избранные",
-    link: "/profile/favorite",
+    link: "/profile/favourites",
   },
   {
     icon: "map",

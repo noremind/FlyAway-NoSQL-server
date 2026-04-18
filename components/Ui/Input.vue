@@ -12,6 +12,7 @@
         :size="iconSize"
       ></UiIcons>
       <input
+        v-if="maska"
         class="input__field"
         :class="{
           'input__field--center': isCenter,
@@ -21,6 +22,20 @@
         :name="name"
         v-maska
         :data-maska="maska"
+        :value="modelValue"
+        @input="$emit('update:modelValue', $event.target.value)"
+        :placeholder="placeholder"
+        :disabled="disabled"
+      />
+      <input
+        v-else
+        class="input__field"
+        :class="{
+          'input__field--center': isCenter,
+          'input__field--disabled': disabled,
+        }"
+        :type="type"
+        :name="name"
         :value="modelValue"
         @input="$emit('update:modelValue', $event.target.value)"
         :placeholder="placeholder"

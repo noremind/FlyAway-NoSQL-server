@@ -13,8 +13,6 @@
           ></UiInput>
         </div>
         <div class="search__box">
-          <p class="search__text">Дата начала</p>
-
           <div class="search__box-calendar">
             <UiCalendar
               class="search__start-date"
@@ -59,11 +57,6 @@ const tabs = reactive([
     id: 2,
     name: "Отели",
     value: "hotels",
-  },
-  {
-    id: 3,
-    name: "Активности",
-    value: "actives",
   },
 ]);
 const selectedTab = ref(tabs[0]);

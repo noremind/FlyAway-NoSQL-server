@@ -191,11 +191,6 @@ const tabs = reactive([
     name: "Отели",
     value: "hotels",
   },
-  {
-    id: 3,
-    name: "Активности",
-    value: "actives",
-  },
 ]);
 const selectedTab = ref(tabs[0]);
 

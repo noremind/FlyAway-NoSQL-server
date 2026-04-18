@@ -1,28 +1,29 @@
 <template>
   <section class="tour">
     <div class="tour__wrapper">
-      <img
-        class="tour__img"
-        src="@/assets/image/content/tour-card.png"
-        alt=""
-      />
+      <img class="tour__img" :src="coverImage" :alt="titleText" />
       <div class="tour__header">
         <div class="tour__header-box">
-          <span class="tour__icon" v-if="tour?.is_hot">
+          <span v-if="tourData.is_hot" class="tour__icon">
             <UiIcons icon="hot" color="orange-200" size="size-14"></UiIcons>
           </span>
-          <UiIcons
-            v-if="userStore.isLoggedIn"
-            icon="heart-fill"
-            color="white"
-            size="size-24"
-          ></UiIcons>
+          <button
+            class="tour__favorite"
+            type="button"
+            @click.stop="toggleFavourite"
+          >
+            <UiIcons
+              :icon="isFavourite ? 'heart-fill' : 'heart'"
+              :color="isFavourite ? 'red-500' : 'white'"
+              size="size-24"
+            ></UiIcons>
+          </button>
         </div>
         <div>
           <div class="tour__price-box">
-            <p class="tour__new-price">{{ tour?.discount_price }} ₸</p>
-            <p class="tour__old-price">
-              <s>{{ tour?.price }} ₸</s>
+            <p class="tour__new-price">{{ discountedPriceLabel }} ₸</p>
+            <p v-if="hasDiscount" class="tour__old-price">
+              <s>{{ basePriceLabel }} ₸</s>
             </p>
           </div>
         </div>
@@ -30,50 +31,61 @@
 
       <div class="tour__info">
         <div class="tour__info-box" v-if="viewType === 'tablet'">
-          <img class="tour__avatar" :src="tour?.partner?.avatar" alt="" />
-          <p class="tour__author">{{ tour.partner?.title }}</p>
+          <img class="tour__avatar" :src="partnerAvatar" :alt="partnerName" />
+          <p class="tour__author">{{ partnerName }}</p>
         </div>
 
         <div class="tour__reviews">
-          <p class="tour__reviews-count">20 отзывов</p>
+          <p class="tour__reviews-count">{{ reviewsCountLabel }}</p>
           <UiIcons icon="star" color="yellow-500" size="size-14"></UiIcons>
-          <p class="tour__reviews-average">{{ tour?.rating }}</p>
+          <p class="tour__reviews-average">{{ ratingLabel }}</p>
         </div>
       </div>
       <span
-        v-if="viewType === 'list'"
-        class="tour__discount tour__discount--new"
-        >{{ tour?.discount }}%</span
+        v-if="viewType === 'tablet' && badgeLabel"
+        class="tour__discount tour__discount--new tour__discount--mobile"
+        >{{ badgeLabel }}</span
       >
       <div class="tour__content">
         <h3 class="tour__title">
-          <nuxt-link class="tour__link" :to="`/tours/${tour?._id}`">{{
-            tour?.title
+          <nuxt-link class="tour__link" :to="detailsLink">{{
+            titleText
           }}</nuxt-link>
         </h3>
         <p class="tour__description">
-          {{ tour?.description }}
+          {{ descriptionText }}
         </p>
         <div class="tour__box">
           <p class="tour__text">Осталось</p>
-          <span class="tour__count">{{ tour?.ticket_count }} места</span>
+          <span class="tour__count">{{ seatsLabel }}</span>
         </div>
         <div class="tour__inner">
           <div class="tour__inner-box">
-            <p class="tour__date">24 декабря</p>
-            <span @click="toggleDropdown" class="tour__date-plus">+5 дат</span>
+            <p class="tour__date">{{ primaryDateLabel }}</p>
+            <span
+              v-if="extraDatesCount > 0"
+              @click="toggleDropdown"
+              class="tour__date-plus"
+            >
+              +{{ extraDatesCount }} дат
+            </span>
             <div v-if="isOpenDropdown" class="tour__date-dropdown">
               <ul class="tour__date-list">
-                <li class="tour__date-item">24 декабря</li>
-                <li class="tour__date-item">24 декабря</li>
-                <li class="tour__date-item">24 декабря</li>
+                <li
+                  v-for="dateLabel in extraDateLabels"
+                  :key="dateLabel"
+                  class="tour__date-item"
+                >
+                  {{ dateLabel }}
+                </li>
               </ul>
             </div>
           </div>
           <span
+            v-if="badgeLabel"
             :class="{ 'tour__discount--show': viewType === 'list' }"
-            class="tour__discount"
-            >{{ tour?.discount }}%</span
+            class="tour__discount tour__discount--new"
+            >{{ badgeLabel }}</span
           >
         </div>
       </div>
@@ -82,13 +94,16 @@
 </template>
 
 <script setup>
+import fallbackImage from "@/assets/image/content/tour-card.png";
+import fallbackAvatar from "@/assets/image/common/tour-avatar.png";
+
 const isOpenDropdown = ref(false);
 const userStore = useAuthStore();
-
+const favouritesStore = useFavouritesStore();
 const props = defineProps({
   tour: {
     type: Object,
-    default: () => {},
+    default: () => ({}),
   },
   viewType: {
     type: String,
@@ -96,8 +111,221 @@ const props = defineProps({
   },
 });
 
+const normalizeString = (value) => String(value || "").trim();
+
+const parseDateValue = (value) => {
+  if (!value) {
+    return null;
+  }
+
+  if (value instanceof Date) {
+    return Number.isNaN(value.getTime()) ? null : value;
+  }
+
+  const text = normalizeString(value);
+  if (!text) {
+    return null;
+  }
+
+  if (text.includes(".")) {
+    const [day, month, year] = text.split(".");
+    if (!day || !month || !year) {
+      return null;
+    }
+
+    const parsed = new Date(`${year}-${month}-${day}T00:00:00`);
+    return Number.isNaN(parsed.getTime()) ? null : parsed;
+  }
+
+  const parsed = new Date(text);
+  return Number.isNaN(parsed.getTime()) ? null : parsed;
+};
+
+const formatMoney = (value) => Number(value || 0).toLocaleString("ru-RU");
+
+const formatCardDate = (value) => {
+  const parsed = parseDateValue(value);
+
+  if (!parsed) {
+    return normalizeString(value);
+  }
+
+  return new Intl.DateTimeFormat("ru-RU", {
+    day: "numeric",
+    month: "long",
+  }).format(parsed);
+};
+
+const pluralizeSeats = (value) => {
+  const count = Math.abs(Number(value) || 0);
+  const mod10 = count % 10;
+  const mod100 = count % 100;
+
+  if (mod10 === 1 && mod100 !== 11) {
+    return "место";
+  }
+
+  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) {
+    return "места";
+  }
+
+  return "мест";
+};
+
+const tourData = computed(() => props.tour || {});
+
+const titleText = computed(
+  () => tourData.value?.title || tourData.value?.name || "Тур FlyAway",
+);
+
+const descriptionText = computed(() => {
+  return (
+    normalizeString(tourData.value?.description) ||
+    normalizeString(tourData.value?.preview_text) ||
+    "Описание скоро появится."
+  );
+});
+
+const coverImage = computed(() => {
+  return (
+    tourData.value?.avatar ||
+    tourData.value?.image ||
+    tourData.value?.images?.[0] ||
+    fallbackImage
+  );
+});
+
+const partnerName = computed(() => {
+  return (
+    tourData.value?.partner?.title ||
+    tourData.value?.author?.name ||
+    "FlyAway Partner"
+  );
+});
+
+const partnerAvatar = computed(() => {
+  return (
+    tourData.value?.partner?.logo ||
+    tourData.value?.partner?.avatar ||
+    fallbackAvatar
+  );
+});
+
+const basePrice = computed(() => {
+  return (
+    Number(tourData.value?.price) ||
+    Number(tourData.value?.ticketTypes?.[0]?.price) ||
+    0
+  );
+});
+
+const discount = computed(() =>
+  Math.max(0, Number(tourData.value?.discount) || 0),
+);
+
+const discountedPrice = computed(() => {
+  if (!discount.value) {
+    return basePrice.value;
+  }
+
+  return Math.max(
+    0,
+    Math.round(basePrice.value - (basePrice.value * discount.value) / 100),
+  );
+});
+
+const hasDiscount = computed(() => discount.value > 0 && basePrice.value > 0);
+const basePriceLabel = computed(() => formatMoney(basePrice.value));
+const discountedPriceLabel = computed(() => formatMoney(discountedPrice.value));
+
+const ratingLabel = computed(() => {
+  const rating = Number(tourData.value?.rating) || 0;
+  return rating.toFixed(1).replace(".", ",");
+});
+
+const reviewsCountLabel = computed(() => {
+  return `${Number(tourData.value?.reviewsCount || tourData.value?.review_count || 0)} отзывов`;
+});
+
+const normalizedDateLabels = computed(() => {
+  const dates = [
+    ...(Array.isArray(tourData.value?.availabilityDates)
+      ? tourData.value.availabilityDates.map((item) => item?.date)
+      : []),
+    ...(Array.isArray(tourData.value?.dateDetails)
+      ? tourData.value.dateDetails.map((item) => item?.date)
+      : []),
+    ...(Array.isArray(tourData.value?.dates) ? tourData.value.dates : []),
+  ]
+    .map((item) => formatCardDate(item))
+    .filter(Boolean);
+
+  return [...new Set(dates)];
+});
+
+const primaryDateLabel = computed(
+  () => normalizedDateLabels.value[0] || "Даты уточняются",
+);
+const extraDateLabels = computed(() => normalizedDateLabels.value.slice(1));
+const extraDatesCount = computed(() => extraDateLabels.value.length);
+
+const seatsLabel = computed(() => {
+  const slot = Array.isArray(tourData.value?.availabilityDates)
+    ? tourData.value.availabilityDates.find((item) => {
+        return Number.isFinite(Number(item?.seats));
+      })
+    : null;
+
+  if (!slot) {
+    return "уточняются";
+  }
+
+  const seats = Math.max(0, Number(slot.seats) || 0);
+  const bookedSeats = Math.max(0, Number(slot.bookedSeats) || 0);
+  const availableSeats = Math.max(0, seats - bookedSeats);
+
+  return `${availableSeats} ${pluralizeSeats(availableSeats)}`;
+});
+
+const detailsLink = computed(() => {
+  const id = tourData.value?._id || tourData.value?.id;
+  return id ? `/tours/${id}` : "/tours";
+});
+
+const isFavourite = computed(() => {
+  return favouritesStore.isFavourite(tourData.value?._id || tourData.value?.id);
+});
+
+const badgeLabel = computed(() => {
+  const createdAt = parseDateValue(tourData.value?.createdAt);
+
+  if (!createdAt) {
+    return "";
+  }
+
+  const now = new Date();
+  const diffInDays = Math.floor(
+    (now.getTime() - createdAt.getTime()) / (1000 * 60 * 60 * 24),
+  );
+
+  return diffInDays <= 30 ? "Новинка" : "";
+});
+
 const toggleDropdown = () => {
+  if (!extraDatesCount.value) {
+    return;
+  }
+
   isOpenDropdown.value = !isOpenDropdown.value;
+};
+
+const toggleFavourite = () => {
+  if (!userStore.isLoggedIn) {
+    userStore.openAuthModalLogin();
+    return;
+  }
+
+  favouritesStore.toggleFavourite(tourData.value);
 };
 </script>
 
@@ -115,7 +343,7 @@ const toggleDropdown = () => {
   &__header {
     position: relative;
     width: 100%;
-    height: 138px;
+    height: 195px;
     padding: 16px 0 16px 0;
     display: inline-flex;
     flex-direction: column;
@@ -136,6 +364,7 @@ const toggleDropdown = () => {
     object-fit: cover;
     cursor: pointer;
     width: 100%;
+    border-radius: 12px;
   }
   &__icon {
     background-color: rgba(255, 255, 255, 0.8);
@@ -145,6 +374,18 @@ const toggleDropdown = () => {
     align-items: center;
     width: 28px;
     height: 28px;
+  }
+  &__favorite {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    // background-color: rgba(255, 255, 255, 0.8);
+    border: none;
+    cursor: pointer;
+    padding: 0;
   }
   &__price-box {
     display: inline-flex;
@@ -198,14 +439,13 @@ const toggleDropdown = () => {
     border-radius: 50%;
     width: 32px;
     height: 32px;
+    object-fit: cover;
   }
   &__content {
     display: flex;
     flex-direction: column;
     gap: 12px;
     position: relative;
-    height: 200px;
-    justify-content: space-between;
   }
   &__title {
     font-size: 24px;
@@ -274,7 +514,7 @@ const toggleDropdown = () => {
     }
   }
   &__discount {
-    padding: 4px 8px;
+    padding: 8px 16px;
     border-radius: 26px;
     color: $white;
     font-size: 14px;

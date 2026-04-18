@@ -1,6 +1,8 @@
 <template>
   <div class="calendar">
-    <label v-if="label" class="calendar__label" :for="inputId">{{ label }}</label>
+    <label v-if="label" class="calendar__label" :for="inputId">{{
+      label
+    }}</label>
     <Calendar
       class="calendar__field"
       :inputId="inputId"
@@ -62,17 +64,22 @@ const model = computed({
 });
 
 const instance = getCurrentInstance();
-const inputId = computed(() => props.inputId || `ui-calendar-${instance?.uid || 0}`);
+const inputId = computed(
+  () => props.inputId || `ui-calendar-${instance?.uid || 0}`,
+);
 </script>
 
 <style scoped lang="scss">
 .calendar {
-  display: grid;
-  gap: 8px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
 
   &__label {
+    display: block;
+    margin-bottom: 6px;
     color: $surface-900;
-    font-weight: 600;
+    font-weight: 500;
     font-size: 14px;
   }
 

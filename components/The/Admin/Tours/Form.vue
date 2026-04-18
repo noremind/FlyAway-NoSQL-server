@@ -109,6 +109,19 @@
               :default-item="''"
             />
 
+            <div class="tour-editor__grid">
+              <UiInput
+                label="Город отправления"
+                placeholder="Алматы"
+                v-model="form.departureCity"
+              />
+              <UiInput
+                label="Точка отправления"
+                placeholder="Пересечение Байтурсынова и Абая"
+                v-model="form.departurePoint"
+              />
+            </div>
+
             <div class="tour-editor__map">
               <div class="tour-editor__section-head">
                 <div>
@@ -139,7 +152,7 @@
               add-label="Добавить день"
               placeholder="25 декабря 2026"
               item-label-prefix="Дата"
-              :default-item="{ date: null }"
+              :default-item="{ date: null, timeFrom: '', timeTo: '', seats: '', text: '' }"
               :fields="dateFields"
             />
 
@@ -432,6 +445,31 @@ const dateFields = [
     component: "calendar",
     placeholder: "Выберите дату",
   },
+  {
+    key: "timeFrom",
+    label: "Время от",
+    placeholder: "06:00",
+    type: "time",
+  },
+  {
+    key: "timeTo",
+    label: "Время до",
+    placeholder: "23:00",
+    type: "time",
+  },
+  {
+    key: "seats",
+    label: "Мест",
+    placeholder: "18",
+    type: "number",
+  },
+  {
+    key: "text",
+    label: "Описание дня",
+    component: "textarea",
+    placeholder: "Что запланировано на эту дату",
+    rows: 3,
+  },
 ];
 
 const programFields = [
@@ -488,7 +526,7 @@ const createFormState = () => ({
   discount: "",
   is_hot: true,
   highlights: [""],
-  dates: [{ date: null }],
+  dates: [{ date: null, timeFrom: "", timeTo: "", seats: "", text: "" }],
   departureCity: "",
   departurePoint: "",
   departureLocation: null,
@@ -598,12 +636,22 @@ const normalizeDateItems = (value) => {
   return (value || [])
     .map((item) => {
       const date = formatCalendarDate(item?.date);
+      const timeFrom = String(item?.timeFrom ?? "").trim();
+      const timeTo = String(item?.timeTo ?? "").trim();
+      const seats = Math.max(0, Number(item?.seats) || 0);
+      const text = String(item?.text ?? "").trim();
 
-      if (!date) {
+      if (!date && !timeFrom && !timeTo && !seats && !text) {
         return null;
       }
 
-      return { date };
+      return {
+        date,
+        timeFrom,
+        timeTo,
+        seats,
+        text,
+      };
     })
     .filter(Boolean);
 };
@@ -626,6 +674,41 @@ const normalizeProgramItems = (value) => {
       };
     })
     .filter(Boolean);
+};
+
+const buildDateState = (tour) => {
+  const details = Array.isArray(tour?.dateDetails) ? tour.dateDetails : [];
+  const availability = Array.isArray(tour?.availabilityDates) ? tour.availabilityDates : [];
+  const detailsMap = new Map(
+    details.map((item) => [String(item?.date || "").trim(), item]),
+  );
+  const availabilityMap = new Map(
+    availability.map((item) => [String(item?.date || "").trim(), item]),
+  );
+  const dates = Array.from(
+    new Set([
+      ...details.map((item) => String(item?.date || "").trim()),
+      ...availability.map((item) => String(item?.date || "").trim()),
+      ...ensureStringList(tour?.dates).map((item) => String(item || "").trim()),
+    ].filter(Boolean)),
+  );
+
+  if (!dates.length) {
+    return [{ date: null, timeFrom: "", timeTo: "", seats: "", text: "" }];
+  }
+
+  return dates.map((date) => {
+    const detailItem = detailsMap.get(date);
+    const availabilityItem = availabilityMap.get(date);
+
+    return {
+      date: parseCalendarDate(date),
+      timeFrom: availabilityItem?.timeFrom || "",
+      timeTo: availabilityItem?.timeTo || "",
+      seats: availabilityItem?.seats?.toString?.() || "",
+      text: detailItem?.text || "",
+    };
+  });
 };
 
 const form = reactive(createFormState());
@@ -722,9 +805,7 @@ const applyFormState = (tour) => {
     discount: tour?.discount?.toString?.() || "",
     is_hot: Boolean(tour?.is_hot),
     highlights: ensureStringList(tour?.highlights),
-    dates: ensureStringList(tour?.dates).map((date) => ({
-      date: parseCalendarDate(date),
-    })),
+    dates: buildDateState(tour),
     departureCity: tour?.departureCity || "",
     departurePoint: tour?.departurePoint || "",
     departureLocation: tour?.departureLocation || null,
@@ -770,7 +851,18 @@ const buildPayload = () => ({
   discount: Number(form.discount) || 0,
   is_hot: Boolean(form.is_hot),
   highlights: normalizeStringArray(form.highlights),
-  dates: normalizeDateItems(form.dates).map((item) => item.date),
+  dates: normalizeDateItems(form.dates)
+    .map((item) => item.date)
+    .filter(Boolean),
+  dateDetails: normalizeDateItems(form.dates),
+  availabilityDates: normalizeDateItems(form.dates)
+    .filter((item) => item.date || item.timeFrom || item.timeTo || item.seats)
+    .map((item) => ({
+      date: item.date,
+      timeFrom: item.timeFrom,
+      timeTo: item.timeTo,
+      seats: item.seats,
+    })),
   departureCity: form.departureCity.trim(),
   departurePoint: form.departurePoint.trim(),
   departureLocation: form.departureLocation,

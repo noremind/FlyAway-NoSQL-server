@@ -2,7 +2,7 @@
   <div class="list-editor">
     <article
       v-for="(item, index) in items"
-      :key="`${index}-${itemKey(item)}`"
+      :key="index"
       class="list-editor__item"
       :class="{ 'list-editor__item--calendar': hasCalendarField }"
     >
@@ -43,7 +43,10 @@
             v-for="field in fields.filter((itemField) => itemField.component !== 'upload')"
             :key="field.key"
             class="list-editor__field"
-            :class="{ 'list-editor__field--full': field.component === 'calendar' }"
+            :class="{
+              'list-editor__field--full': field.component === 'textarea',
+              'list-editor__field--calendar': field.component === 'calendar',
+            }"
             :label="field.label"
             :placeholder="field.placeholder"
             :type="field.type || 'text'"
@@ -197,12 +200,6 @@ const handleUploadField = async (index, field, event) => {
   }
 };
 
-const itemKey = (item) => {
-  if (typeof item === "string") return item;
-  if (!item || typeof item !== "object") return "";
-  return Object.values(item).join("-");
-};
-
 const itemLabel = (_, index) => `${props.itemLabelPrefix} ${index + 1}`;
 </script>
 
@@ -259,7 +256,8 @@ const itemLabel = (_, index) => `${props.itemLabelPrefix} ${index + 1}`;
     }
 
     &--calendar {
-      grid-template-columns: 1fr;
+      grid-template-columns: repeat(2, minmax(0, 240px)) minmax(0, 1fr);
+      align-items: start;
     }
   }
 
@@ -268,6 +266,10 @@ const itemLabel = (_, index) => `${props.itemLabelPrefix} ${index + 1}`;
 
     &--full {
       grid-column: 1 / -1;
+    }
+
+    &--calendar {
+      max-width: 240px;
     }
   }
 
@@ -341,6 +343,16 @@ const itemLabel = (_, index) => `${props.itemLabelPrefix} ${index + 1}`;
 
     &__fields {
       grid-template-columns: 1fr;
+
+      &--calendar {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    &__field {
+      &--calendar {
+        max-width: 100%;
+      }
     }
   }
 }
