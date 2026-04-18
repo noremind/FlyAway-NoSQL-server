@@ -4,7 +4,7 @@ import UserModel from "../models/User.js"
 import { createAuthToken } from "../utils/authToken.js"
 import { sanitizePartner } from "../utils/sanitizePartner.js"
 import { sanitizeUser } from "../utils/sanitizeUser.js"
-import { uploadToBlob } from "../utils/uploadToBlob.js"
+import { deleteFromBlob, uploadBase64File } from "../utils/uploadToBlob.js"
 
 const allowedImageTypes = ["image/jpeg", "image/png", "image/webp"]
 const requiredPartnerFields = [
@@ -49,7 +49,7 @@ const formatPartner = (partner) => {
 const uploadLogoFromBody = async (logoFile, partnerId) => {
 	if (!logoFile?.base64Data) return null
 
-	const { fileName, mimeType, size, base64Data } = logoFile
+	const { mimeType } = logoFile
 
 	if (!process.env.BLOB_READ_WRITE_TOKEN) {
 		throw new Error("BLOB_READ_WRITE_TOKEN is not configured")
@@ -59,21 +59,11 @@ const uploadLogoFromBody = async (logoFile, partnerId) => {
 		throw new Error("Logo must be a JPG, PNG or WEBP image")
 	}
 
-	const cleanBase64 = base64Data.includes(",")
-		? base64Data.split(",")[1]
-		: base64Data
-
-	const buffer = Buffer.from(cleanBase64, "base64")
-	const result = await uploadToBlob(
-		{
-			originalname: fileName || "logo.png",
-			mimetype: mimeType,
-			size: Number(size) || buffer.length,
-			buffer,
-		},
-		`flyaway/partners/${partnerId}/logo`
-	)
-
+	const result = await uploadBase64File(logoFile, {
+		bucket: "partners",
+		entityId: partnerId,
+		scope: "logo",
+	})
 	return result.url
 }
 
@@ -259,25 +249,8 @@ export const applyPartner = async (req, res) => {
 			await partner.save()
 		}
 
-		const user = await UserModel.findByIdAndUpdate(
-			req.userId,
-			{ role: "partner" },
-			{ new: true }
-		)
-		const token = createAuthToken(user, {
-			role: "partner",
-			partnerId: partner._id.toString(),
-		})
-
 		return res.status(201).json({
 			message: "Partner profile created",
-			token,
-			user: {
-				...sanitizeUser(user),
-				role: "partner",
-				partnerId: partner._id.toString(),
-				partner: formatPartner(partner),
-			},
 			data: formatPartner(partner),
 		})
 	} catch (error) {
@@ -318,11 +291,7 @@ export const loginPartner = async (req, res) => {
 			return res.status(400).json({ message: "Invalid email or password" })
 		}
 
-		const user = await UserModel.findByIdAndUpdate(
-			partner.createdBy,
-			{ role: "partner" },
-			{ new: true }
-		)
+		const user = await UserModel.findById(partner.createdBy)
 
 		if (!user) {
 			return res.status(404).json({ message: "Owner user was not found" })
@@ -363,6 +332,12 @@ export const updateCurrentPartner = async (req, res) => {
 			return res.status(400).json({ message: validationError })
 		}
 
+		const currentPartner = await PartnerModel.findById(req.partnerId)
+
+		if (!currentPartner) {
+			return res.status(404).json({ message: "Partner profile was not found" })
+		}
+
 		const update = buildPartnerPayload(req.body)
 
 		if (req.body.password) {
@@ -374,8 +349,13 @@ export const updateCurrentPartner = async (req, res) => {
 		const logoUrl = await uploadLogoFromBody(req.body.logoFile, req.partnerId)
 
 		if (logoUrl) {
+			await deleteFromBlob(currentPartner.logo || currentPartner.avatar)
 			update.logo = logoUrl
 			update.avatar = logoUrl
+		} else if (req.body.logo === null || req.body.avatar === null) {
+			await deleteFromBlob(currentPartner.logo || currentPartner.avatar)
+			update.logo = null
+			update.avatar = null
 		}
 
 		const partner = await PartnerModel.findByIdAndUpdate(req.partnerId, update, {

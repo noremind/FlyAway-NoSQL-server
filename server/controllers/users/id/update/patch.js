@@ -1,8 +1,9 @@
 import bcrypt from "bcrypt"
 import UserModel from "../../../../models/User.js"
 import { sanitizeUser } from "../../../../utils/sanitizeUser.js"
+import { deleteFromBlob, uploadBase64File } from "../../../../utils/uploadToBlob.js"
 
-const selfEditableFields = ["name", "phone", "email", "birthDate", "gender", "avatar"]
+const selfEditableFields = ["name", "phone", "birthDate", "gender", "avatar"]
 const adminEditableFields = [...selfEditableFields, "role", "isVerified"]
 
 export const patchUpdateUser = async (req, res) => {
@@ -38,14 +39,36 @@ export const patchUpdateUser = async (req, res) => {
 			update.password = await bcrypt.hash(req.body.password, 10)
 		}
 
+		const currentUser = await UserModel.findById(req.params.id)
+
+		if (!currentUser) {
+			return res.status(404).json({ message: "User was not found" })
+		}
+
+		if (req.body.avatarFile?.base64Data) {
+			const uploadedAvatar = await uploadBase64File(req.body.avatarFile, {
+				bucket: "users",
+				entityId: req.params.id,
+				scope: "avatar",
+			})
+
+			if (currentUser.avatar) {
+				await deleteFromBlob(currentUser.avatar)
+			}
+
+			update.avatar = uploadedAvatar.url
+		} else if (Object.prototype.hasOwnProperty.call(req.body, "avatar") && req.body.avatar === null) {
+			if (currentUser.avatar) {
+				await deleteFromBlob(currentUser.avatar)
+			}
+
+			update.avatar = null
+		}
+
 		const user = await UserModel.findByIdAndUpdate(req.params.id, update, {
 			new: true,
 			runValidators: true,
 		})
-
-		if (!user) {
-			return res.status(404).json({ message: "User was not found" })
-		}
 
 		return res.json({
 			message: "User updated",

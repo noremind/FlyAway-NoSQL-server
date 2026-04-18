@@ -1,4 +1,5 @@
 import HotelModel from "../models/Hotel.js"
+import PartnerModel from "../models/Partner.js"
 
 export const getHotels = async (req, res) => {
 	try {
@@ -6,6 +7,21 @@ export const getHotels = async (req, res) => {
 		res.json({ data: hotel })
 	} catch (error) {
 		console.error("❌ Ошибка получения отелей:", error)
+		res.status(500).json({
+			message: "Ошибка при получении отелей",
+		})
+	}
+}
+
+export const getManagedHotels = async (req, res) => {
+	try {
+		const filter = req.userRole === "partner" ? { partner: req.partnerId } : {}
+		const hotels = await HotelModel.find(filter)
+			.sort({ updatedAt: -1 })
+			.populate("partner")
+		res.json({ data: hotels })
+	} catch (error) {
+		console.error("❌ Ошибка получения управляемых отелей:", error)
 		res.status(500).json({
 			message: "Ошибка при получении отелей",
 		})
@@ -37,10 +53,21 @@ export const getOneHotel = async (req, res) => {
 
 export const createHotel = async (req, res) => {
 	try {
+		const partnerId = req.userRole === "partner" ? req.partnerId : req.body.partner
+
+		if (!partnerId) {
+			return res.status(400).json({ message: "Партнер для отеля обязателен" })
+		}
+
+		const partner = await PartnerModel.findById(partnerId)
+
+		if (!partner) {
+			return res.status(404).json({ message: "Партнер не найден" })
+		}
+
 		const doc = new HotelModel({
 			name: req.body.name,
-			// tour: req.body.tour,
-			partner: req.body.partner,
+			partner: partnerId,
 			description: req.body.description,
 			rating: req.body.rating,
 			images: req.body.images,
@@ -49,6 +76,9 @@ export const createHotel = async (req, res) => {
 		})
 
 		const hotel = await doc.save()
+		await PartnerModel.findByIdAndUpdate(partnerId, {
+			$addToSet: { hotels: hotel._id },
+		})
 		res.json({ data: hotel })
 	} catch (error) {
 		console.log(error)
