@@ -48,6 +48,24 @@ const normalizeProgram = (value) => {
 	})
 }
 
+const normalizeDateDetails = (value, legacyDates = []) => {
+	const source = Array.isArray(value) && value.length
+		? value
+		: normalizeStringArray(legacyDates).map((date) => ({ date, text: "" }))
+
+	return normalizeObjectArray(source, (item) => {
+		const date = normalizeString(item?.date ?? item)
+		const text = normalizeString(item?.text)
+
+		if (!date && !text) return null
+
+		return {
+			date,
+			text,
+		}
+	})
+}
+
 const normalizeAvailabilityDates = (value, legacyDates = []) => {
 	const source = Array.isArray(value) && value.length
 		? value
@@ -114,9 +132,10 @@ const normalizeLocation = (value) => {
 const buildTourPayload = (body, partnerId) => {
 	const images = normalizeStringArray(body.images)
 	const avatar = normalizeString(body.avatar) || images[0] || null
+	const dateDetails = normalizeDateDetails(body.dateDetails, body.dates)
 	const availabilityDates = normalizeAvailabilityDates(
 		body.availabilityDates,
-		body.dates
+		dateDetails.map((item) => item.date).filter(Boolean)
 	)
 
 	return {
@@ -130,9 +149,12 @@ const buildTourPayload = (body, partnerId) => {
 		rating: Number(body.rating) || 0,
 		duration: normalizeString(body.duration),
 		highlights: normalizeStringArray(body.highlights),
-		dates: availabilityDates.length
-			? availabilityDates.map((item) => item.date).filter(Boolean)
-			: normalizeStringArray(body.dates),
+		dates: dateDetails.length
+			? dateDetails.map((item) => item.date).filter(Boolean)
+			: availabilityDates.length
+				? availabilityDates.map((item) => item.date).filter(Boolean)
+				: normalizeStringArray(body.dates),
+		dateDetails,
 		availabilityDates,
 		departureCity: normalizeString(body.departureCity),
 		departurePoint: normalizeString(body.departurePoint),

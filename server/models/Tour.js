@@ -18,9 +18,15 @@ const TourModel = new mongoose.Schema(
 		images: [{ type: String, required: false, default: null }],
 		rating: { type: Number, default: 0, min: 0, max: 5 },
 		duration: { type: String, required: false, default: "" },
-		highlights: [{ type: String, default: [] }],
-		dates: [{ type: String, default: [] }],
-		availabilityDates: [
+			highlights: [{ type: String, default: [] }],
+			dates: [{ type: String, default: [] }],
+			dateDetails: [
+				{
+					date: { type: String, required: false, default: "" },
+					text: { type: String, required: false, default: "" },
+				},
+			],
+			availabilityDates: [
 			{
 				date: { type: String, required: false, default: "" },
 				timeFrom: { type: String, required: false, default: "" },

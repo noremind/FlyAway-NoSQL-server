@@ -12,7 +12,7 @@ const isDirectRun = process.argv[1]
 	: false
 
 if (isDirectRun) {
-	const PORT = process.env.PORT || 5000
+	const PORT = process.env.PORT || 3001
 
 	app.listen(PORT, () => {
 		console.log(`FlyAway server started on http://localhost:${PORT}!`)
