@@ -1,38 +1,17 @@
 {
-  "name": "nuxt-app",
-  "private": true,
-  "type": "module",
-  "imports": {
-    "#internal/nuxt/paths": "./node_modules/nuxt/dist/core/runtime/nitro/paths.js",
-    "#internal/nitro": "./server/internal/nitro.mjs",
-    "#internal/nitro/app": "./server/internal/nitro.mjs",
-    "#internal/nitro/config": "./server/internal/nitro.mjs",
-    "#internal/nitro/storage": "./server/internal/nitro.mjs",
-    "#internal/nitro/renderer": "./server/internal/nitro.mjs",
-    "#internal/nitro/route-rules": "./server/internal/nitro.mjs",
-    "#internal/nitro/utils": "./server/internal/nitro.mjs"
-  },
+  "name": "mongodb",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
   "scripts": {
-    "build": "nuxt build",
-    "dev": "nuxt dev --host",
-    "generate": "nuxt generate",
-    "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
   "dependencies": {
-    "@nuxtjs/i18n": "^9.1.1",
-    "@pinia/nuxt": "^0.9.0",
-    "maska": "^2.1.11",
-    "nuxt": "^3.14.1592",
-    "nuxt-swiper": "^2.0.0",
-    "pinia": "^2.3.0",
-    "universal-cookie": "^7.2.2",
-    "vue": "latest",
-    "vue-router": "latest",
-    "vue3-tel-input": "^1.0.4"
-  },
-  "devDependencies": {
-    "@primevue/nuxt-module": "^4.2.4",
-    "sass": "^1.82.0"
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "mongoose": "^8.10.0"
   }
 }
