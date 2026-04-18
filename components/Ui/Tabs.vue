@@ -67,8 +67,7 @@ const props = defineProps({
     color: $surface-900;
     cursor: pointer;
     border-radius: 24px;
-    // font-size: 24px;
-    font-size: clamp(0.875rem, 0.648rem + 1.14vw, 1.5rem);
+    font-size: 16px;
     padding: 8px 16px;
     display: flex;
     gap: 6px;
@@ -95,6 +94,7 @@ const props = defineProps({
       flex-grow: 1;
       padding: 2px 8px;
       font-weight: 400;
+      font-size: 15px;
     }
   }
 }

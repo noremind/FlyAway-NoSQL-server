@@ -2,6 +2,16 @@
   "name": "nuxt-app",
   "private": true,
   "type": "module",
+  "imports": {
+    "#internal/nuxt/paths": "./node_modules/nuxt/dist/core/runtime/nitro/paths.js",
+    "#internal/nitro": "./server/internal/nitro.mjs",
+    "#internal/nitro/app": "./server/internal/nitro.mjs",
+    "#internal/nitro/config": "./server/internal/nitro.mjs",
+    "#internal/nitro/storage": "./server/internal/nitro.mjs",
+    "#internal/nitro/renderer": "./server/internal/nitro.mjs",
+    "#internal/nitro/route-rules": "./server/internal/nitro.mjs",
+    "#internal/nitro/utils": "./server/internal/nitro.mjs"
+  },
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev --host",

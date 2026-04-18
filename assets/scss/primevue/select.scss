@@ -1,25 +1,83 @@
-.p-select{
+.p-select {
 	display: flex !important;
-	gap: 8px;
 	align-items: center;
-	border-radius: 16px !important;
-	padding: 8px 12px;
-	&-dropdown{
-		svg{
+	width: 100%;
+	min-height: 46px;
+	border: 0 !important;
+	box-shadow: none !important;
+	border-radius: 26px !important;
+	padding: 0;
+	background: transparent !important;
+	color: #202426 !important;
+	font-size: 14px !important;
+	font-weight: 500 !important;
+
+	&:not(.p-disabled).p-focus {
+		box-shadow: none !important;
+	}
+
+	&-label {
+		display: flex !important;
+		align-items: center;
+		min-height: 46px;
+		padding: 10px 0 10px 14px !important;
+		color: #202426 !important;
+		font-size: 14px !important;
+		font-weight: 500 !important;
+		line-height: 1.2;
+	}
+
+	&-label.p-placeholder {
+		color: #9ca3af !important;
+		font-weight: 500 !important;
+	}
+
+	&-dropdown {
+		width: 42px !important;
+		min-width: 42px !important;
+		margin-left: auto;
+		color: #fa3946 !important;
+
+		svg {
 			margin-top: 3px;
 		}
-		svg path[fill]{
-			color: #fa3946 !important;
+
+		svg path[fill] {
+			fill: currentColor !important;
 		}
 	}
-	&-list{
-		background-color: #f7f5f5 !important;
-		padding: 8px 12px !important;
-		border-radius: 12px !important;
-		font-size: 14px;
-		margin-top: 2px !important;
-		display: flex;
-		flex-direction: column;
-		gap: 10px !important;
+
+	&-overlay {
+		margin-top: 6px !important;
+		overflow: hidden !important;
+		border: 1px solid rgba(250, 57, 70, 0.12) !important;
+		border-radius: 14px !important;
+		background: #ffffff !important;
+		box-shadow: 0 18px 38px rgba(32, 36, 38, 0.12) !important;
+	}
+
+	&-list {
+		padding: 6px !important;
+		background-color: #ffffff !important;
+	}
+
+	&-option {
+		min-height: 38px !important;
+		padding: 9px 10px !important;
+		border-radius: 10px !important;
+		color: #202426 !important;
+		font-size: 14px !important;
+		font-weight: 500 !important;
+	}
+
+	&-option:not(.p-select-option-selected):not(.p-disabled).p-focus,
+	&-option:not(.p-select-option-selected):not(.p-disabled):hover {
+		background: rgba(250, 57, 70, 0.06) !important;
+		color: #202426 !important;
+	}
+
+	&-option-selected {
+		background: #fa3946 !important;
+		color: #ffffff !important;
 	}
 }

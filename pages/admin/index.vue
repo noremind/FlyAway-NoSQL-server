@@ -1,10 +1,9 @@
 <template>
-  <section>
-    <TheAdminCommonPageHeader
-      title="Главная"
-      description="Короткая сводка по основным разделам FlyAway."
-    />
-
+  <section class="admin-home">
+    <div class="admin-home__header">
+      <h1 class="admin-home__title">Обзор</h1>
+      <p class="admin-home__text">Ключевые сущности проекта в одном месте.</p>
+    </div>
     <TheAdminCommonStatGrid :items="stats" />
   </section>
 </template>
@@ -13,6 +12,11 @@
 definePageMeta({
   layout: "admin",
   middleware: "admin",
+});
+
+useSeo({
+  title: "Админ-панель",
+  description: "Рабочий стол админ-панели FlyAway.",
 });
 
 const stats = ref([
@@ -41,3 +45,28 @@ const loadStats = async () => {
 
 onMounted(loadStats);
 </script>
+
+<style lang="scss" scoped>
+.admin-home {
+  display: grid;
+  gap: 16px;
+
+  &__header {
+    display: grid;
+    gap: 4px;
+  }
+
+  &__title {
+    color: $surface-900;
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1.05;
+  }
+
+  &__text {
+    color: $surface-500;
+    font-size: 14px;
+    line-height: 1.45;
+  }
+}
+</style>

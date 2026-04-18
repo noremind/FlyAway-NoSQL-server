@@ -156,14 +156,14 @@
         <div class="hotels__filters-inner">
           <span>от</span>
           <!-- <UiInput class="hotels__filters-input"></UiInput> -->
-          <UiCalendar class="hotels__filters-calendar" />
+          <UiCalendar class="hotels__filters-calendar" label="Дата от" />
           <span>₸</span>
         </div>
 
         <div class="hotels__filters-inner">
           <span>до</span>
           <!-- <UiInput class="hotels__filters-input"></UiInput> -->
-          <UiCalendar class="hotels__filters-calendar" />
+          <UiCalendar class="hotels__filters-calendar" label="Дата до" />
           <span>₸</span>
         </div>
       </div>
@@ -196,8 +196,11 @@
 </template>
 
 <script setup>
+const { createMap } = useYandexMaps();
 const mapContainer = ref(null);
 const mapContainerMobile = ref(null);
+const desktopMap = shallowRef(null);
+const mobileMap = shallowRef(null);
 const isOpenFilterMobile = ref(false);
 const isOpenPartialLocationCards = ref(false);
 const tabs = reactive([
@@ -256,6 +259,7 @@ const tags = reactive([
   },
 ]);
 const hotels = ref(null);
+const mapCenter = [76.889709, 43.238949];
 
 useSeoMeta({
   title: "FlyAway - Отели",
@@ -287,54 +291,67 @@ const openPartialLocationCards = () => {
   isOpenPartialLocationCards.value = true;
 };
 
-onMounted(() => {
-  if (typeof ymaps !== "undefined") {
-    ymaps.ready(() => {
-      const map = new ymaps.Map(mapContainer.value, {
-        center: [43.238949, 76.889709],
-        zoom: 10,
-        controls: [],
-      });
-      const placemark = new ymaps.Placemark(
-        [55.751574, 37.573856],
-        {
-          balloonContent: "This is Almaty!",
-        },
-        {
-          preset: "islands#icon",
-          iconColor: "#0095b6",
-        },
-      );
-
-      map.geoObjects.add(placemark);
-    });
-  } else {
-    console.error("Yandex Maps API is not loaded.");
+const destroyMap = (mapRef) => {
+  if (mapRef.value && typeof mapRef.value.destroy === "function") {
+    mapRef.value.destroy();
   }
 
-  if (typeof ymaps !== "undefined") {
-    ymaps.ready(() => {
-      const map = new ymaps.Map(mapContainerMobile.value, {
-        center: [43.238949, 76.889709],
-        zoom: 10,
-        controls: [],
-      });
-      const placemark = new ymaps.Placemark(
-        [55.751574, 37.573856],
-        {
-          balloonContent: "This is Almaty!",
-        },
-        {
-          preset: "islands#icon",
-          iconColor: "#0095b6",
-        },
-      );
+  mapRef.value = null;
+};
 
-      map.geoObjects.add(placemark);
-    });
-  } else {
-    console.error("Yandex Maps API is not loaded.");
+const mountMap = async (containerRef, mapRef) => {
+  if (!containerRef.value || mapRef.value) {
+    return;
   }
+
+  try {
+    mapRef.value = await createMap({
+      container: containerRef.value,
+      center: mapCenter,
+      zoom: 10,
+      markerCoordinates: mapCenter,
+      markerText: "Алматы",
+    });
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+onMounted(async () => {
+  await nextTick();
+
+  if (selectedTab.value.id === 2) {
+    await mountMap(mapContainer, desktopMap);
+  }
+
+  if (selectedTabMobile.value.id === 3) {
+    await mountMap(mapContainerMobile, mobileMap);
+  }
+});
+
+watch(
+  () => selectedTab.value.id,
+  async (tabId) => {
+    if (tabId === 2) {
+      await nextTick();
+      await mountMap(mapContainer, desktopMap);
+    }
+  },
+);
+
+watch(
+  () => selectedTabMobile.value.id,
+  async (tabId) => {
+    if (tabId === 3) {
+      await nextTick();
+      await mountMap(mapContainerMobile, mobileMap);
+    }
+  },
+);
+
+onBeforeUnmount(() => {
+  destroyMap(desktopMap);
+  destroyMap(mobileMap);
 });
 
 watch(

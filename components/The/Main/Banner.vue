@@ -1,28 +1,27 @@
 <template>
   <UiSwiper :loop="true" :autoplay="true">
-    <swiper-slide v-for="banner in 5" :key="banner">
+    <swiper-slide v-for="banner in banners" :key="banner._id || banner.image">
       <section class="banner">
         <div class="banner__wrapper">
           <div class="banner__img-wrapper">
             <img
               class="banner__img"
-              src="@/assets/image/content/main-image.png"
-              alt="Кольсай"
+              :src="banner.image"
+              :alt="banner.title"
             />
           </div>
 
           <div class="banner__content">
-            <h1 class="banner__title">Кольсай</h1>
-            <p class="banner__description">
-              Погружение в Природную Красоту Казахстана
-            </p>
+            <h1 class="banner__title">{{ banner.title }}</h1>
+            <p class="banner__description">{{ banner.description }}</p>
 
             <UiButton
               class="banner__btn button-secondary"
               afterIcon="arrow"
               iconColor="red-400"
-              label="подробнее"
+              :label="banner.buttonText || 'подробнее'"
               iconSize="size-26"
+              @click="openBannerLink(banner.link)"
             ></UiButton>
           </div>
         </div>
@@ -31,7 +30,40 @@
   </UiSwiper>
 </template>
 
-<script setup></script>
+<script setup>
+import bannerFallback from "@/assets/image/content/main-image.png";
+
+const router = useRouter();
+const response = await useFetchSsr({
+  url: "/banners",
+});
+
+const banners = computed(() => {
+  if (response?.data?.length) return response.data;
+
+  return [
+    {
+      _id: "fallback-banner",
+      title: "FlyAway",
+      description: "Туры и отдых в одном месте",
+      image: bannerFallback,
+      link: "/tours",
+      buttonText: "Подробнее",
+    },
+  ];
+});
+
+const openBannerLink = (link) => {
+  if (!link) return;
+
+  if (String(link).startsWith("http")) {
+    window.open(link, "_blank");
+    return;
+  }
+
+  router.push(link);
+};
+</script>
 
 <style lang="scss" scoped>
 .banner {

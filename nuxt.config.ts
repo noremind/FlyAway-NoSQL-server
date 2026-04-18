@@ -1,3 +1,9 @@
+const devApiTarget = "http://localhost:3001"
+
+const publicApiBase = process.env.NODE_ENV === "production"
+		? process.env.SERVER_URL
+		: "http://localhost:3001/api"
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
 	modules: [
@@ -10,13 +16,16 @@ export default defineNuxtConfig({
 	app: {
 		head: {
 			meta: [{ name: "robots", content: "noindex, nofollow" }],
-			script: [
-				{
-					src: "https://api-maps.yandex.ru/2.1/?apikey=YOUR_API_KEY&lang=ru_RU",
-					type: "text/javascript",
-					defer: true,
-				},
-			],
+			script: process.env.NUXT_PUBLIC_YANDEX_MAPS_API_KEY
+				? [
+						{
+							id: "yandex-maps-sdk",
+							src: `https://api-maps.yandex.ru/2.1/?apikey=${process.env.NUXT_PUBLIC_YANDEX_MAPS_API_KEY}&lang=ru_RU`,
+							type: "text/javascript",
+							defer: true,
+						},
+					]
+				: [],
 		},
 	},
 
@@ -51,9 +60,8 @@ export default defineNuxtConfig({
 	nitro: {
 		devProxy: {
 			"/api": {
-				target: "https://no-sql-project-server.vercel.app",
+				target: `${devApiTarget}/api`,
 				changeOrigin: true,
-				prependPath: true,
 			},
 		},
 	},
@@ -86,22 +94,18 @@ export default defineNuxtConfig({
 		"@/assets/scss/primevue/index.scss",
 	],
 
-	pinia: {
-		storesDirs: ["./store/**"],
-	},
-
 	runtimeConfig: {
+		apiProxyTarget:
+			process.env.NUXT_API_PROXY_TARGET ||
+			process.env.NUXT_DEV_API_TARGET ||
+			process.env.SERVER_URL,
 		public: {
-			baseURL: process.env.SERVER_URL,
-			/* The line `// baseURL: process.env.SERVER_URL,` is a commented-out configuration option in the
-      `runtimeConfig` section of the Nuxt.js configuration file. */
-      /* The line `// baseURL: process.env.SERVER_URL,` is a commented-out configuration option in the
-      `runtimeConfig` section of the Nuxt.js configuration file. */
-      // baseURL: "http://localhost:3001/api/",
+			baseURL: publicApiBase,
+			yandexMapsApiKey: process.env.NUXT_PUBLIC_YANDEX_MAPS_API_KEY || "",
 		},
 	},
 
 	ssr: true,
 	compatibilityDate: "2024-11-01",
-	devtools: { enabled: false },
+	devtools: { enabled: true },
 })

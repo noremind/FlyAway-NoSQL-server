@@ -4,17 +4,27 @@
       <div class="profile-main__side">
         <div class="profile-main__box">
           <img
+            v-if="avatar"
             class="profile-main__avatar"
-            src="@/assets/image/common/avatar-user.jpeg"
+            :src="avatar"
             alt="Avatar"
           />
+          <span v-else class="profile-main__avatar profile-main__avatar--empty">
+            {{ userInitial }}
+          </span>
           <div class="profile-main__inner">
-            <div class="profile-main__inner-box">
+            <label class="profile-main__inner-box">
               <UiIcons color="red-500" icon="upload"></UiIcons>
               <p class="profile-main__box-text profile-main__box-text--upload">
                 Загрузить другое фото
               </p>
-            </div>
+              <input
+                class="profile-main__file"
+                type="file"
+                accept="image/png,image/jpeg,image/webp"
+                @change="handleAvatarChange"
+              />
+            </label>
             <div class="profile-main__inner-box" @click="deleteAvatar()">
               <UiIcons color="orange-200" icon="trash" size="size-14"></UiIcons>
               <p class="profile-main__box-text profile-main__box-text--delete">
@@ -70,10 +80,8 @@
             label="Ваша почта*"
             v-model.trim="email"
             placeholder="Не указан"
+            :disabled="true"
           ></UiInput>
-          <p class="profile-main__input-error" v-if="errorMessage.email">
-            {{ errorMessage.email }}
-          </p>
         </div>
 
         <UiInput
@@ -83,20 +91,13 @@
           v-model.trim="phone"
         ></UiInput>
 
-        <div>
-          <UiInput
-            class="profile-main__input profile-main__input--mobile"
-            label="Ваша почта"
-            :placeholder="email"
-            v-model.trim="email"
-          ></UiInput>
-          <p
-            class="profile-main__input-error profile-main__input-error--mobile"
-            v-if="errorMessage.email"
-          >
-            {{ errorMessage.email }}
-          </p>
-        </div>
+        <UiInput
+          class="profile-main__input profile-main__input--mobile"
+          label="Ваша почта"
+          :placeholder="email"
+          v-model.trim="email"
+          :disabled="true"
+        ></UiInput>
 
         <UiCalendar
           label="Дата рождения"
@@ -140,13 +141,19 @@
 <script setup>
 const userCookie = useCookie("user");
 const userStore = useAuthStore();
-const router = useRouter();
+const { fileToBase64 } = useBlobFiles();
 const user = ref(userStore.getUser);
 const name = ref(user.value?.name || null);
 const email = ref(user.value?.email || null);
 const phone = ref(user.value?.phone || null);
 const birthDate = ref(user.value?.birthday || null);
 const avatar = ref(user.value?.avatar || null);
+const avatarFile = ref(null);
+const userInitial = computed(() =>
+  String(name.value || user.value?.name || "U")
+    .charAt(0)
+    .toUpperCase(),
+);
 
 const isLoading = ref(false);
 const isPartnerModalOpen = ref(false);
@@ -177,54 +184,71 @@ const selectedGender = ref(genders[3]);
 
 const errorMessage = reactive({
   name: "",
-  email: "",
 });
 
 const checkFields = () => {
-  if (name.value < 2) {
+  if (
+    !String(name.value || "").trim() ||
+    String(name.value || "").trim().length < 2
+  ) {
     errorMessage.name = "Минимум 2 букв";
-    return false;
-  }
-  if (!email.value?.length) {
-    errorMessage.email = "Укажите Email";
-    return false;
-  }
-  if (!email.value?.includes("@") && !email.value?.includes(".")) {
-    errorMessage.email = "Напишите корректный Email";
     return false;
   }
   return true;
 };
 
-const postProfile = () => {
+const postProfile = async () => {
   if (checkFields()) {
     isLoading.value = true;
     const formatBirthdate = formatBirthDate(birthDate.value);
-    useApi()
-      .client({
+    try {
+      const payload = {
+        name: name.value,
+        phone: phone.value,
+        birthDate: formatBirthdate,
+        gender: selectedGender.value.value,
+      };
+
+      if (avatarFile.value) {
+        payload.avatarFile = {
+          fileName: avatarFile.value.name,
+          mimeType: avatarFile.value.type,
+          size: avatarFile.value.size,
+          base64Data: await fileToBase64(avatarFile.value),
+        };
+      } else if (avatar.value === null) {
+        payload.avatar = null;
+      }
+
+      const res = await useApi().client({
         url: "/users/update",
         method: "put",
-        data: {
-          name: name.value,
-          email: email.value,
-          phone: phone.value,
-          avatar: null,
-          birthDate: formatBirthdate,
-          gender: selectedGender.value.value,
-        },
-      })
-      .then((res) => {
-        userCookie.value = res.data;
-        isLoading.value = false;
-      })
-      .catch(() => {
-        isLoading.value = false;
+        data: payload,
       });
+
+      userStore.setUserData(res.data);
+      userCookie.value = res.data;
+      user.value = res.data;
+      avatar.value = res.data.avatar || null;
+      avatarFile.value = null;
+    } finally {
+      isLoading.value = false;
+    }
   }
 };
 
 const deleteAvatar = () => {
-  user.value.avatar = null;
+  avatar.value = null;
+  avatarFile.value = null;
+};
+
+const handleAvatarChange = (event) => {
+  const file = event.target.files?.[0] || null;
+
+  if (!file) return;
+
+  avatarFile.value = file;
+  avatar.value = URL.createObjectURL(file);
 };
 
 const openPartnerModal = () => {
@@ -235,18 +259,9 @@ const closePartnerModal = () => {
   isPartnerModalOpen.value = false;
 };
 
-const handlePartnerCreated = (response) => {
-  if (response?.token) {
-    userStore.setToken(response.token);
-  }
-
-  if (response?.user) {
-    userStore.setUserData(response.user);
-    userCookie.value = response.user;
-  }
-
+const handlePartnerCreated = () => {
   closePartnerModal();
-  router.push("/admin");
+  userStore.logoutUser("/");
 };
 
 watch(
@@ -257,10 +272,18 @@ watch(
 );
 
 watch(
-  () => email.value,
-  () => {
-    errorMessage.email = "";
+  () => userStore.getUser,
+  (nextUser) => {
+    user.value = nextUser;
+    name.value = nextUser?.name || null;
+    email.value = nextUser?.email || null;
+    phone.value = nextUser?.phone || null;
+    birthDate.value = nextUser?.birthday || nextUser?.birthDate || null;
+    avatar.value = nextUser?.avatar || null;
+    selectedGender.value =
+      genders.find((gender) => gender.value === nextUser?.gender) || genders[3];
   },
+  { immediate: true },
 );
 </script>
 
@@ -301,7 +324,6 @@ watch(
   &__select {
     border-radius: 26px;
     background-color: transparent;
-    border: 1px solid $surface-300;
   }
   &__btn {
     margin-top: 16px;
@@ -317,7 +339,6 @@ watch(
   &__calendar {
     border-radius: 26px;
     background-color: transparent;
-    border: 1px solid $surface-300;
     width: 100%;
     padding: 4px;
     &-text {
@@ -346,16 +367,33 @@ watch(
     gap: 8px;
     flex-direction: column;
     &-box {
+      position: relative;
       display: flex;
       gap: 6px;
       align-items: center;
     }
+  }
+  &__file {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
   }
   &__avatar {
     width: 66px;
     height: 66px;
     border-radius: 50%;
     object-fit: cover;
+
+    &--empty {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: $white;
+      background: $red-500;
+      font-size: 24px;
+      font-weight: 700;
+    }
   }
 }
 

@@ -3,11 +3,17 @@
     <div class="dropdown__wrapper">
       <div class="dropdown__box">
         <img
-          v-if="userStore.isLoggedIn"
+          v-if="userStore.isLoggedIn && user?.avatar"
           class="dropdown__avatar"
           :src="user?.avatar"
           alt="Avatar"
         />
+        <span
+          v-else-if="userStore.isLoggedIn"
+          class="dropdown__avatar dropdown__avatar--empty"
+        >
+          {{ userInitial }}
+        </span>
 
         <button class="dropdown__avatar" type="button" v-else>
           <UiIcons
@@ -66,6 +72,9 @@
 const userStore = useAuthStore();
 const user = computed(() => userStore.getUser);
 const emit = defineEmits(["closeDropdown"]);
+const userInitial = computed(() => {
+  return (user.value?.name || "U").charAt(0).toUpperCase();
+});
 const dropdownNav = [
   {
     id: 1,
@@ -138,6 +147,16 @@ const dropdownNav = [
     cursor: pointer;
     background-color: $surface-150;
     object-fit: cover;
+
+    &--empty {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: $white;
+      background: $red-500;
+      font-size: 24px;
+      font-weight: 700;
+    }
   }
   &__auth {
     display: flex;

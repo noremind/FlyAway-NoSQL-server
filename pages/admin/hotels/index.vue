@@ -3,8 +3,6 @@
     <TheAdminCommonPageHeader
       title="Отели"
       description="Список отелей, локации, рейтинг и описание."
-      action-to="/admin/hotels/create"
-      action-label="Создать отель"
     />
 
     <UiTable :columns="columns" :rows="hotels" :loading="isLoading" />
@@ -15,6 +13,11 @@
 definePageMeta({
   layout: "admin",
   middleware: "admin",
+});
+
+useSeo({
+  title: "Отели",
+  description: "Управление отелями в админ-панели FlyAway.",
 });
 
 const hotels = ref([]);
@@ -30,7 +33,7 @@ const loadHotels = async () => {
   isLoading.value = true;
 
   try {
-    const res = await useApi().client({ url: "/hotels" });
+    const res = await useApi().client({ url: "/hotels/manage" });
     hotels.value = res.data || [];
   } finally {
     isLoading.value = false;

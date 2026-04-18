@@ -261,6 +261,10 @@ const tabsMobile = reactive([
 ]);
 const selectedTab = ref(tabs[0]);
 const selectedTabMobile = ref(tabsMobile[0]);
+const api = useApi();
+const mapCenter = [76.889709, 43.238949];
+const desktopMap = shallowRef(null);
+const mobileMap = shallowRef(null);
 const options = [
   { label: "по цене", value: "price" },
   { label: "по популярности", value: "popularity" },
@@ -292,17 +296,21 @@ useSeoMeta({
   ogDescription: "FlyAway - сайт для бронирования туров и отелей",
 });
 
+const { createMap } = useYandexMaps();
+
 const getTours = () => {
-  useApi({
-    url: "/tours",
-    method: "get",
-    query: { page: currentPage.value },
-  }).then((res) => {
-    tours.value = res.data;
-    // pagination.last_page = res.data.last_page;
-    // pagination.total_items = res.data.total;
-    // pagination.per_page = res.data.per_page;
-  });
+  api
+    .client({
+      url: "/tours",
+      method: "get",
+      query: { page: currentPage.value },
+    })
+    .then((res) => {
+      tours.value = res.data;
+      // pagination.last_page = res.data.last_page;
+      // pagination.total_items = res.data.total;
+      // pagination.per_page = res.data.per_page;
+    });
 };
 getTours();
 
@@ -311,54 +319,67 @@ const paginationPage = (page) => {
   getTours();
 };
 
-onMounted(() => {
-  if (typeof ymaps !== "undefined") {
-    ymaps.ready(() => {
-      const map = new ymaps.Map(mapContainer.value, {
-        center: [43.238949, 76.889709],
-        zoom: 10,
-        controls: [],
-      });
-      const placemark = new ymaps.Placemark(
-        [55.751574, 37.573856],
-        {
-          balloonContent: "This is Almaty!",
-        },
-        {
-          preset: "islands#icon",
-          iconColor: "#0095b6",
-        }
-      );
-
-      map.geoObjects.add(placemark);
-    });
-  } else {
-    console.error("Yandex Maps API is not loaded.");
+const destroyMap = (mapRef) => {
+  if (mapRef.value && typeof mapRef.value.destroy === "function") {
+    mapRef.value.destroy();
   }
 
-  if (typeof ymaps !== "undefined") {
-    ymaps.ready(() => {
-      const map = new ymaps.Map(mapContainerMobile.value, {
-        center: [43.238949, 76.889709],
-        zoom: 10,
-        controls: [],
-      });
-      const placemark = new ymaps.Placemark(
-        [55.751574, 37.573856],
-        {
-          balloonContent: "This is Almaty!",
-        },
-        {
-          preset: "islands#icon",
-          iconColor: "#0095b6",
-        }
-      );
+  mapRef.value = null;
+};
 
-      map.geoObjects.add(placemark);
-    });
-  } else {
-    console.error("Yandex Maps API is not loaded.");
+const mountMap = async (containerRef, mapRef) => {
+  if (!containerRef.value || mapRef.value) {
+    return;
   }
+
+  try {
+    mapRef.value = await createMap({
+      container: containerRef.value,
+      center: mapCenter,
+      zoom: 10,
+      markerCoordinates: mapCenter,
+      markerText: "Алматы",
+    });
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+onMounted(async () => {
+  await nextTick();
+
+  if (selectedTab.value.id === 2) {
+    await mountMap(mapContainer, desktopMap);
+  }
+
+  if (selectedTabMobile.value.id === 3) {
+    await mountMap(mapContainerMobile, mobileMap);
+  }
+});
+
+watch(
+  () => selectedTab.value.id,
+  async (tabId) => {
+    if (tabId === 2) {
+      await nextTick();
+      await mountMap(mapContainer, desktopMap);
+    }
+  },
+);
+
+watch(
+  () => selectedTabMobile.value.id,
+  async (tabId) => {
+    if (tabId === 3) {
+      await nextTick();
+      await mountMap(mapContainerMobile, mobileMap);
+    }
+  },
+);
+
+onBeforeUnmount(() => {
+  destroyMap(desktopMap);
+  destroyMap(mobileMap);
 });
 
 const openFilterMobile = () => {

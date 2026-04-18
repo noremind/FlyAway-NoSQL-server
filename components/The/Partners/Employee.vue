@@ -1,11 +1,7 @@
 <template>
   <section class="employee">
     <div class="employee__wrapper">
-      <img
-        class="employee__avatar"
-        src="@/assets/image/common/avatar-user.jpeg"
-        alt="Employee"
-      />
+      <span class="employee__avatar employee__avatar--empty">Д</span>
       <h3 class="employee__title">Данагуль</h3>
       <p class="employee__prof">Гид</p>
     </div>
@@ -29,6 +25,16 @@
     height: 100px;
     border-radius: 50%;
     object-fit: cover;
+
+    &--empty {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: $white;
+      background: $red-500;
+      font-size: 36px;
+      font-weight: 700;
+    }
   }
   &__title {
     font-size: 24px;

@@ -26,36 +26,77 @@
         Загрузка данных
       </div>
 
-      <table v-else class="ui-table__table">
-        <thead>
-          <tr>
-            <th v-for="column in columns" :key="column.key">
-              <button
-                class="ui-table__sort"
-                type="button"
-                @click="toggleSort(column.key)"
+      <template v-else>
+        <table class="ui-table__table">
+          <thead>
+            <tr>
+              <th v-for="column in columns" :key="column.key">
+                <button
+                  class="ui-table__sort"
+                  type="button"
+                  @click="toggleSort(column.key)"
+                >
+                  <span>{{ column.label }}</span>
+                  <span class="ui-table__sort-icon">
+                    {{ sortIcon(column.key) }}
+                  </span>
+                </button>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="row in paginatedRows" :key="row._id || row.id">
+              <td v-for="column in columns" :key="column.key">
+                <NuxtLink
+                  v-if="column.type === 'link'"
+                  class="ui-table__link"
+                  :to="resolveLink(column, row)"
+                >
+                  {{ resolveLinkText(column, row) }}
+                </NuxtLink>
+                <template v-else>
+                  {{ formatValue(getValue(row, column.key)) }}
+                </template>
+              </td>
+            </tr>
+            <tr v-if="!paginatedRows.length">
+              <td class="ui-table__empty" :colspan="columns.length">
+                Данных пока нет
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="ui-table__mobile">
+          <article
+            v-for="row in paginatedRows"
+            :key="row._id || row.id"
+            class="ui-table__card"
+          >
+            <div
+              v-for="column in columns"
+              :key="column.key"
+              class="ui-table__card-row"
+            >
+              <span class="ui-table__card-label">{{ column.label }}</span>
+              <span v-if="column.type !== 'link'" class="ui-table__card-value">
+                {{ formatValue(getValue(row, column.key)) }}
+              </span>
+              <NuxtLink
+                v-else
+                class="ui-table__link"
+                :to="resolveLink(column, row)"
               >
-                <span>{{ column.label }}</span>
-                <span class="ui-table__sort-icon">
-                  {{ sortIcon(column.key) }}
-                </span>
-              </button>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="row in paginatedRows" :key="row._id || row.id">
-            <td v-for="column in columns" :key="column.key">
-              {{ formatValue(getValue(row, column.key)) }}
-            </td>
-          </tr>
-          <tr v-if="!paginatedRows.length">
-            <td class="ui-table__empty" :colspan="columns.length">
-              Данных пока нет
-            </td>
-          </tr>
-        </tbody>
-      </table>
+                {{ resolveLinkText(column, row) }}
+              </NuxtLink>
+            </div>
+          </article>
+
+          <div v-if="!paginatedRows.length" class="ui-table__mobile-empty">
+            Данных пока нет
+          </div>
+        </div>
+      </template>
     </div>
 
     <div v-if="showPagination" class="ui-table__pagination">
@@ -125,7 +166,13 @@ const getValue = (row, key) => {
 
 const normalizeValue = (value) => {
   if (value === null || value === undefined) return "";
-  if (Array.isArray(value)) return value.join(" ");
+  if (Array.isArray(value)) {
+    return value
+      .map((item) =>
+        typeof item === "object" ? Object.values(item).join(" ") : String(item),
+      )
+      .join(" ");
+  }
   if (typeof value === "object") return Object.values(value).join(" ");
   return String(value);
 };
@@ -133,11 +180,27 @@ const normalizeValue = (value) => {
 const formatValue = (value) => {
   if (value === null || value === undefined || value === "") return "-";
 
+  if (typeof value === "boolean") {
+    return value ? "Да" : "Нет";
+  }
+
+  if (Array.isArray(value)) {
+    return value.length ? value.length : "-";
+  }
+
   if (typeof value === "string" && /^\d{4}-\d{2}-\d{2}T/.test(value)) {
     return new Date(value).toLocaleDateString("ru-RU");
   }
 
   return value;
+};
+
+const resolveLink = (column, row) => {
+  return typeof column.to === "function" ? column.to(row) : column.to;
+};
+
+const resolveLinkText = (column, row) => {
+  return typeof column.text === "function" ? column.text(row) : column.text || "Открыть";
 };
 
 const filteredRows = computed(() => {
@@ -220,9 +283,9 @@ watch(totalPages, (pages) => {
     align-items: center;
     justify-content: space-between;
     gap: 16px;
-    padding: 14px;
-    background: $surface-150;
-    border: 1px solid $surface-300;
+    padding: 14px 16px;
+    background: rgba(255, 255, 255, 0.88);
+    border: 1px solid rgba($red-500, 0.1);
     border-radius: 8px;
   }
 
@@ -245,7 +308,7 @@ watch(totalPages, (pages) => {
     gap: 8px;
     padding: 10px 12px;
     background: $white;
-    border: 1px solid $surface-300;
+    border: 1px solid rgba($red-500, 0.1);
     border-radius: 8px;
 
     input {
@@ -258,9 +321,10 @@ watch(totalPages, (pages) => {
   &__frame {
     width: 100%;
     overflow-x: auto;
-    background: $white;
-    border: 1px solid $surface-300;
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid rgba($red-500, 0.1);
     border-radius: 8px;
+    box-shadow: 0 18px 38px rgba(32, 36, 38, 0.05);
   }
 
   &__table {
@@ -274,14 +338,14 @@ watch(totalPages, (pages) => {
     padding: 14px 16px;
     text-align: left;
     color: $surface-900;
-    border-bottom: 1px solid $surface-300;
+    border-bottom: 1px solid rgba($red-500, 0.08);
     font-size: 14px;
   }
 
   th {
     color: $red-500;
     font-weight: 700;
-    background: $surface-150;
+    background: rgba($red-500, 0.04);
   }
 
   tr {
@@ -354,8 +418,8 @@ watch(totalPages, (pages) => {
     min-height: 36px;
     padding: 8px 12px;
     color: $surface-900;
-    background: $white;
-    border: 1px solid $surface-300;
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid rgba($red-500, 0.1);
     border-radius: 8px;
     transition:
       color 0.2s ease,
@@ -373,6 +437,74 @@ watch(totalPages, (pages) => {
       opacity: 0.5;
       cursor: not-allowed;
     }
+  }
+
+  &__mobile {
+    display: none;
+    padding: 12px;
+  }
+
+  &__card {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 14px;
+    background: #fff;
+    border: 1px solid rgba($red-500, 0.1);
+    border-radius: 8px;
+
+    & + & {
+      margin-top: 10px;
+    }
+  }
+
+  &__card-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba($red-500, 0.08);
+
+    &:last-child {
+      padding-bottom: 0;
+      border-bottom: 0;
+    }
+  }
+
+  &__card-label {
+    color: $surface-500;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  &__card-value {
+    max-width: 58%;
+    color: $surface-900;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: right;
+    word-break: break-word;
+  }
+
+  &__mobile-empty {
+    padding: 30px 16px;
+    color: $surface-400;
+    text-align: center;
+  }
+
+  &__link {
+    width: fit-content;
+    min-height: 34px;
+    display: inline-flex;
+    align-items: center;
+    padding: 0 12px;
+    color: $red-500;
+    background: rgba($red-500, 0.06);
+    border: 1px solid rgba($red-500, 0.12);
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 700;
   }
 }
 
@@ -395,6 +527,14 @@ watch(totalPages, (pages) => {
 
     &__pagination {
       justify-content: flex-start;
+    }
+
+    &__table {
+      display: none;
+    }
+
+    &__mobile {
+      display: block;
     }
   }
 }

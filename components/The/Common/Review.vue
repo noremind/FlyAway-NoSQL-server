@@ -7,11 +7,7 @@
       <div class="review__inner">
         <div class="review__header">
           <div class="review__header-box">
-            <img
-              class="review__avatar"
-              src="@/assets/image/common/avatar-user.jpeg"
-              alt="Avatar"
-            />
+            <span class="review__avatar review__avatar--empty">Д</span>
             <div class="review__header-inner">
               <p class="review__name">Дана Дайланова</p>
               <span class="review__date">сегодня в 12:00</span>
@@ -96,6 +92,17 @@ const props = defineProps({
     height: 40px;
     object-fit: cover;
     border-radius: 50%;
+
+    &--empty {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: $white;
+      background: $red-500;
+      font-size: 16px;
+      font-weight: 700;
+    }
+
     &--small {
       width: 24px;
       height: 24px;

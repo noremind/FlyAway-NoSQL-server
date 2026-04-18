@@ -20,11 +20,13 @@
               class="search__start-date"
               placeholder="17.12.2024"
               :have-icon="false"
+              label="Дата от"
             ></UiCalendar>
             <UiIcons icon="arrow" color="red-500" size="size-14"></UiIcons>
             <UiCalendar
               class="search__start-date"
               placeholder="17.12.2024"
+              label="Дата до"
             ></UiCalendar>
           </div>
         </div>
@@ -95,18 +97,22 @@ const selectedTab = ref(tabs[0]);
     margin: 12px;
   }
   &__box {
+    min-width: 0;
+
     &-calendar {
-      display: flex;
-      border: 1px solid $surface-300;
+      display: grid;
+      grid-template-columns: minmax(190px, 1fr) auto minmax(190px, 1fr);
+      gap: 12px;
+      align-items: end;
       padding: 3px;
-      align-items: center;
       border-radius: 26px;
+      min-width: 0;
     }
   }
   &__btn {
     max-width: 215px;
     width: 100%;
-    margin: auto 0 0 0;
+    margin: 20px 0 0 0;
     padding: 12px 16px;
     white-space: nowrap;
   }
@@ -120,6 +126,7 @@ const selectedTab = ref(tabs[0]);
     display: flex;
     gap: 36px;
     justify-content: center;
+    align-items: center;
     flex-wrap: wrap;
     width: 100%;
   }
@@ -128,6 +135,11 @@ const selectedTab = ref(tabs[0]);
     display: flex;
     margin-top: 0px;
     padding: 3.2px;
+    min-width: 0;
+  }
+
+  :deep(.calendar__label) {
+    white-space: nowrap;
   }
 }
 
@@ -137,6 +149,11 @@ const selectedTab = ref(tabs[0]);
     top: -10px;
     &__filter {
       gap: 12px;
+    }
+
+    &__box-calendar {
+      grid-template-columns: 1fr;
+      justify-items: stretch;
     }
   }
 }

@@ -9,15 +9,7 @@
 
       <h4 class="login-user__title">Войти</h4>
 
-      <button
-        class="login-user__switch"
-        type="button"
-        @click="toggleLoginType"
-      >
-        {{ isPartnerLogin ? "Войти как пользователь" : "Войти как партнер" }}
-      </button>
-
-      <form class="login-user__form" >
+      <form class="login-user__form">
         <UiInput
           placeholder="mail@example.com"
           label="Email"
@@ -47,6 +39,14 @@
             {{ errorMessage }}
           </p>
         </div>
+
+        <button
+          class="login-user__switch"
+          type="button"
+          @click="toggleLoginType"
+        >
+          {{ isPartnerLogin ? "Войти как пользователь" : "Войти как партнер" }}
+        </button>
 
         <UiButton
           :label="isPartnerLogin ? 'Войти как партнер' : 'Войти'"
@@ -105,9 +105,7 @@ const postLogin = () => {
         emit("nextStep", {
           goTo: res.user?.role === "partner" ? "/admin" : "/profile",
           title:
-            res.user?.role === "partner"
-              ? "Вы вошли как партнер"
-              : "Вы вошли",
+            res.user?.role === "partner" ? "Вы вошли как партнер" : "Вы вошли",
           btnLabel:
             res.user?.role === "partner"
               ? "Перейти в админ-панель"
@@ -171,7 +169,7 @@ watch(
     }
     &-eye {
       position: absolute;
-      top: 28px;
+      top: 36px;
       right: 13px;
       cursor: pointer;
     }

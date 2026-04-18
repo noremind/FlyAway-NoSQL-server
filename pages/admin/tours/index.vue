@@ -2,9 +2,7 @@
   <section>
     <TheAdminCommonPageHeader
       title="Туры"
-      description="Каталог туров, цены, скидки и привязка к партнерам."
-      action-to="/admin/tours/create"
-      action-label="Создать тур"
+      description="Список туров с быстрым переходом к редактированию."
     />
 
     <UiTable :columns="columns" :rows="tours" :loading="isLoading" />
@@ -17,6 +15,11 @@ definePageMeta({
   middleware: "admin",
 });
 
+useSeo({
+  title: "Туры",
+  description: "Управление турами в админ-панели FlyAway.",
+});
+
 const tours = ref([]);
 const isLoading = ref(false);
 const columns = [
@@ -25,13 +28,20 @@ const columns = [
   { key: "price", label: "Цена" },
   { key: "discount", label: "Скидка" },
   { key: "rating", label: "Рейтинг" },
+  {
+    key: "_id",
+    label: "Действие",
+    type: "link",
+    to: (row) => `/admin/tours/${row._id}`,
+    text: "Открыть",
+  },
 ];
 
 const loadTours = async () => {
   isLoading.value = true;
 
   try {
-    const res = await useApi().client({ url: "/tours" });
+    const res = await useApi().client({ url: "/tours/manage" });
     tours.value = res.data || [];
   } finally {
     isLoading.value = false;

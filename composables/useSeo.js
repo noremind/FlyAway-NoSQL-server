@@ -1,12 +1,22 @@
 export function useSeo({ title, description }) {
-	let logotype = "https://flyaway-project.vercel.app/assets/logo/FlyAwayLogo-full.png";
+	const logotype =
+		"https://flyaway-project.vercel.app/assets/logo/FlyAwayLogo-full.png"
+
+	const resolvedTitle = computed(() => {
+		const value = unref(title)
+		return value ? `FlyAway - ${value}` : "FlyAway"
+	})
+
+	const resolvedDescription = computed(() => {
+		return unref(description) || "FlyAway"
+	})
 
 	useSeoMeta({
-		title: `FlyAway - ${title}`,
-		ogTitle: `FlyAway - ${title}`,
-		description: description,
-		ogDescription: description,
+		title: resolvedTitle,
+		ogTitle: resolvedTitle,
+		description: resolvedDescription,
+		ogDescription: resolvedDescription,
 		image: logotype,
 		ogImage: logotype,
-	});
+	})
 }

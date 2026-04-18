@@ -1,13 +1,18 @@
 <template>
-  <div class="select" :class="{ 'select--margin': !!label }">
-    <p class="select__label">{{ label }}</p>
-    <Select
-      v-model="model"
-      :options="options"
-      :optionLabel="optionLabel"
-      :placeholder="placeholder"
-      class="select__field"
-    />
+  <div class="select">
+    <label v-if="label" class="select__label">{{ label }}</label>
+
+    <div class="select__wrapper" :class="{ 'select__wrapper--disabled': disabled }">
+      <Select
+        v-model="model"
+        :options="options"
+        :optionLabel="optionLabel"
+        :optionValue="optionValue || undefined"
+        :placeholder="placeholder"
+        :disabled="disabled"
+        class="select__field"
+      />
+    </div>
   </div>
 </template>
 
@@ -16,8 +21,8 @@ import Select from "primevue/select";
 
 const props = defineProps({
   modelValue: {
-    type: Object,
-    default: () => ({}),
+    type: [String, Number, Object, Boolean, Array],
+    default: null,
   },
   options: {
     type: Array,
@@ -27,6 +32,10 @@ const props = defineProps({
     type: String,
     default: "name",
   },
+  optionValue: {
+    type: String,
+    default: "",
+  },
   placeholder: {
     type: String,
     default: "",
@@ -35,23 +44,44 @@ const props = defineProps({
     type: String,
     default: "",
   },
+  disabled: Boolean,
 });
-const model = ref(props.modelValue);
+const emit = defineEmits(["update:modelValue"]);
+
+const model = computed({
+  get: () => props.modelValue,
+  set: (value) => emit("update:modelValue", value),
+});
 </script>
 
 <style lang="scss" scoped>
 .select {
-  position: relative;
-  border: 1px solid $surface-300;
-  border-radius: 26px;
-  &--margin {
-    margin-top: 17px;
-  }
   &__label {
-    position: absolute;
-    top: -18px;
+    display: block;
+    margin-bottom: 6px;
     font-size: 14px;
-    font-weight: 400;
+    font-weight: 500;
+    color: $surface-900;
+  }
+
+  &__wrapper {
+    border: 1px solid $surface-300;
+    border-radius: 26px;
+    background: $white;
+    box-shadow: 0 8px 20px rgba(32, 36, 38, 0.06);
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease;
+
+    &:focus-within {
+      border-color: rgba($red-500, 0.55);
+      box-shadow: 0 10px 24px rgba($red-500, 0.1);
+    }
+
+    &--disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+    }
   }
 }
 </style>

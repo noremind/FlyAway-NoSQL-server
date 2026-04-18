@@ -23,8 +23,9 @@ const checkType = (banner) => {
     case "our_hotel":
       router.push(`/hotels/${banner.link}`);
       break;
+    case "our_partner":
     case "out_partner":
-      router.push(`/tours/${banner.link}`);
+      router.push(`/partners/${banner.link}`);
       break;
     case "another":
       window.open(banner.link, "_blank");

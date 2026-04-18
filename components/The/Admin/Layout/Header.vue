@@ -1,53 +1,64 @@
 <template>
   <header class="admin-header">
-    <div class="admin-header__title-box">
-      <p class="admin-header__eyebrow">Админ-панель</p>
-      <p class="admin-header__title">Управление FlyAway</p>
+    <div class="admin-header__lead">
+      <button
+        class="admin-header__menu"
+        type="button"
+        aria-label="Открыть меню"
+        @click="toggleNav"
+      >
+        <UiIcons icon="burger-menu" size="size-20" color="red-500" />
+      </button>
     </div>
 
-    <div class="admin-header__profile" ref="profileRef">
-      <button class="admin-header__user" type="button" @click="toggleDropdown">
-        <img
-          v-if="user?.avatar"
-          class="admin-header__avatar"
-          :src="user.avatar"
-          :alt="userName"
-        />
-        <span v-else class="admin-header__avatar admin-header__avatar--empty">
-          {{ userInitial }}
-        </span>
-
-        <span class="admin-header__meta">
-          <span class="admin-header__name">{{ userName }}</span>
-          <span class="admin-header__role">{{ roleLabel }}</span>
-        </span>
-
-        <UiIcons
-          class="admin-header__chevron"
-          icon="chevron"
-          size="size-14"
-          color="surface-400"
-          :deg="isDropdownOpen ? 'up' : ''"
-        />
-      </button>
-
-      <div v-if="isDropdownOpen" class="admin-header__dropdown">
-        <NuxtLink
-          class="admin-header__dropdown-link"
-          to="/admin/profile"
-          @click="closeDropdown"
-        >
-          <UiIcons icon="profile-user" size="size-17-5" color="red-500" />
-          Профиль
-        </NuxtLink>
+    <div class="admin-header__actions">
+      <div class="admin-header__profile" ref="profileRef">
         <button
-          class="admin-header__dropdown-link"
+          class="admin-header__user"
           type="button"
-          @click="logout"
+          @click="toggleDropdown"
         >
-          <UiIcons icon="login" size="size-17-5" color="red-500" />
-          Выйти
+          <img
+            v-if="userAvatar"
+            class="admin-header__avatar"
+            :src="userAvatar"
+            :alt="userName"
+          />
+          <span v-else class="admin-header__avatar admin-header__avatar--empty">
+            {{ userInitial }}
+          </span>
+
+          <span class="admin-header__meta">
+            <span class="admin-header__name">{{ userName }}</span>
+          </span>
+
+          <UiIcons
+            class="admin-header__chevron"
+            icon="chevron"
+            size="size-14"
+            color="surface-400"
+            :deg="isDropdownOpen ? 'up' : ''"
+          />
         </button>
+
+        <div v-if="isDropdownOpen" class="admin-header__dropdown">
+          <NuxtLink
+            class="admin-header__dropdown-link"
+            to="/admin/profile"
+            @click="closeDropdown"
+          >
+            <UiIcons icon="profile-user" size="size-17-5" color="red-500" />
+            Профиль
+          </NuxtLink>
+          <button
+            class="admin-header__dropdown-link"
+            type="button"
+            @click="logout"
+          >
+            <UiIcons icon="login" size="size-17-5" color="red-500" />
+            Выйти
+          </button>
+        </div>
       </div>
     </div>
   </header>
@@ -55,22 +66,34 @@
 
 <script setup>
 const userStore = useAuthStore();
+const isNavOpen = useState("admin-nav-open", () => false);
 const user = computed(() => userStore.getUser);
 const isDropdownOpen = ref(false);
 const profileRef = ref(null);
 
-const roleNames = {
-  admin: "Администратор",
-  partner: "Партнер",
-  user: "Пользователь",
-};
+const sessionPartner = computed(() => user.value?.partner || null);
+const userName = computed(() => {
+  if (user.value?.role === "partner") {
+    return sessionPartner.value?.title || user.value?.name || "Партнер";
+  }
 
-const userName = computed(() => user.value?.name || "Администратор");
-const roleLabel = computed(() => roleNames[user.value?.role] || "Администратор");
+  return user.value?.name || "Администратор";
+});
+const userAvatar = computed(() => {
+  if (user.value?.role === "partner") {
+    return sessionPartner.value?.logo || sessionPartner.value?.avatar || user.value?.avatar || null;
+  }
+
+  return user.value?.avatar || null;
+});
 const userInitial = computed(() => userName.value.charAt(0).toUpperCase());
 
 const toggleDropdown = () => {
   isDropdownOpen.value = !isDropdownOpen.value;
+};
+
+const toggleNav = () => {
+  isNavOpen.value = !isNavOpen.value;
 };
 
 const closeDropdown = () => {
@@ -104,27 +127,27 @@ onBeforeUnmount(() => {
   align-items: center;
   justify-content: space-between;
   gap: 24px;
-  padding: 18px 28px;
-  background: $white;
-  border-bottom: 1px solid $surface-300;
+  padding: 16px 28px;
+  background: rgba(255, 255, 255, 0.84);
+  border-bottom: 1px solid rgba($red-500, 0.08);
+  backdrop-filter: blur(12px);
 
-  &__title-box {
+  &__lead,
+  &__actions {
     display: flex;
-    flex-direction: column;
-    gap: 6px;
+    align-items: center;
+    gap: 16px;
   }
 
-  &__eyebrow {
-    color: $red-500;
-    font-size: 12px;
-    font-weight: 700;
-    text-transform: uppercase;
-  }
-
-  &__title {
-    color: $surface-900;
-    font-size: 20px;
-    font-weight: 700;
+  &__menu {
+    display: none;
+    width: 42px;
+    height: 42px;
+    align-items: center;
+    justify-content: center;
+    background: rgba($red-500, 0.08);
+    border: 1px solid rgba($red-500, 0.12);
+    border-radius: 8px;
   }
 
   &__profile {
@@ -137,9 +160,10 @@ onBeforeUnmount(() => {
     gap: 12px;
     min-width: 220px;
     padding: 8px 12px;
-    background: $surface-150;
-    border: 1px solid $surface-300;
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid rgba($red-500, 0.12);
     border-radius: 8px;
+    box-shadow: 0 14px 30px rgba(32, 36, 38, 0.08);
     transition:
       border-color 0.2s ease,
       background-color 0.2s ease,
@@ -188,11 +212,6 @@ onBeforeUnmount(() => {
     white-space: nowrap;
   }
 
-  &__role {
-    color: $surface-400;
-    font-size: 12px;
-  }
-
   &__chevron {
     transition: transform 0.2s ease;
   }
@@ -208,7 +227,7 @@ onBeforeUnmount(() => {
     gap: 6px;
     padding: 8px;
     background: $white;
-    border: 1px solid $surface-300;
+    border: 1px solid rgba($red-500, 0.12);
     border-radius: 8px;
     box-shadow: 0 14px 34px rgba(32, 36, 38, 0.12);
     animation: dropdownAppear 0.18s ease;
@@ -229,7 +248,7 @@ onBeforeUnmount(() => {
 
     &:hover {
       color: $red-500;
-      background: $surface-150;
+      background: rgba($red-500, 0.06);
     }
   }
 }
@@ -249,17 +268,37 @@ onBeforeUnmount(() => {
   .admin-header {
     align-items: stretch;
     flex-direction: column;
-    padding: 16px;
+    padding: 14px 16px;
 
-    &__user {
+    &__lead,
+    &__actions {
       width: 100%;
-      min-width: 0;
+    }
+
+    &__lead {
+      align-items: flex-start;
+    }
+
+    &__actions {
+      flex-wrap: wrap;
+    }
+
+    &__menu {
+      display: inline-flex;
     }
 
     &__dropdown {
       left: 0;
       right: auto;
       width: 100%;
+    }
+  }
+}
+
+@media (min-width: 701px) and (max-width: 1024px) {
+  .admin-header {
+    &__menu {
+      display: inline-flex;
     }
   }
 }

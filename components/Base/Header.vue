@@ -59,12 +59,20 @@
           </button>
 
           <img
-            v-else
+            v-else-if="user?.avatar"
             class="header__avatar"
             @click="openDropdownMenu"
             :src="user?.avatar"
             alt="Avatar"
           />
+          <button
+            v-else
+            class="header__avatar header__avatar--empty"
+            type="button"
+            @click="openDropdownMenu"
+          >
+            {{ userInitial }}
+          </button>
 
           <TheHeaderDropdown
             v-if="isOpenDropdownMenu"
@@ -100,6 +108,7 @@ const isOpenDropdownMenu = ref(false);
 const isOpenMobileNavMenu = ref(false);
 const userStore = useAuthStore();
 const user = computed(() => userStore.getUser);
+const userInitial = computed(() => (user.value?.name || "U").charAt(0).toUpperCase());
 const cities = reactive([
   {
     id: 1,
@@ -191,10 +200,11 @@ watch(
     }
   }
   &__city {
-    background-color: $surface-150;
-    font-size: 14px;
-    border-radius: 16px;
-    border: none;
+    :deep(.select__wrapper) {
+      background-color: $surface-150;
+      border: none;
+      box-shadow: none;
+    }
   }
   &__avatar {
     width: 44px;
@@ -202,6 +212,16 @@ watch(
     border-radius: 50%;
     object-fit: cover;
     cursor: pointer;
+
+    &--empty {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: $white;
+      background: $red-500;
+      font-size: 16px;
+      font-weight: 700;
+    }
   }
   &__inner {
     display: flex;

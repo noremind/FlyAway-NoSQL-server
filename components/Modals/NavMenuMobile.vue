@@ -2,12 +2,7 @@
   <div class="menu">
     <div class="menu__wrapper">
       <div class="menu__avatar">
-        <img
-          class="menu__avatar-img"
-          src="@/assets/image/common/avatar-user.jpeg"
-          alt="Avatar"
-        />
-        <button class="menu__avatar-default">
+        <button class="menu__avatar-default" type="button">
           <UiIcons icon="profile-user" color="red-500" size="size-32"></UiIcons>
         </button>
       </div>

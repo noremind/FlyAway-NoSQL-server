@@ -2,15 +2,10 @@
   <section>
     <TheAdminCommonPageHeader
       title="FAQ"
-      description="Раздел для будущего управления частыми вопросами."
+      description="Короткие ответы на частые вопросы."
     />
 
-    <div class="admin-list">
-      <div v-for="item in items" :key="item.title" class="admin-list__item">
-        <h2 class="admin-list__title">{{ item.title }}</h2>
-        <p class="admin-list__text">{{ item.text }}</p>
-      </div>
-    </div>
+    <UiAccordion :items="items" />
   </section>
 </template>
 
@@ -20,39 +15,23 @@ definePageMeta({
   middleware: "admin",
 });
 
+useSeo({
+  title: "FAQ",
+  description: "Частые вопросы в админ-панели FlyAway.",
+});
+
 const items = [
   {
     title: "Бронирование",
-    text: "Здесь появятся вопросы о турах, оплате и отмене.",
+    text: "Покупка, оплата и отмена будут собраны здесь в одном компактном блоке.",
   },
   {
     title: "Партнеры",
-    text: "Здесь появятся вопросы для партнерских аккаунтов.",
+    text: "Здесь будут правила по доступам, публикации туров и редактированию предложений.",
+  },
+  {
+    title: "Бонусы",
+    text: "После запуска бонусного потока сюда можно вынести правила начисления и списания.",
   },
 ];
 </script>
-
-<style lang="scss" scoped>
-.admin-list {
-  display: grid;
-  gap: 14px;
-
-  &__item {
-    padding: 18px;
-    background: $white;
-    border: 1px solid $surface-300;
-    border-radius: 8px;
-  }
-
-  &__title {
-    color: $surface-900;
-    font-size: 18px;
-    font-weight: 700;
-  }
-
-  &__text {
-    margin-top: 8px;
-    color: $surface-400;
-  }
-}
-</style>

@@ -110,7 +110,13 @@
 <script setup>
 const isOpenBonusModal = ref(false);
 const isOpenOverlay = ref(false);
-const wallet = ref(null);
+const api = useApi();
+const wallet = ref({
+  balance: 0,
+  bonusBalance: 0,
+  currency: "KZT",
+  transactions: [],
+});
 
 useSeoMeta({
   title: "FlyAway - Мой транзакции",
@@ -120,12 +126,22 @@ useSeoMeta({
 });
 
 const getWallet = () => {
-  useApi({
-    url: "/personal-cabinet/wallet",
-    method: "get",
-  }).then((res) => {
-    wallet.value = res.data;
-  });
+  api
+    .client({
+      url: "/personal-cabinet/wallet",
+      method: "get",
+    })
+    .then((res) => {
+      wallet.value = res.data;
+    })
+    .catch(() => {
+      wallet.value = {
+        balance: 0,
+        bonusBalance: 0,
+        currency: "KZT",
+        transactions: [],
+      };
+    });
 };
 getWallet();
 

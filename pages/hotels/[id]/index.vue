@@ -737,8 +737,11 @@ const isOpenMobileStatusPayment = ref(null);
 
 const date = new Date();
 const yandexMapInfo = ref(null);
+const { createMap } = useYandexMaps();
 
 const isMapReady = ref(false);
+const infoMap = shallowRef(null);
+const mapCenter = [76.889709, 43.238949];
 
 const hotel = ref(null);
 const route = useRoute();
@@ -750,8 +753,48 @@ useFetchSsr({
   hotel.value = res.data;
 });
 
-onMounted(() => {
-  getInfoMap();
+const destroyInfoMap = () => {
+  if (infoMap.value && typeof infoMap.value.destroy === "function") {
+    infoMap.value.destroy();
+  }
+
+  infoMap.value = null;
+};
+
+const getInfoMap = async () => {
+  if (!yandexMapInfo.value || infoMap.value) {
+    return;
+  }
+
+  try {
+    infoMap.value = await createMap({
+      container: yandexMapInfo.value,
+      center: mapCenter,
+      zoom: 10,
+      markerCoordinates: mapCenter,
+      markerText: "Алматы",
+    });
+    isMapReady.value = true;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+watch(
+  () => hotel.value,
+  async (value) => {
+    if (!value) {
+      return;
+    }
+
+    await nextTick();
+    await getInfoMap();
+  },
+  { immediate: true },
+);
+
+onBeforeUnmount(() => {
+  destroyInfoMap();
 });
 
 // Step 1
@@ -817,32 +860,7 @@ const closePaymentModal = () => {
   isOpenPayment.value = false;
 };
 
-const getInfoMap = () => {
-  if (typeof ymaps !== "undefined") {
-    ymaps.ready(() => {
-      const map = new ymaps.Map(yandexMapInfo.value, {
-        center: [43.238949, 76.889709],
-        zoom: 10,
-        controls: [],
-      });
-      const placemark = new ymaps.Placemark(
-        [55.751574, 37.573856],
-        {
-          balloonContent: "This is Almaty!",
-        },
-        {
-          preset: "islands#icon",
-          iconColor: "#0095b6",
-        },
-      );
-
-      map.geoObjects.add(placemark);
-    });
-    isMapReady.value = true;
-  } else {
-    console.error("Yandex Maps API is not loaded.");
-  }
-};
+ 
 </script>
 
 <style lang="scss" scoped>
