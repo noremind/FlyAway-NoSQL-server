@@ -6,6 +6,7 @@ import { hotelRoutes } from "./hotels.js"
 import { partnerRoutes } from './partners.js'
 import adRoutes from "./ad.js";
 import { bannerRoutes } from "./banner.js";
+import { promoCodeRoutes } from "./promocodes.js"
 import { storageRoutes } from "./storage.js"
 import { tourRoutes } from "./tours.js"
 import { devRoutes } from "./dev.js"
@@ -25,6 +26,7 @@ router.use("/users", userRoutes)
 router.use("/hotels", hotelRoutes)
 router.use("/partners", partnerRoutes)
 router.use("/personal-cabinet", personalCabinetRoutes)
+router.use("/promocodes", promoCodeRoutes)
 router.use("/dev", devRoutes)
 
 export default router

@@ -1,10 +1,56 @@
 import HotelModel from "../models/Hotel.js"
 import PartnerModel from "../models/Partner.js"
 
+const normalizeString = (value) => {
+	if (value === null || value === undefined) return ""
+	return String(value).trim()
+}
+
+const escapeRegExp = (value) =>
+	String(value).replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+
+const normalizeQueryDate = (value) => {
+	const normalized = normalizeString(value)
+
+	if (!/^\d{4}-\d{2}-\d{2}$/.test(normalized)) {
+		return ""
+	}
+
+	return normalized
+}
+
 export const getHotels = async (req, res) => {
 	try {
-		const hotel = await HotelModel.find().populate("partner")
-		res.json({ data: hotel })
+		const search = normalizeString(req.query.search)
+		const checkIn = normalizeQueryDate(req.query.checkIn)
+		const checkOut = normalizeQueryDate(req.query.checkOut)
+		const query = {}
+
+		if (search) {
+			const regex = new RegExp(escapeRegExp(search), "i")
+
+			query.$or = [
+				{ name: regex },
+				{ description: regex },
+				{ location: regex },
+				{ content: regex },
+			]
+		}
+
+		const hotels = await HotelModel.find(query)
+			.sort({ createdAt: -1 })
+			.populate("partner")
+
+		res.json({
+			data: hotels,
+			meta: {
+				filters: {
+					search,
+					checkIn: checkIn || null,
+					checkOut: checkOut || null,
+				},
+			},
+		})
 	} catch (error) {
 		console.error("❌ Ошибка получения отелей:", error)
 		res.status(500).json({

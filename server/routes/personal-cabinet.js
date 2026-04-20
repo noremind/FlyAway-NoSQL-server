@@ -1,7 +1,19 @@
 import express from "express"
-import { getWallet } from "../controllers/personalCabinetController.js"
+import {
+	getFavouriteTours,
+	getTourBookings,
+	getWallet,
+	toggleFavouriteTour,
+} from "../controllers/personalCabinetController.js"
 import { requireAuth } from "../middleware/checkAuth.js"
 
 export const personalCabinetRoutes = express.Router()
 
 personalCabinetRoutes.get("/wallet", requireAuth, getWallet)
+personalCabinetRoutes.get("/favourites/tours", requireAuth, getFavouriteTours)
+personalCabinetRoutes.post(
+	"/favourites/tours/:tourId/toggle",
+	requireAuth,
+	toggleFavouriteTour
+)
+personalCabinetRoutes.get("/bookings/tours", requireAuth, getTourBookings)
