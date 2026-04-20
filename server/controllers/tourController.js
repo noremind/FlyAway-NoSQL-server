@@ -16,6 +16,7 @@ const normalizeQueryDate = (value) => {
 
 	if (!/^\d{4}-\d{2}-\d{2}$/.test(normalized)) {
 		return ""
+
 	}
 
 	return normalized
@@ -659,10 +660,10 @@ export const bookTourDate = async (req, res) => {
 		const afterTourDiscount = Math.max(0, subtotal - tourDiscountAmount)
 		const promoResult = normalizeString(req.body.promoCode)
 			? await resolvePromoDiscount({
-					code: req.body.promoCode,
-					subtotal: afterTourDiscount,
-					tourId: tour._id,
-			  })
+				code: req.body.promoCode,
+				subtotal: afterTourDiscount,
+				tourId: tour._id,
+			})
 			: { promo: null, discountAmount: 0 }
 		const promoDiscountAmount = Number(promoResult.discountAmount) || 0
 		const afterPromoDiscount = Math.max(0, afterTourDiscount - promoDiscountAmount)
