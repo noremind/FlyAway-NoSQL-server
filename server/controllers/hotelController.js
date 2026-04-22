@@ -19,6 +19,42 @@ const normalizeQueryDate = (value) => {
 	return normalized
 }
 
+const normalizeImages = (value) =>
+	Array.isArray(value)
+		? value.map((item) => normalizeString(item)).filter(Boolean)
+		: []
+
+const canManageHotel = (req, hotel) => {
+	if (req.userRole === "admin") return true
+	return req.partnerId && String(hotel.partner) === String(req.partnerId)
+}
+
+const buildHotelPayload = (body, partnerId, currentHotel = null) => {
+	const currentData = currentHotel?.toObject ? currentHotel.toObject() : currentHotel || {}
+
+	return {
+		name: Object.prototype.hasOwnProperty.call(body, "name")
+			? normalizeString(body.name)
+			: normalizeString(currentData.name),
+		partner: partnerId,
+		description: Object.prototype.hasOwnProperty.call(body, "description")
+			? normalizeString(body.description)
+			: normalizeString(currentData.description),
+		rating: Object.prototype.hasOwnProperty.call(body, "rating")
+			? Number(body.rating) || 0
+			: Number(currentData.rating) || 0,
+		images: Object.prototype.hasOwnProperty.call(body, "images")
+			? normalizeImages(body.images)
+			: normalizeImages(currentData.images),
+		location: Object.prototype.hasOwnProperty.call(body, "location")
+			? normalizeString(body.location)
+			: normalizeString(currentData.location),
+		content: Object.prototype.hasOwnProperty.call(body, "content")
+			? normalizeString(body.content)
+			: normalizeString(currentData.content),
+	}
+}
+
 export const getHotels = async (req, res) => {
 	try {
 		const search = normalizeString(req.query.search)
@@ -111,25 +147,109 @@ export const createHotel = async (req, res) => {
 			return res.status(404).json({ message: "Партнер не найден" })
 		}
 
-		const doc = new HotelModel({
-			name: req.body.name,
-			partner: partnerId,
-			description: req.body.description,
-			rating: req.body.rating,
-			images: req.body.images,
-			location: req.body.location,
-			content: req.body.content,
-		})
+		const payload = buildHotelPayload(req.body, partnerId)
 
+		if (!payload.name || !payload.location || !payload.description || !payload.content) {
+			return res.status(400).json({
+				message: "Название, локация, описание и контент обязательны",
+			})
+		}
+
+		const doc = new HotelModel(payload)
 		const hotel = await doc.save()
 		await PartnerModel.findByIdAndUpdate(partnerId, {
 			$addToSet: { hotels: hotel._id },
 		})
-		res.json({ data: hotel })
+		const savedHotel = await HotelModel.findById(hotel._id).populate("partner")
+		res.json({ data: savedHotel })
 	} catch (error) {
 		console.log(error)
 		res.status(500).json({
 			message: "Ошибка при создании отеля",
+		})
+	}
+}
+
+export const updateHotel = async (req, res) => {
+	try {
+		const hotel = await HotelModel.findById(req.params.id)
+
+		if (!hotel) {
+			return res.status(404).json({ message: "Отель не найден" })
+		}
+
+		if (!canManageHotel(req, hotel)) {
+			return res.status(403).json({ message: "Нет доступа к редактированию отеля" })
+		}
+
+		const currentPartnerId = String(hotel.partner)
+		const nextPartnerId =
+			req.userRole === "partner"
+				? req.partnerId
+				: normalizeString(req.body.partner) || currentPartnerId
+
+		const partner = await PartnerModel.findById(nextPartnerId)
+
+		if (!partner) {
+			return res.status(404).json({ message: "Партнер не найден" })
+		}
+
+		const payload = buildHotelPayload(req.body, nextPartnerId, hotel)
+
+		if (!payload.name || !payload.location || !payload.description || !payload.content) {
+			return res.status(400).json({
+				message: "Название, локация, описание и контент обязательны",
+			})
+		}
+
+		Object.assign(hotel, payload)
+		await hotel.save()
+
+		if (currentPartnerId !== String(nextPartnerId)) {
+			await PartnerModel.findByIdAndUpdate(currentPartnerId, {
+				$pull: { hotels: hotel._id },
+			})
+		}
+
+		await PartnerModel.findByIdAndUpdate(nextPartnerId, {
+			$addToSet: { hotels: hotel._id },
+		})
+
+		const updatedHotel = await HotelModel.findById(hotel._id).populate("partner")
+		return res.json({
+			message: "Отель обновлен",
+			data: updatedHotel,
+		})
+	} catch (error) {
+		console.error("Ошибка при обновлении отеля:", error)
+		return res.status(500).json({
+			message: "Ошибка при обновлении отеля",
+		})
+	}
+}
+
+export const deleteHotel = async (req, res) => {
+	try {
+		const hotel = await HotelModel.findById(req.params.id)
+
+		if (!hotel) {
+			return res.status(404).json({ message: "Отель не найден" })
+		}
+
+		if (!canManageHotel(req, hotel)) {
+			return res.status(403).json({ message: "Нет доступа к удалению отеля" })
+		}
+
+		await HotelModel.deleteOne({ _id: hotel._id })
+		await PartnerModel.findByIdAndUpdate(hotel.partner, {
+			$pull: { hotels: hotel._id },
+		})
+
+		return res.json({ message: "Отель удален" })
+	} catch (error) {
+		console.error("Ошибка при удалении отеля:", error)
+		return res.status(500).json({
+			message: "Ошибка при удалении отеля",
 		})
 	}
 }
