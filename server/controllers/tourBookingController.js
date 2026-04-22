@@ -66,6 +66,34 @@ const serializeBooking = (booking, user = null) => {
 	}
 }
 
+const refundCancelledBooking = ({ booking, user, tour }) => {
+	const refundAmount = Math.max(0, Number(booking?.total) || 0)
+	const refundedBonuses = Math.max(0, Number(booking?.paidWithBonuses) || 0)
+	const bookingLabel = normalizeString(tour?.title) || "Бронирование тура"
+	const bookingDateLabel = normalizeString(booking?.date) || "без даты"
+
+	if (refundAmount > 0) {
+		user.walletTransactions.unshift({
+			name: bookingLabel,
+			type: "Возврат",
+			amount: refundAmount,
+			currency: "KZT",
+			note: `Возврат по отмене бронирования (${bookingDateLabel})`,
+		})
+	}
+
+	if (refundedBonuses > 0) {
+		user.bonusBalance = Math.max(0, Number(user.bonusBalance) || 0) + refundedBonuses
+		user.walletTransactions.unshift({
+			name: bookingLabel,
+			type: "Бонусы",
+			amount: refundedBonuses,
+			currency: "BONUS",
+			note: "Возврат бонусов при отмене бронирования",
+		})
+	}
+}
+
 const getManagedTourFilter = async (req) => {
 	if (req.userRole === "admin") {
 		return null
@@ -182,6 +210,8 @@ export const updateManagedTourBookingStatus = async (req, res) => {
 						(Number(slot.bookedSeats) || 0) - (Number(booking.guests) || 0)
 					)
 				}
+
+				refundCancelledBooking({ booking, user, tour })
 			}
 
 			booking.status = nextStatus
@@ -253,6 +283,7 @@ export const cancelOwnTourBooking = async (req, res) => {
 				)
 			}
 
+			refundCancelledBooking({ booking, user, tour })
 			booking.status = "cancelled"
 
 			await tour.save({ session })
