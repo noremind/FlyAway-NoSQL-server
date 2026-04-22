@@ -69,6 +69,10 @@ const serializeBooking = (booking, user = null) => {
 const refundCancelledBooking = ({ booking, user, tour }) => {
 	const refundAmount = Math.max(0, Number(booking?.total) || 0)
 	const refundedBonuses = Math.max(0, Number(booking?.paidWithBonuses) || 0)
+	const accruedBonusRollback =
+		normalizeString(booking?.paymentMethod) === "bonus"
+			? 0
+			: Math.max(0, Math.floor(refundAmount * 0.05))
 	const bookingLabel = normalizeString(tour?.title) || "Бронирование тура"
 	const bookingDateLabel = normalizeString(booking?.date) || "без даты"
 
@@ -90,6 +94,20 @@ const refundCancelledBooking = ({ booking, user, tour }) => {
 			amount: refundedBonuses,
 			currency: "BONUS",
 			note: "Возврат бонусов при отмене бронирования",
+		})
+	}
+
+	if (accruedBonusRollback > 0) {
+		user.bonusBalance = Math.max(
+			0,
+			Math.max(0, Number(user.bonusBalance) || 0) - accruedBonusRollback
+		)
+		user.walletTransactions.unshift({
+			name: bookingLabel,
+			type: "Бонусы",
+			amount: -accruedBonusRollback,
+			currency: "BONUS",
+			note: "Отмена ранее начисленных бонусов за бронирование",
 		})
 	}
 }
