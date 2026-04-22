@@ -34,6 +34,17 @@ const normalizePositiveNumber = (value) => {
 	return Number.isFinite(parsed) && parsed >= 0 ? parsed : null
 }
 
+const normalizePositiveInteger = (value, fallback) => {
+	const normalized = normalizeString(value)
+
+	if (!normalized) {
+		return fallback
+	}
+
+	const parsed = Number.parseInt(normalized, 10)
+	return Number.isFinite(parsed) && parsed > 0 ? parsed : fallback
+}
+
 const normalizeSortBy = (value) => {
 	const normalized = normalizeString(value)
 	const allowedValues = new Set([
@@ -381,6 +392,11 @@ export const getTours = async (req, res) => {
 		const duration = normalizeString(req.query.duration)
 		const location = normalizeString(req.query.location)
 		const sortBy = normalizeSortBy(req.query.sortBy)
+		const page = normalizePositiveInteger(req.query.page, 1)
+		const perPage = Math.min(
+			24,
+			normalizePositiveInteger(req.query.per_page ?? req.query.perPage, 9)
+		)
 		const normalizedSearch = search.toLowerCase()
 		const normalizedDuration = duration.toLowerCase()
 		const normalizedLocation = location.toLowerCase()
@@ -445,10 +461,23 @@ export const getTours = async (req, res) => {
 			})
 			.sort((left, right) => compareTours(left, right, sortBy))
 
+		const totalItems = filteredTours.length
+		const lastPage = Math.max(1, Math.ceil(totalItems / perPage))
+		const currentPage = Math.min(page, lastPage)
+		const startIndex = (currentPage - 1) * perPage
+		const paginatedTours = filteredTours.slice(startIndex, startIndex + perPage)
+
 		res.json({
-			data: filteredTours,
+			data: paginatedTours,
 			meta: {
-				total: filteredTours.length,
+				total: totalItems,
+				total_items: totalItems,
+				current_page: currentPage,
+				last_page: lastPage,
+				per_page: perPage,
+				from: totalItems ? startIndex + 1 : 0,
+				to: totalItems ? Math.min(startIndex + perPage, totalItems) : 0,
+				has_more: currentPage < lastPage,
 				filters: {
 					search,
 					dateFrom: dateFrom || null,
