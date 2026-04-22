@@ -77,6 +77,14 @@ const parseComparableDate = (value) => {
 	return null
 }
 
+const buildAvailabilitySlotKey = (value) => {
+	return [
+		normalizeString(value?.date),
+		normalizeString(value?.timeFrom),
+		normalizeString(value?.timeTo),
+	].join("|")
+}
+
 const extractComparableDates = (tour) => {
 	const values = [
 		...(Array.isArray(tour?.availabilityDates)
@@ -190,6 +198,11 @@ const normalizeAvailabilityDates = (
 	legacyDates = [],
 	currentAvailabilityDates = []
 ) => {
+	const currentBySlotKey = new Map(
+		(currentAvailabilityDates || [])
+			.map((item) => [buildAvailabilitySlotKey(item), item])
+			.filter(([slotKey]) => slotKey !== "||")
+	)
 	const currentByDate = new Map(
 		(currentAvailabilityDates || [])
 			.map((item) => [normalizeString(item?.date), item])
@@ -201,9 +214,11 @@ const normalizeAvailabilityDates = (
 
 	return normalizeObjectArray(source, (item) => {
 		const date = normalizeString(item?.date)
-		const currentSlot = currentByDate.get(date)
 		const timeFrom = normalizeString(item?.timeFrom)
 		const timeTo = normalizeString(item?.timeTo)
+		const currentSlot =
+			currentBySlotKey.get(buildAvailabilitySlotKey({ date, timeFrom, timeTo })) ||
+			currentByDate.get(date)
 		const hasSeats = item?.seats !== undefined && item?.seats !== null && item?.seats !== ""
 		const hasBookedSeats =
 			item?.bookedSeats !== undefined &&
@@ -223,6 +238,10 @@ const normalizeAvailabilityDates = (
 		if (!date && !timeFrom && !timeTo && !seats && !bookedSeats) return null
 
 		return {
+			_id:
+				item?._id ||
+				currentSlot?._id ||
+				new mongoose.Types.ObjectId(),
 			date,
 			timeFrom,
 			timeTo,
@@ -641,12 +660,47 @@ export const bookTourDate = async (req, res) => {
 			}
 
 			const availabilityDateId = normalizeString(req.body.availabilityDateId)
-			const slot = tour.availabilityDates.id(availabilityDateId)
+			const requestedSlotDate = normalizeString(req.body.date)
+			const requestedSlotTimeFrom = normalizeString(req.body.timeFrom)
+			const requestedSlotTimeTo = normalizeString(req.body.timeTo)
+			let slot = availabilityDateId
+				? tour.availabilityDates.id(availabilityDateId)
+				: null
+
+			if (!slot && requestedSlotDate) {
+				slot =
+					tour.availabilityDates.find((item) => {
+						if (normalizeString(item?.date) !== requestedSlotDate) return false
+						if (
+							requestedSlotTimeFrom &&
+							normalizeString(item?.timeFrom) !== requestedSlotTimeFrom
+						) {
+							return false
+						}
+						if (
+							requestedSlotTimeTo &&
+							normalizeString(item?.timeTo) !== requestedSlotTimeTo
+						) {
+							return false
+						}
+						return true
+					}) || null
+			}
+
+			if (!slot && requestedSlotDate) {
+				const sameDateSlots = tour.availabilityDates.filter(
+					(item) => normalizeString(item?.date) === requestedSlotDate
+				)
+				if (sameDateSlots.length === 1) {
+					slot = sameDateSlots[0]
+				}
+			}
 
 			if (!slot) {
 				throw Object.assign(new Error("Дата тура не найдена"), { statusCode: 404 })
 			}
 
+			const resolvedAvailabilityDateId = normalizeString(slot?._id || availabilityDateId)
 			const requestedTickets = Array.isArray(req.body.ticketSelections)
 				? req.body.ticketSelections
 				: []
@@ -756,7 +810,7 @@ export const bookTourDate = async (req, res) => {
 
 			user.tourBookings.unshift({
 				tour: tour._id,
-				availabilityDateId,
+				availabilityDateId: resolvedAvailabilityDateId,
 				date: normalizeString(slot.date),
 				timeFrom: normalizeString(slot.timeFrom),
 				timeTo: normalizeString(slot.timeTo),
