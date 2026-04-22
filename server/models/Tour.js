@@ -17,16 +17,17 @@ const TourModel = new mongoose.Schema(
 		is_hot: { type: Boolean, required: false, default: false },
 		images: [{ type: String, required: false, default: null }],
 		rating: { type: Number, default: 0, min: 0, max: 5 },
+		reviewsCount: { type: Number, default: 0, min: 0 },
 		duration: { type: String, required: false, default: "" },
-			highlights: [{ type: String, default: [] }],
-			dates: [{ type: String, default: [] }],
-			dateDetails: [
-				{
-					date: { type: String, required: false, default: "" },
-					text: { type: String, required: false, default: "" },
-				},
-			],
-			availabilityDates: [
+		highlights: [{ type: String, default: [] }],
+		dates: [{ type: String, default: [] }],
+		dateDetails: [
+			{
+				date: { type: String, required: false, default: "" },
+				text: { type: String, required: false, default: "" },
+			},
+		],
+		availabilityDates: [
 			{
 				date: { type: String, required: false, default: "" },
 				timeFrom: { type: String, required: false, default: "" },
@@ -81,7 +82,7 @@ const TourModel = new mongoose.Schema(
 		},
 		hotels: [
 			{ type: mongoose.Schema.Types.ObjectId, ref: "Hotel", default: [] },
-		], 
+		],
 	},
 	{ timestamps: true }
 )

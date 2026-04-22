@@ -6,6 +6,47 @@ const normalizeString = (value) => {
 	return String(value).trim()
 }
 
+const parseBookingDate = (value) => {
+	const text = normalizeString(value)
+
+	if (!text) {
+		return null
+	}
+
+	const parsed = /^\d{4}-\d{2}-\d{2}$/.test(text)
+		? new Date(`${text}T00:00:00`)
+		: new Date(text)
+
+	return Number.isNaN(parsed.getTime()) ? null : parsed
+}
+
+const deriveBookingStatus = (booking) => {
+	const currentStatus = normalizeString(booking?.status) || "active"
+
+	if (currentStatus !== "active") {
+		return currentStatus
+	}
+
+	const parsedDate = parseBookingDate(booking?.date)
+
+	if (!parsedDate) {
+		return currentStatus
+	}
+
+	return parsedDate.getTime() < Date.now() - 24 * 60 * 60 * 1000
+		? "completed"
+		: currentStatus
+}
+
+const serializeBooking = (booking) => {
+	const source = typeof booking?.toObject === "function" ? booking.toObject() : booking
+
+	return {
+		...source,
+		status: deriveBookingStatus(source),
+	}
+}
+
 export const getWallet = async (req, res) => {
 	try {
 		const user = await UserModel.findById(req.userId)
@@ -21,10 +62,10 @@ export const getWallet = async (req, res) => {
 				currency: "KZT",
 				transactions: Array.isArray(user.walletTransactions)
 					? [...user.walletTransactions].sort(
-							(left, right) =>
-								new Date(right.createdAt || 0).getTime() -
-								new Date(left.createdAt || 0).getTime()
-					  )
+						(left, right) =>
+							new Date(right.createdAt || 0).getTime() -
+							new Date(left.createdAt || 0).getTime()
+					)
 					: [],
 			},
 		})
@@ -111,11 +152,13 @@ export const getTourBookings = async (req, res) => {
 		const bookings = Array.isArray(user.tourBookings) ? user.tourBookings : []
 
 		return res.json({
-			data: bookings.sort(
-				(left, right) =>
-					new Date(right.createdAt || 0).getTime() -
-					new Date(left.createdAt || 0).getTime()
-			),
+			data: bookings
+				.map(serializeBooking)
+				.sort(
+					(left, right) =>
+						new Date(right.createdAt || 0).getTime() -
+						new Date(left.createdAt || 0).getTime()
+				),
 		})
 	} catch (error) {
 		console.error("Get tour bookings error:", error)

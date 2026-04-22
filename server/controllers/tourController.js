@@ -1,3 +1,4 @@
+import mongoose from "mongoose"
 import PartnerModel from "../models/Partner.js"
 import UserModel from "../models/User.js"
 import TourModel from "../models/Tour.js"
@@ -598,161 +599,197 @@ export const updateTour = async (req, res) => {
 }
 
 export const bookTourDate = async (req, res) => {
+	const session = await mongoose.startSession()
+
 	try {
-		const tour = await TourModel.findById(req.params.id)
+		let responseData = null
 
-		if (!tour) {
-			return res.status(404).json({ message: "Тур не найден" })
-		}
+		await session.withTransaction(async () => {
+			const tour = await TourModel.findById(req.params.id).session(session)
 
-		const availabilityDateId = normalizeString(req.body.availabilityDateId)
-		const slot = tour.availabilityDates.id(availabilityDateId)
+			if (!tour) {
+				throw Object.assign(new Error("Тур не найден"), { statusCode: 404 })
+			}
 
-		if (!slot) {
-			return res.status(404).json({ message: "Дата тура не найдена" })
-		}
+			const availabilityDateId = normalizeString(req.body.availabilityDateId)
+			const slot = tour.availabilityDates.id(availabilityDateId)
 
-		const requestedTickets = Array.isArray(req.body.ticketSelections)
-			? req.body.ticketSelections
-			: []
-		const normalizedTicketSelections = requestedTickets
-			.map((item, index) => {
-				const quantity = Math.max(0, Number(item?.quantity) || 0)
-				const sourceTicket = tour.ticketTypes[index] || {}
-				const price = Math.max(0, Number(sourceTicket?.price ?? item?.price) || 0)
-				const title = normalizeString(sourceTicket?.title || item?.title)
+			if (!slot) {
+				throw Object.assign(new Error("Дата тура не найдена"), { statusCode: 404 })
+			}
 
-				if (!quantity) {
-					return null
-				}
+			const requestedTickets = Array.isArray(req.body.ticketSelections)
+				? req.body.ticketSelections
+				: []
 
-				return {
-					title,
-					quantity,
-					price,
-					subtotal: quantity * price,
-				}
+			const normalizedTicketSelections = requestedTickets
+				.map((item, index) => {
+					const quantity = Math.max(0, Number(item?.quantity) || 0)
+					const sourceTicket = tour.ticketTypes[index] || {}
+					const price = Math.max(
+						0,
+						Number(sourceTicket?.price ?? item?.price) || 0
+					)
+					const title = normalizeString(sourceTicket?.title || item?.title)
+
+					if (!quantity) {
+						return null
+					}
+
+					return {
+						title,
+						quantity,
+						price,
+						subtotal: quantity * price,
+					}
+				})
+				.filter(Boolean)
+
+			const guests = normalizedTicketSelections.reduce(
+				(total, item) => total + (Number(item.quantity) || 0),
+				0
+			)
+
+			if (!guests) {
+				throw Object.assign(new Error("Выберите хотя бы один билет"), {
+					statusCode: 400,
+				})
+			}
+
+			const seats = Number(slot.seats) || 0
+			const bookedSeats = Number(slot.bookedSeats) || 0
+			const availableSeats = Math.max(0, seats - bookedSeats)
+
+			if (availableSeats < guests) {
+				throw Object.assign(new Error("На эту дату нет мест"), {
+					statusCode: 409,
+				})
+			}
+
+			const subtotal = normalizedTicketSelections.reduce(
+				(total, item) => total + (Number(item.subtotal) || 0),
+				0
+			)
+
+			const tourDiscountPercent = Math.max(0, Number(tour.discount) || 0)
+			const tourDiscountAmount = Math.round((subtotal * tourDiscountPercent) / 100)
+			const afterTourDiscount = Math.max(0, subtotal - tourDiscountAmount)
+
+			const promoResult = normalizeString(req.body.promoCode)
+				? await resolvePromoDiscount({
+					code: req.body.promoCode,
+					subtotal: afterTourDiscount,
+					tourId: tour._id,
+				})
+				: { promo: null, discountAmount: 0 }
+
+			const promoDiscountAmount = Number(promoResult.discountAmount) || 0
+			const afterPromoDiscount = Math.max(
+				0,
+				afterTourDiscount - promoDiscountAmount
+			)
+
+			const user = await UserModel.findById(req.userId).session(session)
+
+			if (!user) {
+				throw Object.assign(new Error("Пользователь не найден"), {
+					statusCode: 404,
+				})
+			}
+
+			const paymentMethod = normalizeString(req.body.paymentMethod) || "card"
+			const requestedBonusAmount = Math.max(0, Number(req.body.bonusAmount) || 0)
+			const useBonusBalance =
+				paymentMethod === "bonus" || Boolean(req.body.useBonusBalance)
+			const availableBonusBalance = Math.max(0, Number(user.bonusBalance) || 0)
+
+			const bonusAmount = useBonusBalance
+				? paymentMethod === "bonus"
+					? Math.min(availableBonusBalance, afterPromoDiscount)
+					: Math.min(
+						availableBonusBalance,
+						requestedBonusAmount,
+						afterPromoDiscount
+					)
+				: 0
+
+			const total = Math.max(0, afterPromoDiscount - bonusAmount)
+
+			if (paymentMethod === "bonus" && bonusAmount < afterPromoDiscount) {
+				throw Object.assign(
+					new Error("Недостаточно бонусов для полной оплаты"),
+					{ statusCode: 409 }
+				)
+			}
+
+			slot.bookedSeats = bookedSeats + guests
+			user.bonusBalance = Math.max(0, availableBonusBalance - bonusAmount)
+
+			user.tourBookings.unshift({
+				tour: tour._id,
+				availabilityDateId,
+				date: normalizeString(slot.date),
+				timeFrom: normalizeString(slot.timeFrom),
+				timeTo: normalizeString(slot.timeTo),
+				guests,
+				ticketSelections: normalizedTicketSelections,
+				promoCode: promoResult?.promo?.code || null,
+				promoDiscountAmount,
+				tourDiscountPercent,
+				paidWithBonuses: bonusAmount,
+				paymentMethod,
+				total,
+				status: "active",
 			})
-			.filter(Boolean)
-		const guests = normalizedTicketSelections.reduce(
-			(total, item) => total + (Number(item.quantity) || 0),
-			0
-		)
 
-		if (!guests) {
-			return res.status(400).json({ message: "Выберите хотя бы один билет" })
-		}
-
-		const seats = Number(slot.seats) || 0
-		const bookedSeats = Number(slot.bookedSeats) || 0
-		const availableSeats = Math.max(0, seats - bookedSeats)
-
-		if (availableSeats < guests) {
-			return res.status(409).json({ message: "На эту дату нет мест" })
-		}
-
-		const subtotal = normalizedTicketSelections.reduce(
-			(total, item) => total + (Number(item.subtotal) || 0),
-			0
-		)
-		const tourDiscountPercent = Math.max(0, Number(tour.discount) || 0)
-		const tourDiscountAmount = Math.round((subtotal * tourDiscountPercent) / 100)
-		const afterTourDiscount = Math.max(0, subtotal - tourDiscountAmount)
-		const promoResult = normalizeString(req.body.promoCode)
-			? await resolvePromoDiscount({
-				code: req.body.promoCode,
-				subtotal: afterTourDiscount,
-				tourId: tour._id,
-			})
-			: { promo: null, discountAmount: 0 }
-		const promoDiscountAmount = Number(promoResult.discountAmount) || 0
-		const afterPromoDiscount = Math.max(0, afterTourDiscount - promoDiscountAmount)
-		const user = await UserModel.findById(req.userId)
-
-		if (!user) {
-			return res.status(404).json({ message: "Пользователь не найден" })
-		}
-
-		const paymentMethod = normalizeString(req.body.paymentMethod) || "card"
-		const requestedBonusAmount = Math.max(0, Number(req.body.bonusAmount) || 0)
-		const useBonusBalance =
-			paymentMethod === "bonus" || Boolean(req.body.useBonusBalance)
-		const availableBonusBalance = Math.max(0, Number(user.bonusBalance) || 0)
-		const bonusAmount = useBonusBalance
-			? paymentMethod === "bonus"
-				? Math.min(availableBonusBalance, afterPromoDiscount)
-				: Math.min(availableBonusBalance, requestedBonusAmount, afterPromoDiscount)
-			: 0
-		const total = Math.max(0, afterPromoDiscount - bonusAmount)
-
-		if (paymentMethod === "bonus" && bonusAmount < afterPromoDiscount) {
-			return res.status(409).json({
-				message: "Недостаточно бонусов для полной оплаты",
-			})
-		}
-
-		slot.bookedSeats = bookedSeats + guests
-		user.bonusBalance = Math.max(0, availableBonusBalance - bonusAmount)
-		user.tourBookings.unshift({
-			tour: tour._id,
-			availabilityDateId,
-			date: normalizeString(slot.date),
-			timeFrom: normalizeString(slot.timeFrom),
-			timeTo: normalizeString(slot.timeTo),
-			guests,
-			ticketSelections: normalizedTicketSelections,
-			promoCode: promoResult?.promo?.code || null,
-			promoDiscountAmount,
-			tourDiscountPercent,
-			paidWithBonuses: bonusAmount,
-			paymentMethod,
-			total,
-			status: "active",
-		})
-		user.walletTransactions.unshift({
-			name: normalizeString(tour.title) || "Бронирование тура",
-			type: "Тур",
-			amount: -total,
-			currency: "KZT",
-			note: `Оплата тура (${normalizeString(slot.date) || "без даты"})`,
-		})
-
-		if (bonusAmount > 0) {
 			user.walletTransactions.unshift({
-				name: normalizeString(tour.title) || "Списание бонусов",
-				type: "Бонусы",
-				amount: -bonusAmount,
-				currency: "BONUS",
-				note: "Оплата бонусами",
+				name: normalizeString(tour.title) || "Бронирование тура",
+				type: "Тур",
+				amount: -total,
+				currency: "KZT",
+				note: `Оплата тура (${normalizeString(slot.date) || "без даты"})`,
 			})
-		}
 
-		const bonusAccrual = paymentMethod === "bonus" ? 0 : Math.floor(total * 0.05)
+			if (bonusAmount > 0) {
+				user.walletTransactions.unshift({
+					name: normalizeString(tour.title) || "Списание бонусов",
+					type: "Бонусы",
+					amount: -bonusAmount,
+					currency: "BONUS",
+					note: "Оплата бонусами",
+				})
+			}
 
-		if (bonusAccrual > 0) {
-			user.bonusBalance += bonusAccrual
-			user.walletTransactions.unshift({
-				name: normalizeString(tour.title) || "Начисление бонусов",
-				type: "Бонусы",
-				amount: bonusAccrual,
-				currency: "BONUS",
-				note: "Начисление за покупку тура",
-			})
-		}
+			const bonusAccrual = paymentMethod === "bonus" ? 0 : Math.floor(total * 0.05)
 
-		await tour.save()
-		await user.save()
+			if (bonusAccrual > 0) {
+				user.bonusBalance += bonusAccrual
+				user.walletTransactions.unshift({
+					name: normalizeString(tour.title) || "Начисление бонусов",
+					type: "Бонусы",
+					amount: bonusAccrual,
+					currency: "BONUS",
+					note: "Начисление за покупку тура",
+				})
+			}
 
-		const updatedTour = await TourModel.findById(tour._id).populate("partner")
-		const latestUser = await UserModel.findById(req.userId).populate({
-			path: "tourBookings.tour",
-			populate: { path: "partner" },
-		})
-		const booking = latestUser?.tourBookings?.[0] || null
+			await tour.save({ session })
+			await user.save({ session })
 
-		return res.json({
-			message: "Место забронировано",
-			data: {
+			const updatedTour = await TourModel.findById(tour._id)
+				.session(session)
+				.populate("partner")
+
+			const latestUser = await UserModel.findById(req.userId)
+				.session(session)
+				.populate({
+					path: "tourBookings.tour",
+					populate: { path: "partner" },
+				})
+
+			const booking = latestUser?.tourBookings?.[0] || null
+
+			responseData = {
 				tour: updatedTour,
 				booking,
 				wallet: {
@@ -766,10 +803,19 @@ export const bookTourDate = async (req, res) => {
 					bonusAmount,
 					total,
 				},
-			},
+			}
+		})
+
+		return res.json({
+			message: "Место забронировано",
+			data: responseData,
 		})
 	} catch (error) {
 		console.error("Ошибка при бронировании даты тура:", error)
-		return res.status(500).json({ message: "Ошибка при бронировании тура" })
+		return res.status(error.statusCode || 500).json({
+			message: error.message || "Ошибка при бронировании тура",
+		})
+	} finally {
+		await session.endSession()
 	}
 }

@@ -43,9 +43,8 @@ const TourBookingSchema = new mongoose.Schema(
 			enum: ["active", "completed", "cancelled"],
 			default: "active",
 		},
-		createdAt: { type: Date, required: false, default: Date.now },
 	},
-	{ _id: true }
+	{ _id: true, timestamps: true }
 )
 
 const UserSchema = new mongoose.Schema(
