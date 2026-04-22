@@ -4,6 +4,8 @@ import {
 	getManagedHotels,
 	createHotel,
 	getOneHotel,
+	updateHotel,
+	deleteHotel,
 } from "../controllers/hotelController.js"
 import { requireAuth, requireRoles } from "../middleware/checkAuth.js"
 
@@ -22,4 +24,16 @@ hotelRoutes.post(
 	requireAuth,
 	requireRoles("admin", "partner"),
 	createHotel
+)
+hotelRoutes.patch(
+	"/:id",
+	requireAuth,
+	requireRoles("admin", "partner"),
+	updateHotel
+)
+hotelRoutes.delete(
+	"/:id",
+	requireAuth,
+	requireRoles("admin", "partner"),
+	deleteHotel
 )
