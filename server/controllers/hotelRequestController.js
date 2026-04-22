@@ -132,9 +132,7 @@ export const getManagedHotelRequests = async (req, res) => {
 		return res.json({ data: requests })
 	} catch (error) {
 		console.error("Get managed hotel requests error:", error)
-		return res
-			.status(500)
-			.json({ message: "Failed to get hotel requests" })
+		return res.status(500).json({ message: "Failed to get hotel requests" })
 	}
 }
 
@@ -182,8 +180,6 @@ export const updateHotelRequestStatus = async (req, res) => {
 		})
 	} catch (error) {
 		console.error("Update hotel request status error:", error)
-		return res
-			.status(500)
-			.json({ message: "Failed to update hotel request" })
+		return res.status(500).json({ message: "Failed to update hotel request" })
 	}
 }
