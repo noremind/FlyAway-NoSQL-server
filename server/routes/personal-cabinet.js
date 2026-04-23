@@ -1,6 +1,8 @@
 import express from "express"
 import {
+	cancelOwnHotelRequest,
 	getFavouriteTours,
+	getHotelRequests,
 	getTourBookings,
 	getWallet,
 	toggleFavouriteTour,
@@ -22,4 +24,10 @@ personalCabinetRoutes.patch(
 	"/bookings/tours/:bookingId/cancel",
 	requireAuth,
 	cancelOwnTourBooking
+)
+personalCabinetRoutes.get("/bookings/hotels", requireAuth, getHotelRequests)
+personalCabinetRoutes.patch(
+	"/bookings/hotels/:bookingId/cancel",
+	requireAuth,
+	cancelOwnHotelRequest
 )
