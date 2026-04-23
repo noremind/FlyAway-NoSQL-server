@@ -1,3 +1,4 @@
+import HotelModel from "../models/Hotel.js"
 import HotelRequestModel from "../models/HotelRequest.js"
 import TourModel from "../models/Tour.js"
 import UserModel from "../models/User.js"
@@ -120,6 +121,26 @@ export const getFavouriteTours = async (req, res) => {
 	}
 }
 
+export const getFavouriteHotels = async (req, res) => {
+	try {
+		const user = await UserModel.findById(req.userId).populate({
+			path: "favouriteHotels",
+			populate: { path: "partner" },
+		})
+
+		if (!user) {
+			return res.status(404).json({ message: "Пользователь не найден" })
+		}
+
+		return res.json({
+			data: Array.isArray(user.favouriteHotels) ? user.favouriteHotels : [],
+		})
+	} catch (error) {
+		console.error("Get favourite hotels error:", error)
+		return res.status(500).json({ message: "Не удалось получить избранные отели" })
+	}
+}
+
 export const toggleFavouriteTour = async (req, res) => {
 	try {
 		const tourId = normalizeString(req.params.tourId)
@@ -160,6 +181,49 @@ export const toggleFavouriteTour = async (req, res) => {
 	} catch (error) {
 		console.error("Toggle favourite tour error:", error)
 		return res.status(500).json({ message: "Не удалось обновить избранное" })
+	}
+}
+
+export const toggleFavouriteHotel = async (req, res) => {
+	try {
+		const hotelId = normalizeString(req.params.hotelId)
+		const user = await UserModel.findById(req.userId)
+
+		if (!user) {
+			return res.status(404).json({ message: "Пользователь не найден" })
+		}
+
+		const hotel = await HotelModel.findById(hotelId)
+
+		if (!hotel) {
+			return res.status(404).json({ message: "Отель не найден" })
+		}
+
+		const currentIds = Array.isArray(user.favouriteHotels)
+			? user.favouriteHotels.map((item) => String(item))
+			: []
+		const isFavourite = currentIds.includes(hotelId)
+
+		user.favouriteHotels = isFavourite
+			? user.favouriteHotels.filter((item) => String(item) !== hotelId)
+			: [hotel._id, ...user.favouriteHotels.filter(Boolean)]
+
+		await user.save()
+
+		const refreshedUser = await UserModel.findById(req.userId).populate({
+			path: "favouriteHotels",
+			populate: { path: "partner" },
+		})
+
+		return res.json({
+			data: {
+				isFavourite: !isFavourite,
+				favourites: refreshedUser?.favouriteHotels || [],
+			},
+		})
+	} catch (error) {
+		console.error("Toggle favourite hotel error:", error)
+		return res.status(500).json({ message: "Не удалось обновить избранные отели" })
 	}
 }
 
