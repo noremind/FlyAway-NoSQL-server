@@ -1,10 +1,12 @@
 import express from "express"
 import {
 	cancelOwnHotelRequest,
+	getFavouriteHotels,
 	getFavouriteTours,
 	getHotelRequests,
 	getTourBookings,
 	getWallet,
+	toggleFavouriteHotel,
 	toggleFavouriteTour,
 } from "../controllers/personalCabinetController.js"
 import { cancelOwnTourBooking } from "../controllers/tourBookingController.js"
@@ -18,6 +20,12 @@ personalCabinetRoutes.post(
 	"/favourites/tours/:tourId/toggle",
 	requireAuth,
 	toggleFavouriteTour
+)
+personalCabinetRoutes.get("/favourites/hotels", requireAuth, getFavouriteHotels)
+personalCabinetRoutes.post(
+	"/favourites/hotels/:hotelId/toggle",
+	requireAuth,
+	toggleFavouriteHotel
 )
 personalCabinetRoutes.get("/bookings/tours", requireAuth, getTourBookings)
 personalCabinetRoutes.patch(
