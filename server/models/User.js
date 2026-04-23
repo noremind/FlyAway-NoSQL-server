@@ -97,6 +97,13 @@ const UserSchema = new mongoose.Schema(
 				default: [],
 			},
 		],
+		favouriteHotels: [
+			{
+				type: mongoose.Schema.Types.ObjectId,
+				ref: "Hotel",
+				default: [],
+			},
+		],
 		walletTransactions: {
 			type: [WalletTransactionSchema],
 			default: [],
