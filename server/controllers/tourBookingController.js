@@ -112,6 +112,13 @@ const refundCancelledBooking = ({ booking, user, tour }) => {
 	}
 }
 
+const applyCancellationDetails = (booking, payload = {}) => {
+	booking.cancellationReason = normalizeString(payload.refundReason)
+	booking.cancellationReasonLabel = normalizeString(payload.refundReasonLabel)
+	booking.cancellationComment = normalizeString(payload.refundComment)
+	booking.cancelledAt = new Date()
+}
+
 const getManagedTourFilter = async (req) => {
 	if (req.userRole === "admin") {
 		return null
@@ -230,6 +237,7 @@ export const updateManagedTourBookingStatus = async (req, res) => {
 				}
 
 				refundCancelledBooking({ booking, user, tour })
+				applyCancellationDetails(booking, req.body)
 			}
 
 			booking.status = nextStatus
@@ -280,7 +288,7 @@ export const cancelOwnTourBooking = async (req, res) => {
 				throw createHttpError(404, "Booking was not found")
 			}
 
-			if (booking.status !== "active") {
+			if (deriveBookingStatus(booking) !== "active") {
 				throw createHttpError(409, "Only active booking can be cancelled")
 			}
 
@@ -302,6 +310,7 @@ export const cancelOwnTourBooking = async (req, res) => {
 			}
 
 			refundCancelledBooking({ booking, user, tour })
+			applyCancellationDetails(booking, req.body)
 			booking.status = "cancelled"
 
 			await tour.save({ session })

@@ -43,6 +43,10 @@ const TourBookingSchema = new mongoose.Schema(
 			enum: ["active", "completed", "cancelled"],
 			default: "active",
 		},
+		cancellationReason: { type: String, required: false, default: "" },
+		cancellationReasonLabel: { type: String, required: false, default: "" },
+		cancellationComment: { type: String, required: false, default: "" },
+		cancelledAt: { type: Date, required: false, default: null },
 	},
 	{ _id: true, timestamps: true }
 )
