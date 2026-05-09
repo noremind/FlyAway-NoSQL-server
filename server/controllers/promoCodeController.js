@@ -50,6 +50,22 @@ const isPromoActiveNow = (promo) => {
 	return true
 }
 
+const resolvePreviewRequestPayload = (body = {}) => ({
+	code: normalizeCode(body.code || body.promoCode || body.promocode),
+	subtotal: Math.max(
+		0,
+		Number(
+			body.subtotal ??
+				body.total ??
+				body.amount ??
+				body.price ??
+				0
+		) || 0
+	),
+	tourId: normalizeString(body.tourId || body.tour),
+	hotelId: normalizeString(body.hotelId || body.hotel),
+})
+
 export const resolvePromoDiscount = async ({
 	code,
 	subtotal = 0,
@@ -117,31 +133,29 @@ export const getPromoCodes = async (req, res) => {
 
 export const previewPromoCode = async (req, res) => {
 	try {
-		const result = await resolvePromoDiscount({
-			code: req.body.code,
-			subtotal: req.body.subtotal,
-			tourId: req.body.tourId,
-			hotelId: req.body.hotelId,
-		})
+		const payload = resolvePreviewRequestPayload(req.body)
+		const result = await resolvePromoDiscount(payload)
+		const responseData = {
+			code: result?.promo?.code || payload.code,
+			title: result?.promo?.title || "",
+			discountType: result?.promo?.discountType || "percent",
+			value: Number(result?.promo?.value) || 0,
+			discountAmount: Number(result?.discountAmount) || 0,
+			message: result?.message || "",
+			isValid: Boolean(result?.promo) && Number(result?.discountAmount) > 0,
+		}
 
-		if (!result.promo || !result.discountAmount) {
-			return res.status(404).json({
-				message: result.message || "Промокод не применен",
-				data: {
-					code: normalizeCode(req.body.code),
-					discountAmount: 0,
-				},
+		if (!responseData.isValid) {
+			return res.status(200).json({
+				message: responseData.message || "Промокод не применен",
+				data: responseData,
+				...responseData,
 			})
 		}
 
 		return res.json({
-			data: {
-				code: result.promo.code,
-				title: result.promo.title,
-				discountType: result.promo.discountType,
-				value: result.promo.value,
-				discountAmount: result.discountAmount,
-			},
+			data: responseData,
+			...responseData,
 		})
 	} catch (error) {
 		console.error("Ошибка при проверке промокода:", error)
