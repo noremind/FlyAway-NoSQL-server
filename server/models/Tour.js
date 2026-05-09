@@ -84,7 +84,7 @@ const TourModel = new mongoose.Schema(
 			{ type: mongoose.Schema.Types.ObjectId, ref: "Hotel", default: [] },
 		],
 	},
-	{ timestamps: true }
+	{ timestamps: true },
 )
 
 export default mongoose.model("Tour", TourModel)
