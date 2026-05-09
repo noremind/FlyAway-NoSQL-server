@@ -7,6 +7,10 @@ import {
 	getTours,
 	updateTour,
 } from "../controllers/tourController.js"
+import {
+	getTourFilterCities,
+	getTourFilterDurations,
+} from "../controllers/tourFilterController.js"
 import { requireAuth, requireRoles } from "../middleware/checkAuth.js"
 
 export const tourRoutes = express.Router()
@@ -17,6 +21,8 @@ tourRoutes.get(
 	requireRoles("admin", "partner"),
 	getManagedTours
 )
+tourRoutes.get("/filter/cities", getTourFilterCities)
+tourRoutes.get("/filter/durations", getTourFilterDurations)
 tourRoutes.get("/", getTours)
 tourRoutes.post(
 	"/create",
