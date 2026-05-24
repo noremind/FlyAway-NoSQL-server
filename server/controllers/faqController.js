@@ -12,7 +12,7 @@ const buildPayload = (body = {}) => ({
 
 export const getFaqItems = async (req, res) => {
 	try {
-		const includeInactive = req.userRole === "admin" && String(req.query.all || "") === "true"
+		const includeInactive = String(req.query.all || "") === "true"
 		const filter = includeInactive ? {} : { isActive: true }
 		const items = await FaqModel.find(filter).sort({ order: 1, createdAt: -1 })
 		return res.json({ data: items })
