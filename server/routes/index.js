@@ -15,6 +15,7 @@ import { devRoutes } from "./dev.js"
 import { personalCabinetRoutes } from "./personal-cabinet.js"
 import { tourReviewRoutes } from "./tour-reviews.js"
 import { dashboardRoutes } from "./dashboard.js"
+import { faqRoutes } from "./faq.js"
 
 const router = express.Router()
 
@@ -36,8 +37,7 @@ router.use("/personal-cabinet", personalCabinetRoutes)
 router.use("/promocodes", promoCodeRoutes)
 router.use("/tour-reviews", tourReviewRoutes)
 router.use("/dashboard", dashboardRoutes)
-
-
+router.use("/faq", faqRoutes)
 
 if (process.env.NODE_ENV !== "production") {
 	router.use("/dev", devRoutes)
