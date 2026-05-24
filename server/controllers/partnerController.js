@@ -10,14 +10,16 @@ const allowedImageTypes = ["image/jpeg", "image/png", "image/webp"]
 const requiredPartnerFields = ["title", "email", "phone", "password", "bin", "ownerName", "address"]
 const isValidEmail = (email) => /\S+@\S+\.\S+/.test(email)
 const normalizePhone = (phone) => phone ? String(phone).replace(/\D/g, "") : null
+const normalizeString = (value) => value === null || value === undefined ? "" : String(value).trim()
+const escapeRegExp = (value) => String(value).replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
 
 const buildDuplicateMessage = (error) => {
 	const field = Object.keys(error.keyPattern || error.keyValue || {})[0]
-	if (field === "email") return "Partner with this email already exists"
-	if (field === "bin") return "Partner with this BIN already exists"
-	if (field === "contacts.phone") return "Partner with this phone already exists"
-	if (field === "title") return "Partner with this company already exists"
-	return "Partner already exists"
+	if (field === "email") return "Партнер с такой почтой уже существует"
+	if (field === "bin") return "Партнер с таким БИН уже существует"
+	if (field === "contacts.phone") return "Партнер с таким телефоном уже существует"
+	if (field === "title") return "Партнер с таким названием уже существует"
+	return "Партнер уже существует"
 }
 
 const getArray = (value) => Array.isArray(value) ? value : []
@@ -51,11 +53,27 @@ const formatPartner = (partner) => {
 	}
 }
 
+const makePartnerSessionUser = (owner, partner) => {
+	const safeOwner = sanitizeUser(owner)
+	const safePartner = formatPartner(partner)
+	return {
+		_id: safePartner._id,
+		name: safePartner.title,
+		email: safePartner.email || safeOwner.email,
+		avatar: safePartner.logo || safePartner.avatar || safeOwner.avatar || null,
+		role: "partner",
+		partnerId: safePartner._id.toString(),
+		ownerId: safeOwner._id,
+		owner: safeOwner,
+		partner: safePartner,
+	}
+}
+
 const uploadLogoFromBody = async (logoFile, partnerId) => {
 	if (!logoFile?.base64Data) return null
 	const { mimeType } = logoFile
-	if (!process.env.BLOB_READ_WRITE_TOKEN) throw new Error("BLOB_READ_WRITE_TOKEN is not configured")
-	if (!allowedImageTypes.includes(mimeType)) throw new Error("Logo must be a JPG, PNG or WEBP image")
+	if (!process.env.BLOB_READ_WRITE_TOKEN) throw new Error("Токен хранилища файлов не настроен")
+	if (!allowedImageTypes.includes(mimeType)) throw new Error("Логотип должен быть изображением JPG, PNG или WEBP")
 	const result = await uploadBase64File(logoFile, { bucket: "partners", entityId: partnerId, scope: "logo" })
 	return result.url
 }
@@ -84,11 +102,11 @@ const buildPartnerPayload = (body, hashedPassword) => {
 const validatePartnerRequest = (body, options = {}) => {
 	for (const field of requiredPartnerFields) {
 		if (options.allowMissingPassword && field === "password") continue
-		if (!body[field]?.toString().trim()) return `${field} is required`
+		if (!body[field]?.toString().trim()) return "Заполните обязательные поля партнера"
 	}
-	if (!isValidEmail(body.email?.trim().toLowerCase() || "")) return "Email is invalid"
-	if (!options.allowMissingPassword && body.password.length < 6) return "Password must contain at least 6 characters"
-	if (body.password && body.password.length < 6) return "Password must contain at least 6 characters"
+	if (!isValidEmail(body.email?.trim().toLowerCase() || "")) return "Некорректная почта"
+	if (!options.allowMissingPassword && body.password.length < 6) return "Пароль должен содержать минимум 6 символов"
+	if (body.password && body.password.length < 6) return "Пароль должен содержать минимум 6 символов"
 	return null
 }
 
@@ -97,44 +115,50 @@ const partnerPopulate = [
 	{ path: "hotels", populate: { path: "partner", select: "title logo avatar rating" } },
 ]
 
+const sortPartners = (data, sortBy) => {
+	const normalizedSort = normalizeString(sortBy) || "rating_desc"
+	return [...data].sort((a, b) => {
+		if (normalizedSort === "title_asc") return normalizeString(a.title).localeCompare(normalizeString(b.title), "ru")
+		if (normalizedSort === "title_desc") return normalizeString(b.title).localeCompare(normalizeString(a.title), "ru")
+		if (normalizedSort === "rating_asc") return (Number(a.rating) || 0) - (Number(b.rating) || 0)
+		return (Number(b.rating) || 0) - (Number(a.rating) || 0)
+	})
+}
+
 export const getPartners = async (req, res) => {
 	try {
-		const search = String(req.query.search || "").trim()
-		const sortBy = String(req.query.sortBy || "rating_desc").trim()
-		const query = search ? { title: new RegExp(search.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i") } : {}
+		const search = normalizeString(req.query.search)
+		const sortBy = normalizeString(req.query.sortBy) || "rating_desc"
+		const query = search ? { title: new RegExp(escapeRegExp(search), "i") } : {}
 		const partners = await PartnerModel.find(query).populate(partnerPopulate)
-		const data = partners.map(formatPartner).sort((a, b) => {
-			if (sortBy === "tours_desc") return (b.tour_count || 0) - (a.tour_count || 0)
-			if (sortBy === "hotels_desc") return (b.hotel_count || 0) - (a.hotel_count || 0)
-			return (Number(b.rating) || 0) - (Number(a.rating) || 0)
-		})
-		return res.json({ data })
+		const data = sortPartners(partners.map(formatPartner), sortBy)
+		return res.json({ data, meta: { search, sortBy } })
 	} catch (error) {
 		console.error("Get partners error:", error)
-		return res.status(500).json({ message: "Failed to get partners" })
+		return res.status(500).json({ message: "Не удалось получить список партнеров" })
 	}
 }
 
 export const getOnePartner = async (req, res) => {
 	try {
 		const partner = await PartnerModel.findById(req.params.id).populate(partnerPopulate)
-		if (!partner) return res.status(404).json({ message: "Partner was not found" })
+		if (!partner) return res.status(404).json({ message: "Партнер не найден" })
 		return res.json({ data: formatPartner(partner) })
 	} catch (error) {
 		console.error("Get partner error:", error)
-		return res.status(500).json({ message: "Failed to get partner" })
+		return res.status(500).json({ message: "Не удалось получить партнера" })
 	}
 }
 
 export const getCurrentPartner = async (req, res) => {
 	try {
-		if (!req.partnerId) return res.status(404).json({ message: "Partner profile was not found" })
+		if (!req.partnerId) return res.status(404).json({ message: "Партнерский профиль не найден" })
 		const partner = await PartnerModel.findById(req.partnerId).populate(partnerPopulate)
-		if (!partner) return res.status(404).json({ message: "Partner profile was not found" })
+		if (!partner) return res.status(404).json({ message: "Партнерский профиль не найден" })
 		return res.json({ data: formatPartner(partner) })
 	} catch (error) {
 		console.error("Get current partner error:", error)
-		return res.status(500).json({ message: "Failed to get partner profile" })
+		return res.status(500).json({ message: "Не удалось получить профиль партнера" })
 	}
 }
 
@@ -151,7 +175,7 @@ export const createPartner = async (req, res) => {
 	} catch (error) {
 		console.error("Create partner error:", error)
 		if (error.code === 11000) return res.status(409).json({ message: buildDuplicateMessage(error) })
-		return res.status(500).json({ message: "Failed to create partner" })
+		return res.status(500).json({ message: "Не удалось создать партнера" })
 	}
 }
 
@@ -160,21 +184,21 @@ export const applyPartner = async (req, res) => {
 		const validationError = validatePartnerRequest(req.body)
 		if (validationError) return res.status(400).json({ message: validationError })
 		const existingCreatedBy = await PartnerModel.findOne({ createdBy: req.userId })
-		if (existingCreatedBy) return res.status(409).json({ message: "You already have a partner profile" })
+		if (existingCreatedBy) return res.status(409).json({ message: "У вас уже есть партнерский профиль" })
 		const normalizedEmail = req.body.email.trim().toLowerCase()
 		const normalizedPhone = normalizePhone(req.body.phone)
 		const existingPartner = await PartnerModel.findOne({ $or: [{ title: req.body.title.trim() }, { email: normalizedEmail }, { bin: String(req.body.bin).trim() }, { "contacts.phone": normalizedPhone }] })
-		if (existingPartner) return res.status(409).json({ message: "Partner with these contacts already exists" })
-		if (req.body.logoFile?.base64Data && !process.env.BLOB_READ_WRITE_TOKEN) return res.status(500).json({ message: "BLOB_READ_WRITE_TOKEN is not configured" })
+		if (existingPartner) return res.status(409).json({ message: "Партнер с такими данными уже существует" })
+		if (req.body.logoFile?.base64Data && !process.env.BLOB_READ_WRITE_TOKEN) return res.status(500).json({ message: "Токен хранилища файлов не настроен" })
 		const hashedPassword = await bcrypt.hash(req.body.password, 10)
 		const partner = await PartnerModel.create({ ...buildPartnerPayload(req.body, hashedPassword), createdBy: req.userId })
 		const logoUrl = await uploadLogoFromBody(req.body.logoFile, partner._id)
 		if (logoUrl) { partner.logo = logoUrl; partner.avatar = logoUrl; await partner.save() }
-		return res.status(201).json({ message: "Partner profile created", data: formatPartner(partner) })
+		return res.status(201).json({ message: "Партнерский профиль создан", data: formatPartner(partner) })
 	} catch (error) {
 		console.error("Apply partner error:", error)
 		if (error.code === 11000) return res.status(409).json({ message: buildDuplicateMessage(error) })
-		return res.status(500).json({ message: error.message || "Failed to create partner profile" })
+		return res.status(500).json({ message: error.message || "Не удалось создать партнерский профиль" })
 	}
 }
 
@@ -182,28 +206,28 @@ export const loginPartner = async (req, res) => {
 	try {
 		const { email, password } = req.body
 		const normalizedEmail = email?.trim().toLowerCase()
-		if (!normalizedEmail || !password) return res.status(400).json({ message: "Email and password are required" })
+		if (!normalizedEmail || !password) return res.status(400).json({ message: "Введите почту и пароль" })
 		const partner = await PartnerModel.findOne({ email: normalizedEmail }).select("+password")
-		if (!partner || !partner.password) return res.status(400).json({ message: "Invalid email or password" })
+		if (!partner || !partner.password) return res.status(400).json({ message: "Неверная почта или пароль" })
 		const isValidPassword = await bcrypt.compare(password, partner.password)
-		if (!isValidPassword) return res.status(400).json({ message: "Invalid email or password" })
+		if (!isValidPassword) return res.status(400).json({ message: "Неверная почта или пароль" })
 		const user = await UserModel.findById(partner.createdBy)
-		if (!user) return res.status(404).json({ message: "Owner user was not found" })
+		if (!user) return res.status(404).json({ message: "Владелец партнерского аккаунта не найден" })
 		const token = createAuthToken(user, { role: "partner", partnerId: partner._id.toString() })
-		return res.json({ message: "Partner login completed", token, user: { ...sanitizeUser(user), role: "partner", partnerId: partner._id.toString(), partner: formatPartner(partner) } })
+		return res.json({ message: "Вход в партнерский аккаунт выполнен", token, user: makePartnerSessionUser(user, partner) })
 	} catch (error) {
 		console.error("Partner login error:", error)
-		return res.status(500).json({ message: "Partner login failed" })
+		return res.status(500).json({ message: "Не удалось выполнить вход партнера" })
 	}
 }
 
 export const updateCurrentPartner = async (req, res) => {
 	try {
-		if (!req.partnerId) return res.status(404).json({ message: "Partner profile was not found" })
+		if (!req.partnerId) return res.status(404).json({ message: "Партнерский профиль не найден" })
 		const validationError = validatePartnerRequest(req.body, { allowMissingPassword: true })
 		if (validationError) return res.status(400).json({ message: validationError })
 		const currentPartner = await PartnerModel.findById(req.partnerId)
-		if (!currentPartner) return res.status(404).json({ message: "Partner profile was not found" })
+		if (!currentPartner) return res.status(404).json({ message: "Партнерский профиль не найден" })
 		const update = buildPartnerPayload(req.body)
 		if (req.body.password) update.password = await bcrypt.hash(req.body.password, 10)
 		else delete update.password
@@ -211,11 +235,11 @@ export const updateCurrentPartner = async (req, res) => {
 		if (logoUrl) { await deleteFromBlob(currentPartner.logo || currentPartner.avatar); update.logo = logoUrl; update.avatar = logoUrl }
 		else if (req.body.logo === null || req.body.avatar === null) { await deleteFromBlob(currentPartner.logo || currentPartner.avatar); update.logo = null; update.avatar = null }
 		const partner = await PartnerModel.findByIdAndUpdate(req.partnerId, update, { new: true, runValidators: true }).populate(partnerPopulate)
-		if (!partner) return res.status(404).json({ message: "Partner profile was not found" })
-		return res.json({ message: "Partner profile updated", data: formatPartner(partner) })
+		if (!partner) return res.status(404).json({ message: "Партнерский профиль не найден" })
+		return res.json({ message: "Партнерский профиль обновлен", data: formatPartner(partner) })
 	} catch (error) {
 		console.error("Update partner profile error:", error)
 		if (error.code === 11000) return res.status(409).json({ message: buildDuplicateMessage(error) })
-		return res.status(500).json({ message: error.message || "Failed to update partner profile" })
+		return res.status(500).json({ message: error.message || "Не удалось обновить партнерский профиль" })
 	}
 }
