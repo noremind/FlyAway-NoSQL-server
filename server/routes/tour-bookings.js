@@ -1,5 +1,6 @@
 import express from "express"
 import {
+	getManagedTourBookingGroup,
 	getManagedTourBookings,
 	updateManagedTourBookingStatus,
 } from "../controllers/tourBookingController.js"
@@ -12,6 +13,13 @@ tourBookingRoutes.get(
 	requireAuth,
 	requireRoles("admin", "partner"),
 	getManagedTourBookings
+)
+
+tourBookingRoutes.get(
+	"/manage/:tourId",
+	requireAuth,
+	requireRoles("admin", "partner"),
+	getManagedTourBookingGroup
 )
 
 tourBookingRoutes.patch(
