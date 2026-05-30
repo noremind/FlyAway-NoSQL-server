@@ -1,6 +1,7 @@
 import express from "express"
 import {
 	createHotelRequest,
+	getManagedHotelRequestGroup,
 	getManagedHotelRequests,
 	updateHotelRequestStatus,
 } from "../controllers/hotelRequestController.js"
@@ -15,6 +16,13 @@ hotelRequestRoutes.get(
 	requireAuth,
 	requireRoles("admin", "partner"),
 	getManagedHotelRequests
+)
+
+hotelRequestRoutes.get(
+	"/manage/:hotelId",
+	requireAuth,
+	requireRoles("admin", "partner"),
+	getManagedHotelRequestGroup
 )
 
 hotelRequestRoutes.patch(
