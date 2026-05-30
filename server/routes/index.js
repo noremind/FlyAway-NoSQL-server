@@ -14,6 +14,7 @@ import { tourBookingRoutes } from "./tour-bookings.js"
 import { devRoutes } from "./dev.js"
 import { personalCabinetRoutes } from "./personal-cabinet.js"
 import { tourReviewRoutes } from "./tour-reviews.js"
+import { hotelReviewRoutes } from "./hotel-reviews.js"
 import { dashboardRoutes } from "./dashboard.js"
 import { faqRoutes } from "./faq.js"
 import { qrRoutes } from "./qr.js"
@@ -38,6 +39,7 @@ router.use("/partners", partnerRoutes)
 router.use("/personal-cabinet", personalCabinetRoutes)
 router.use("/promocodes", promoCodeRoutes)
 router.use("/tour-reviews", tourReviewRoutes)
+router.use("/hotel-reviews", hotelReviewRoutes)
 router.use("/dashboard", dashboardRoutes)
 router.use("/faq", faqRoutes)
 router.use("/qr", qrRoutes)
