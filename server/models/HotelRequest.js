@@ -70,7 +70,7 @@ const HotelRequestSchema = new mongoose.Schema(
 		},
 		status: {
 			type: String,
-			enum: ["new", "in_progress", "contacted", "closed", "cancelled"],
+			enum: ["new", "active", "completed", "cancelled"],
 			default: "new",
 			index: true,
 		},
