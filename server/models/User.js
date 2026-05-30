@@ -36,7 +36,10 @@ const TourBookingSchema = new mongoose.Schema(
 		promoDiscountAmount: { type: Number, required: false, default: 0, min: 0 },
 		tourDiscountPercent: { type: Number, required: false, default: 0, min: 0 },
 		paidWithBonuses: { type: Number, required: false, default: 0, min: 0 },
+		paidWithMoney: { type: Number, required: false, default: 0, min: 0 },
 		paymentMethod: { type: String, required: false, default: "card" },
+		paymentCardMask: { type: String, required: false, default: "" },
+		paymentCardHolder: { type: String, required: false, default: "" },
 		total: { type: Number, required: false, default: 0, min: 0 },
 		status: {
 			type: String,
