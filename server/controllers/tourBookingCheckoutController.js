@@ -39,6 +39,11 @@ const normalizeCard = (card = {}) => {
 	}
 }
 
+const hasCardPayload = (value) => {
+	if (!value || typeof value !== "object") return false
+	return Boolean(value.number || value.cardNumber || value.holder || value.cardHolder || value.expiry || value.expiryDate || value.cvv || value.cvc || value.code)
+}
+
 const getSlot = (tour, body) => {
 	const availabilityDateId = normalizeString(body.availabilityDateId)
 	const requestedDate = normalizeString(body.date)
@@ -132,8 +137,8 @@ export const bookTourDate = async (req, res) => {
 					currency: "BONUS",
 					note: `Оплата тура: ${tour.title}`,
 				})
-			} else {
-				cardSnapshot = normalizeCard(req.body.paymentCard || {})
+			} else if (hasCardPayload(req.body.paymentCard)) {
+				cardSnapshot = normalizeCard(req.body.paymentCard)
 			}
 
 			slot.bookedSeats = Math.min(seats, bookedSeats + guests)
@@ -168,7 +173,7 @@ export const bookTourDate = async (req, res) => {
 					type: "Покупка",
 					amount: paidWithMoney,
 					currency: "KZT",
-					note: `Оплата банковской картой ${cardSnapshot.mask}`,
+					note: cardSnapshot.mask ? `Оплата банковской картой ${cardSnapshot.mask}` : "Оплата банковской картой",
 				})
 
 				const bonusAccrual = Math.floor(paidWithMoney * 0.05)
