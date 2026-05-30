@@ -42,7 +42,7 @@ const canUserReviewHotel = async (userId, hotelId) => {
 	const booking = await HotelRequestModel.findOne({
 		createdBy: userId,
 		hotel: hotelId,
-		status: { $in: ["active", "completed", "closed"] },
+		status: { $in: ["active", "completed", "closed", "in_progress", "contacted"] },
 	}).sort({ createdAt: -1 })
 
 	return Boolean(booking && deriveHotelBookingStatus(booking) === "completed")
