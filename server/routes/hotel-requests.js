@@ -9,7 +9,7 @@ import { requireAuth, requireRoles } from "../middleware/checkAuth.js"
 
 export const hotelRequestRoutes = express.Router()
 
-hotelRequestRoutes.post("/", createHotelRequest)
+hotelRequestRoutes.post("/", requireAuth, createHotelRequest)
 
 hotelRequestRoutes.get(
 	"/manage",
