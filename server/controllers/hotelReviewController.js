@@ -39,13 +39,15 @@ const deriveHotelBookingStatus = (booking) => {
 }
 
 const canUserReviewHotel = async (userId, hotelId) => {
-	const booking = await HotelRequestModel.findOne({
+	const bookings = await HotelRequestModel.find({
 		createdBy: userId,
 		hotel: hotelId,
 		status: { $in: ["active", "completed", "closed", "in_progress", "contacted"] },
-	}).sort({ createdAt: -1 })
+	})
+		.sort({ createdAt: -1 })
+		.limit(20)
 
-	return Boolean(booking && deriveHotelBookingStatus(booking) === "completed")
+	return bookings.some((booking) => deriveHotelBookingStatus(booking) === "completed")
 }
 
 const updateHotelReviewSummary = async (hotelId) => {
