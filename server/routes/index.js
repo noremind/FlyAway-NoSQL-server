@@ -17,6 +17,7 @@ import { tourReviewRoutes } from "./tour-reviews.js"
 import { dashboardRoutes } from "./dashboard.js"
 import { faqRoutes } from "./faq.js"
 import { qrRoutes } from "./qr.js"
+import { recordContentView } from "../controllers/contentViewController.js"
 
 const router = express.Router()
 
@@ -40,6 +41,7 @@ router.use("/tour-reviews", tourReviewRoutes)
 router.use("/dashboard", dashboardRoutes)
 router.use("/faq", faqRoutes)
 router.use("/qr", qrRoutes)
+router.post("/content-views", recordContentView)
 
 if (process.env.NODE_ENV !== "production") {
 	router.use("/dev", devRoutes)
