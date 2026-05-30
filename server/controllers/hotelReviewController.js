@@ -1,3 +1,4 @@
+import mongoose from "mongoose"
 import HotelModel from "../models/Hotel.js"
 import HotelRequestModel from "../models/HotelRequest.js"
 import HotelReviewModel from "../models/HotelReview.js"
@@ -48,10 +49,11 @@ const canUserReviewHotel = async (userId, hotelId) => {
 }
 
 const updateHotelReviewSummary = async (hotelId) => {
+	const hotelObjectId = new mongoose.Types.ObjectId(String(hotelId))
 	const summary = await HotelReviewModel.aggregate([
 		{
 			$match: {
-				hotel: HotelReviewModel.db.base.Types.ObjectId.createFromHexString(String(hotelId)),
+				hotel: hotelObjectId,
 			},
 		},
 		{
