@@ -1,13 +1,12 @@
 import HotelModel from "../models/Hotel.js"
 import HotelRequestModel from "../models/HotelRequest.js"
 
-const allowedRequestStatuses = [
-	"new",
-	"in_progress",
-	"contacted",
-	"closed",
-	"cancelled",
-]
+const allowedRequestStatuses = ["new", "active", "completed", "cancelled"]
+const legacyStatusMap = {
+	in_progress: "active",
+	contacted: "active",
+	closed: "completed",
+}
 
 const normalizeString = (value) => {
 	if (value === null || value === undefined) return ""
@@ -29,11 +28,48 @@ const normalizeDate = (value) => {
 	return /^\d{4}-\d{2}-\d{2}$/.test(normalized) ? normalized : null
 }
 
+const parseBookingDate = (value) => {
+	const normalized = normalizeDate(value)
+	if (!normalized) return null
+	const parsed = new Date(`${normalized}T00:00:00`)
+	return Number.isNaN(parsed.getTime()) ? null : parsed
+}
+
+const normalizeRequestStatus = (status) => {
+	const normalized = normalizeString(status)
+	return legacyStatusMap[normalized] || normalized || "new"
+}
+
+const getEffectiveRequestStatus = (request) => {
+	const status = normalizeRequestStatus(request?.status)
+
+	if (status !== "active") {
+		return allowedRequestStatuses.includes(status) ? status : "new"
+	}
+
+	const checkOutDate = parseBookingDate(request?.checkOut)
+
+	if (checkOutDate && checkOutDate.getTime() < Date.now()) {
+		return "completed"
+	}
+
+	return "active"
+}
+
+const serializeRequest = (request) => {
+	const source = typeof request?.toObject === "function" ? request.toObject() : request
+	return {
+		...source,
+		status: getEffectiveRequestStatus(source),
+		rawStatus: normalizeRequestStatus(source?.status),
+	}
+}
+
 const isValidEmail = (email) => /\S+@\S+\.\S+/.test(email)
 
 const buildHotelRequestFilter = (req) => {
 	const filter = {}
-	const status = normalizeString(req.query.status)
+	const status = normalizeRequestStatus(req.query.status)
 	const hotelId = normalizeString(req.query.hotelId)
 
 	if (req.userRole === "partner") {
@@ -41,7 +77,13 @@ const buildHotelRequestFilter = (req) => {
 	}
 
 	if (status && allowedRequestStatuses.includes(status)) {
-		filter.status = status
+		if (status === "active") {
+			filter.status = { $in: ["active", "in_progress", "contacted"] }
+		} else if (status === "completed") {
+			filter.status = { $in: ["completed", "closed"] }
+		} else {
+			filter.status = status
+		}
 	}
 
 	if (hotelId) {
@@ -68,7 +110,7 @@ const groupRequestsByHotel = (requests) => {
 	const map = new Map()
 
 	for (const request of requests) {
-		const source = typeof request?.toObject === "function" ? request.toObject() : request
+		const source = serializeRequest(request)
 		const hotel = source?.hotel
 		const hotelId = String(hotel?._id || hotel || "")
 		if (!hotelId) continue
@@ -81,9 +123,8 @@ const groupRequestsByHotel = (requests) => {
 				requests: [],
 				requestCount: 0,
 				newCount: 0,
-				inProgressCount: 0,
-				contactedCount: 0,
-				closedCount: 0,
+				activeCount: 0,
+				completedCount: 0,
 				cancelledCount: 0,
 				guestsCount: 0,
 				lastRequestAt: null,
@@ -94,9 +135,8 @@ const groupRequestsByHotel = (requests) => {
 		group.requests.push(source)
 		group.requestCount += 1
 		group.guestsCount += Number(source?.guests) || 0
-		if (source.status === "in_progress") group.inProgressCount += 1
-		else if (source.status === "contacted") group.contactedCount += 1
-		else if (source.status === "closed") group.closedCount += 1
+		if (source.status === "active") group.activeCount += 1
+		else if (source.status === "completed") group.completedCount += 1
 		else if (source.status === "cancelled") group.cancelledCount += 1
 		else group.newCount += 1
 
@@ -191,7 +231,10 @@ export const getManagedHotelRequests = async (req, res) => {
 	try {
 		const grouped = normalizeString(req.query.grouped) === "true"
 		const requests = await findManagedHotelRequests(req)
-		return res.json({ data: grouped ? groupRequestsByHotel(requests) : requests, meta: { grouped } })
+		return res.json({
+			data: grouped ? groupRequestsByHotel(requests) : requests.map(serializeRequest),
+			meta: { grouped },
+		})
 	} catch (error) {
 		console.error("Get managed hotel requests error:", error)
 		return res.status(500).json({ message: "Не удалось получить заявки на отели" })
@@ -225,9 +268,8 @@ export const getManagedHotelRequestGroup = async (req, res) => {
 					requests: [],
 					requestCount: 0,
 					newCount: 0,
-					inProgressCount: 0,
-					contactedCount: 0,
-					closedCount: 0,
+					activeCount: 0,
+					completedCount: 0,
 					cancelledCount: 0,
 					guestsCount: 0,
 					lastRequestAt: null,
@@ -244,7 +286,7 @@ export const getManagedHotelRequestGroup = async (req, res) => {
 
 export const updateHotelRequestStatus = async (req, res) => {
 	try {
-		const status = normalizeString(req.body.status)
+		const status = normalizeRequestStatus(req.body.status)
 		const managerNote = normalizeString(req.body.managerNote)
 
 		if (!allowedRequestStatuses.includes(status)) {
@@ -282,7 +324,7 @@ export const updateHotelRequestStatus = async (req, res) => {
 
 		return res.json({
 			message: "Заявка обновлена",
-			data: updatedRequest,
+			data: serializeRequest(updatedRequest),
 		})
 	} catch (error) {
 		console.error("Update hotel request status error:", error)
