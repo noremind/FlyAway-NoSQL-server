@@ -40,15 +40,25 @@ const deriveBookingStatus = (booking) => {
 		: currentStatus
 }
 
-const deriveHotelRequestStatus = (request) => {
-	const currentStatus = normalizeString(request?.status)
+const normalizeHotelStatus = (status) => {
+	const normalized = normalizeString(status)
+	if (normalized === "in_progress" || normalized === "contacted") return "active"
+	if (normalized === "closed") return "completed"
+	if (["new", "active", "completed", "cancelled"].includes(normalized)) return normalized
+	return "new"
+}
 
-	if (currentStatus === "closed") {
-		return "completed"
+const deriveHotelRequestStatus = (request) => {
+	const currentStatus = normalizeHotelStatus(request?.status)
+
+	if (currentStatus !== "active") {
+		return currentStatus
 	}
 
-	if (currentStatus === "cancelled") {
-		return "cancelled"
+	const checkOutDate = parseBookingDate(request?.checkOut)
+
+	if (checkOutDate && checkOutDate.getTime() < Date.now()) {
+		return "completed"
 	}
 
 	return "active"
@@ -65,10 +75,11 @@ const serializeBooking = (booking) => {
 
 const serializeHotelRequest = (request) => {
 	const source = typeof request?.toObject === "function" ? request.toObject() : request
+	const rawStatus = normalizeHotelStatus(source?.status)
 
 	return {
 		...source,
-		requestStatus: normalizeString(source?.status) || "new",
+		requestStatus: rawStatus,
 		status: deriveHotelRequestStatus(source),
 	}
 }
@@ -293,11 +304,13 @@ export const cancelOwnHotelRequest = async (req, res) => {
 			return res.status(403).json({ message: "Нет доступа к заявке" })
 		}
 
-		if (normalizeString(request.status) === "cancelled") {
+		const currentStatus = deriveHotelRequestStatus(request)
+
+		if (currentStatus === "cancelled") {
 			return res.status(409).json({ message: "Заявка уже отменена" })
 		}
 
-		if (normalizeString(request.status) === "closed") {
+		if (currentStatus === "completed") {
 			return res.status(409).json({ message: "Завершенную заявку отменить нельзя" })
 		}
 
