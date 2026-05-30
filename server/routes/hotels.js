@@ -7,6 +7,7 @@ import {
 	updateHotel,
 	deleteHotel,
 } from "../controllers/hotelController.js"
+import { recordHotelView } from "../middleware/contentViewTracker.js"
 import { requireAuth, requireRoles } from "../middleware/checkAuth.js"
 
 export const hotelRoutes = express.Router()
@@ -18,7 +19,7 @@ hotelRoutes.get(
 	getManagedHotels
 )
 hotelRoutes.get("/", getHotels)
-hotelRoutes.get("/:id", getOneHotel)
+hotelRoutes.get("/:id", recordHotelView, getOneHotel)
 hotelRoutes.post(
 	"/create",
 	requireAuth,
