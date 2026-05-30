@@ -11,6 +11,7 @@ import {
 	getTourFilterCities,
 	getTourFilterDurations,
 } from "../controllers/tourFilterController.js"
+import { recordTourView } from "../middleware/contentViewTracker.js"
 import { requireAuth, requireRoles } from "../middleware/checkAuth.js"
 
 export const tourRoutes = express.Router()
@@ -31,6 +32,10 @@ tourRoutes.post(
 	createTour
 )
 tourRoutes.patch(
-	"/:id", requireAuth, requireRoles("admin", "partner"), updateTour)
+	"/:id",
+	requireAuth,
+	requireRoles("admin", "partner"),
+	updateTour
+)
 tourRoutes.post("/:id/book-date", requireAuth, bookTourDate)
-tourRoutes.get("/:id", getOneTour)
+tourRoutes.get("/:id", recordTourView, getOneTour)
