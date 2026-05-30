@@ -1,12 +1,12 @@
 import express from "express"
 import {
 	createTour,
-	bookTourDate,
 	getManagedTours,
 	getOneTour,
 	getTours,
 	updateTour,
 } from "../controllers/tourController.js"
+import { bookTourDate } from "../controllers/tourBookingCheckoutController.js"
 import {
 	getTourFilterCities,
 	getTourFilterDurations,
@@ -31,10 +31,6 @@ tourRoutes.post(
 	createTour
 )
 tourRoutes.patch(
-	"/:id",
-	requireAuth,
-	requireRoles("admin", "partner"),
-	updateTour
-)
+	"/:id", requireAuth, requireRoles("admin", "partner"), updateTour)
 tourRoutes.post("/:id/book-date", requireAuth, bookTourDate)
 tourRoutes.get("/:id", getOneTour)
