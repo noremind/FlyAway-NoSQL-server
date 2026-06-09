@@ -23,35 +23,35 @@ const TourBookingSchema = new mongoose.Schema(
 		date: { type: String, required: false, default: "" },
 		timeFrom: { type: String, required: false, default: "" },
 		timeTo: { type: String, required: false, default: "" },
-		guests: { type: Number, required: false, default: 1, min: 1 },
-		ticketSelections: [
-			{
-				title: { type: String, required: false, default: "" },
-				quantity: { type: Number, required: false, default: 0, min: 0 },
-				price: { type: Number, required: false, default: 0, min: 0 },
-				subtotal: { type: Number, required: false, default: 0, min: 0 },
-			},
-		],
-		promoCode: { type: String, required: false, default: null },
-		promoDiscountAmount: { type: Number, required: false, default: 0, min: 0 },
-		tourDiscountPercent: { type: Number, required: false, default: 0, min: 0 },
-		paidWithBonuses: { type: Number, required: false, default: 0, min: 0 },
-		paidWithMoney: { type: Number, required: false, default: 0, min: 0 },
-		paymentMethod: { type: String, required: false, default: "card" },
-		paymentCardMask: { type: String, required: false, default: "" },
-		paymentCardHolder: { type: String, required: false, default: "" },
-		total: { type: Number, required: false, default: 0, min: 0 },
-		status: {
-			type: String,
+		: { type: Number, required: false, default: 1, min: 1 },
+ticketSelections: [
+	{
+		title: { type: String, required: false, default: "" },
+		quantity: { type: Number, required: false, default: 0, min: 0 },
+		price: { type: Number, required: false, default: 0, min: 0 },
+		subtotal: { type: Number, required: false, default: 0, min: 0 },
+	},
+],
+	promoCode: { type: String, required: false, default: null },
+promoDiscountAmount: { type: Number, required: false, default: 0, min: 0 },
+tourDiscountPercent: { type: Number, required: false, default: 0, min: 0 },
+paidWithBonuses: { type: Number, required: false, default: 0, min: 0 },
+paidWithMoney: { type: Number, required: false, default: 0, min: 0 },
+paymentMethod: { type: String, required: false, default: "card" },
+paymentCardMask: { type: String, required: false, default: "" },
+paymentCardHolder: { type: String, required: false, default: "" },
+total: { type: Number, required: false, default: 0, min: 0 },
+status: {
+	type: String,
 			enum: ["active", "completed", "cancelled"],
 			default: "active",
 		},
-		cancellationReason: { type: String, required: false, default: "" },
-		cancellationReasonLabel: { type: String, required: false, default: "" },
-		cancellationComment: { type: String, required: false, default: "" },
-		cancelledAt: { type: Date, required: false, default: null },
+cancellationReason: { type: String, required: false, default: "" },
+cancellationReasonLabel: { type: String, required: false, default: "" },
+cancellationComment: { type: String, required: false, default: "" },
+cancelledAt: { type: Date, required: false, default: null },
 	},
-	{ _id: true, timestamps: true }
+{ _id: true, timestamps: true }
 )
 
 const UserSchema = new mongoose.Schema(
